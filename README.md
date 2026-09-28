@@ -4,6 +4,14 @@ The recovered controller, weights, calibration and existing experiment results l
 in this checkout. Docker supplies Ubuntu 20.04, ROS Noetic, Python 3.8, NEST
 `HEAD@41892a5`, Gazebo and the upstream TIAGo packages.
 
+## Co-simulation refactor (branch `cosim-loop`)
+
+The NEST → Gazebo control loop is being replaced by a lock-stepped, NRP-style
+co-simulation layer. The assessment of the current loop, the two candidate plans
+(migrate to `nrp-core`, or an in-house loop — recommended) and the hand-over
+checklist for a Linux session are in [`docs/cosim/`](docs/cosim/README.md). `main`
+remains the frozen baseline behind the existing results.
+
 ## Start
 
 Use Linux amd64 with Docker Engine accessible to your user. Desktop operation needs
