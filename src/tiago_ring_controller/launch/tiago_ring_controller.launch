@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+  <!-- Define arguments for ring controller -->
+  <arg name="world" default="tiago_ring_controller"/>
+  <arg name="gui" default="true"/>
+  <arg name="public_sim" default="true"/>
+  <arg name="arm" default="true"/>
+  <arg name="end_effector" default="pal-hey5"/>
+  <arg name="ft_sensor" default="schunk-ft"/>
+  
+  <!-- Launch Tiago in Gazebo with the ring controller world -->
+  <include file="$(find tiago_gazebo)/launch/tiago_gazebo.launch">
+    <arg name="world" value="$(arg world)"/>
+    <arg name="gui" value="$(arg gui)"/>
+    <arg name="public_sim" value="$(arg public_sim)"/>
+    <arg name="arm" value="$(arg arm)"/>
+    <arg name="end_effector" value="$(arg end_effector)"/>
+    <arg name="ft_sensor" value="$(arg ft_sensor)"/>
+  </include>
+
+  <!-- Camera recording node -->
+  <node name="record_experiments" pkg="tiago_ring_controller" type="record_experiments.py" output="screen"/>
+
+  <!-- Velocity control node -->
+  <!-- <node name="tiago_velocity_controller" pkg="tiago_ring_controller" type="tiago_controller.py" output="screen"/> -->
+
+  <!-- Additional launch files can be included here -->
+
+</launch>

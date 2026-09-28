@@ -1,0 +1,21 @@
+{
+  "left_homeostasis_gain_weight": 10000.0,
+  "right_homeostasis_gain_weight": 10000.0,
+  "ring_to_gain_weight": 450000.0,
+  "gain_to_ring_weight": -0.6,
+  "cross_inhibition_weight": -30000.0,
+  "previous_params": {
+    "left_homeostasis_gain_weight": 37000.0,
+    "right_homeostasis_gain_weight": 37000.0,
+    "ring_to_gain_weight": 180000.0,
+    "gain_to_ring_weight": -1,
+    "cross_inhibition_weight": -30000.0
+  },
+  "previous_params_init": {
+    "left_homeostasis_gain_weight": 7000.0,
+    "right_homeostasis_gain_weight": 7000.0,
+    "ring_to_gain_weight": 350000.0,
+    "gain_to_ring_weight": -0.15,
+    "cross_inhibition_weight": -50000.0
+  }
+}

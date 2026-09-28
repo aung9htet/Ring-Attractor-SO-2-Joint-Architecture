@@ -1,0 +1,14 @@
+{
+  "population_size": 100,
+  "num_positions": 30,
+  "num_fourier_k": 5,
+  "config_dir": "./config/ring_decoder",
+  "samples_per_position": 1,
+  "sim_settle_ms": 300.0,
+  "stimulus_half_width": 5,
+  "ridge_lambda": 1e-06,
+  "output_dir": "./outputs/ring_decoding",
+  "harmonic_index": 0,
+  "readout_weight_scale": 200.0,
+  "output_dc_baseline": 200.0
+}

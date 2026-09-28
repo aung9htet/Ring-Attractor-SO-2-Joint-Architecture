@@ -1,0 +1,48 @@
+{
+  "eval_split": "test",
+  "n_eval_samples": 52,
+  "model_config": {
+    "population_size": 100,
+    "num_joints": 2,
+    "joint_axes": [
+      "x",
+      "y"
+    ],
+    "output_ring_size": 100,
+    "product_population_size": 32,
+    "n_prod_neurons": 1024,
+    "sim_settle_ms": 300.0,
+    "stimulus_half_width": 5,
+    "output_rate_baseline": 50.0,
+    "output_rate_amplitude": 40.0,
+    "ridge_lambda": 1e-06
+  },
+  "centroid_decoder": {
+    "lift_mean_abs_angle_error_rad": 1.511956299734751,
+    "pitch_mean_abs_angle_error_rad": 0.3493400694506897,
+    "yaw_mean_abs_angle_error_rad": 1.6231079315445096,
+    "lift_max_abs_angle_error_rad": 3.141592653589793,
+    "pitch_max_abs_angle_error_rad": 1.5707963267948966,
+    "yaw_max_abs_angle_error_rad": 3.141592653589793,
+    "lift_mean_abs_index_error": 24.063531884171702,
+    "pitch_mean_abs_index_error": 5.5599198873143285,
+    "yaw_mean_abs_index_error": 25.832565047697035,
+    "lift_max_abs_index_error": 50.0,
+    "pitch_max_abs_index_error": 25.0,
+    "yaw_max_abs_index_error": 50.0
+  },
+  "sawtooth_decoder": {
+    "lift_mean_abs_angle_error_rad": 1.511956299734751,
+    "pitch_mean_abs_angle_error_rad": 0.3493400694506897,
+    "yaw_mean_abs_angle_error_rad": 1.6231079315445096,
+    "lift_max_abs_angle_error_rad": 3.141592653589793,
+    "pitch_max_abs_angle_error_rad": 1.5707963267948966,
+    "yaw_max_abs_angle_error_rad": 3.141592653589793,
+    "lift_mean_abs_index_error": 24.063531884171702,
+    "pitch_mean_abs_index_error": 5.5599198873143285,
+    "yaw_mean_abs_index_error": 25.832565047697035,
+    "lift_max_abs_index_error": 50.0,
+    "pitch_max_abs_index_error": 25.0,
+    "yaw_max_abs_index_error": 50.0
+  }
+}

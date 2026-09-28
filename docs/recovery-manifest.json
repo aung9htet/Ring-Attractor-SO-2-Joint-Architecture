@@ -1,0 +1,2886 @@
+{
+  "image": "aung9htet/ubuntu-20.04@sha256:903cecc6936d68aa6d457d10399e3f8210d4271dcffc6f3d28a739d5b0abba47",
+  "image_id": "sha256:ce01b3b8d861043de5c8d7003d185cd81012f8f9f22cec4f368e62cc6d260157",
+  "files": {
+    "src/tiago_ring_controller/CMakeLists.txt": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/CMakeLists.txt",
+      "bytes": 2656,
+      "mode": "0o644",
+      "sha256": "a60a41c217f076205b2c5c35abac893f53fd970cc39fef4a83f411bbea7d6152"
+    },
+    "src/tiago_ring_controller/README.md": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/README.md",
+      "bytes": 4626,
+      "mode": "0o644",
+      "sha256": "014d59e804a72537bb1fc660ef68486b1664f0e651d1aa67c4cb96b034f09e68"
+    },
+    "src/tiago_ring_controller/docs/architecture.md": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/docs/architecture.md",
+      "bytes": 5761,
+      "mode": "0o644",
+      "sha256": "7c821514a641072acc621cd5101b939b9f155068c6d20ffee1fb0553916e0ad6"
+    },
+    "src/tiago_ring_controller/docs/artifacts.md": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/docs/artifacts.md",
+      "bytes": 4911,
+      "mode": "0o644",
+      "sha256": "a22e39636784b88df2c009fc641907b62a810390e61027a428a41a61ac4b323b"
+    },
+    "src/tiago_ring_controller/docs/paper_traceability.md": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/docs/paper_traceability.md",
+      "bytes": 4316,
+      "mode": "0o644",
+      "sha256": "228e5f138fc6d9c002f334f4c406148bc6109cd8c0462953fb6a9931073a89e5"
+    },
+    "src/tiago_ring_controller/docs/reproducibility.md": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/docs/reproducibility.md",
+      "bytes": 5959,
+      "mode": "0o644",
+      "sha256": "defa1be7299a837b549c3a3ff91c33b2183c13923a08015c5686429fc87e3311"
+    },
+    "src/tiago_ring_controller/docs/robot_safety.md": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/docs/robot_safety.md",
+      "bytes": 4383,
+      "mode": "0o644",
+      "sha256": "b69810b5409a3b15c84e30346bf055dd87054d88bed9dfc9a9e46787ae69d3d8"
+    },
+    "src/tiago_ring_controller/env-hooks/50.tiago_ring_controller_pythonpath.sh.develspace.in": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/env-hooks/50.tiago_ring_controller_pythonpath.sh.develspace.in",
+      "bytes": 309,
+      "mode": "0o644",
+      "sha256": "7b4feb9c5f5dac126baf815ac0d70518acc585b9f41d7249eb39d2a6b1fdb93c"
+    },
+    "src/tiago_ring_controller/experiment_results/torque_data/torque_data_20260804_082635.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/experiment_results/torque_data/torque_data_20260804_082635.csv",
+      "bytes": 181033,
+      "mode": "0o644",
+      "sha256": "0a580cd5dc04c9d7466a6830f7c0bd36ccad8c5127e44f89152b9df7339aef56"
+    },
+    "src/tiago_ring_controller/launch/tiago_ring_controller.launch": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/launch/tiago_ring_controller.launch",
+      "bytes": 1167,
+      "mode": "0o644",
+      "sha256": "b19d2008d626f5ea0632261cab8e6c2329bf6e178dff94dba0dc0c1edf395988"
+    },
+    "src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_1/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_1/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_13/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_13/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_14/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_14/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_15/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_15/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_2/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_2/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_20/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_20/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_21/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_21/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "c62bd362cf8436d918a8c82c742b65bbeeeaecca39ac51847f6f9670472d652b"
+    },
+    "src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_3/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_3/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_9/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/outputs/train/single_joint_ring_component/results_9/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/tiago_ring_controller/package.xml": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/package.xml",
+      "bytes": 1108,
+      "mode": "0o644",
+      "sha256": "aef44c82ab4e84ce5d88ad8302204296e354a9d751554ad666704c38615acc4e"
+    },
+    "src/tiago_ring_controller/results/ring_attractor/results_1/raster_plot.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/ring_attractor/results_1/raster_plot.png",
+      "bytes": 59666,
+      "mode": "0o644",
+      "sha256": "a8bd10bf45704956fadfe6bfa55845b163c3d72d9bd97e8484adac52815dff5f"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_1/error_distribution.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_1/error_distribution.png",
+      "bytes": 43130,
+      "mode": "0o644",
+      "sha256": "bf987c74fa4c891f813eb6056b87b0d6ba3ee01623a05a2987f23d9bf442f59a"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_1/readout_comparison.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_1/readout_comparison.png",
+      "bytes": 55328,
+      "mode": "0o644",
+      "sha256": "0870d4422486eab33d5cd0b2f6e54a035983c4ff335dd58d756333f5d4a35089"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_13/error_distribution.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_13/error_distribution.png",
+      "bytes": 43130,
+      "mode": "0o644",
+      "sha256": "bf987c74fa4c891f813eb6056b87b0d6ba3ee01623a05a2987f23d9bf442f59a"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_13/readout_comparison.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_13/readout_comparison.png",
+      "bytes": 55328,
+      "mode": "0o644",
+      "sha256": "0870d4422486eab33d5cd0b2f6e54a035983c4ff335dd58d756333f5d4a35089"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_14/error_distribution.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_14/error_distribution.png",
+      "bytes": 43130,
+      "mode": "0o644",
+      "sha256": "bf987c74fa4c891f813eb6056b87b0d6ba3ee01623a05a2987f23d9bf442f59a"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_14/readout_comparison.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_14/readout_comparison.png",
+      "bytes": 55328,
+      "mode": "0o644",
+      "sha256": "0870d4422486eab33d5cd0b2f6e54a035983c4ff335dd58d756333f5d4a35089"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_15/error_distribution.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_15/error_distribution.png",
+      "bytes": 43130,
+      "mode": "0o644",
+      "sha256": "bf987c74fa4c891f813eb6056b87b0d6ba3ee01623a05a2987f23d9bf442f59a"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_15/readout_comparison.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_15/readout_comparison.png",
+      "bytes": 55328,
+      "mode": "0o644",
+      "sha256": "0870d4422486eab33d5cd0b2f6e54a035983c4ff335dd58d756333f5d4a35089"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_2/error_distribution.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_2/error_distribution.png",
+      "bytes": 43130,
+      "mode": "0o644",
+      "sha256": "bf987c74fa4c891f813eb6056b87b0d6ba3ee01623a05a2987f23d9bf442f59a"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_2/readout_comparison.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_2/readout_comparison.png",
+      "bytes": 55328,
+      "mode": "0o644",
+      "sha256": "0870d4422486eab33d5cd0b2f6e54a035983c4ff335dd58d756333f5d4a35089"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_20/error_distribution.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_20/error_distribution.png",
+      "bytes": 43130,
+      "mode": "0o644",
+      "sha256": "bf987c74fa4c891f813eb6056b87b0d6ba3ee01623a05a2987f23d9bf442f59a"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_20/readout_comparison.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_20/readout_comparison.png",
+      "bytes": 55328,
+      "mode": "0o644",
+      "sha256": "0870d4422486eab33d5cd0b2f6e54a035983c4ff335dd58d756333f5d4a35089"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_21/error_distribution.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_21/error_distribution.png",
+      "bytes": 42794,
+      "mode": "0o644",
+      "sha256": "f46dfa27cf0ee53f4204f01c629062c4c9ec7e863840b170dfec20d032ec516c"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_21/readout_comparison.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_21/readout_comparison.png",
+      "bytes": 56844,
+      "mode": "0o644",
+      "sha256": "a4bcfdcb68ec50c4307adda1aa37ee5a1333f87cc0b885e6d0a6228a49b39710"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_3/error_distribution.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_3/error_distribution.png",
+      "bytes": 43130,
+      "mode": "0o644",
+      "sha256": "bf987c74fa4c891f813eb6056b87b0d6ba3ee01623a05a2987f23d9bf442f59a"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_3/readout_comparison.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_3/readout_comparison.png",
+      "bytes": 55328,
+      "mode": "0o644",
+      "sha256": "0870d4422486eab33d5cd0b2f6e54a035983c4ff335dd58d756333f5d4a35089"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_9/error_distribution.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_9/error_distribution.png",
+      "bytes": 43130,
+      "mode": "0o644",
+      "sha256": "bf987c74fa4c891f813eb6056b87b0d6ba3ee01623a05a2987f23d9bf442f59a"
+    },
+    "src/tiago_ring_controller/results/single_joint_ring_component/results_9/readout_comparison.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/results/single_joint_ring_component/results_9/readout_comparison.png",
+      "bytes": 55328,
+      "mode": "0o644",
+      "sha256": "0870d4422486eab33d5cd0b2f6e54a035983c4ff335dd58d756333f5d4a35089"
+    },
+    "src/tiago_ring_controller/setup.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/setup.py",
+      "bytes": 1585,
+      "mode": "0o644",
+      "sha256": "c418c69117bf8c385752dd09b569e9653e9b6df2a6dd0943c9166edba188aeca"
+    },
+    "src/tiago_ring_controller/src/Neurips_2026.pdf": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/Neurips_2026.pdf",
+      "bytes": 2654330,
+      "mode": "0o644",
+      "sha256": "c97b3a8b3612dc7d0fc9c585bc9395d4061a2a9497f94932b30eb4e09e397db5"
+    },
+    "src/tiago_ring_controller/src/README.md": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/README.md",
+      "bytes": 3729,
+      "mode": "0o644",
+      "sha256": "a21a37ee62b9ff8aa1bfcbd7174e305743ed58b27a8cbfd71823b8e88fa77f93"
+    },
+    "src/tiago_ring_controller/src/__pycache__/analysis_single_joint.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/analysis_single_joint.cpython-38.pyc",
+      "bytes": 41020,
+      "mode": "0o644",
+      "sha256": "7144184ae4d7eb828e2fdeff194b753cb355afeaaa8f4f78012e99c368c0e538"
+    },
+    "src/tiago_ring_controller/src/__pycache__/calibrate_single_joint.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/calibrate_single_joint.cpython-38.pyc",
+      "bytes": 31896,
+      "mode": "0o644",
+      "sha256": "f73b4410fc786396960400a67ba8a3c4617765b26c0ea09e582c5099049f6e64"
+    },
+    "src/tiago_ring_controller/src/__pycache__/calibrate_velocity_model.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/calibrate_velocity_model.cpython-38.pyc",
+      "bytes": 9270,
+      "mode": "0o644",
+      "sha256": "3e70e72b35fe18ebcd5f13db4dc621a043fede126725950087275052c3ca5c4c"
+    },
+    "src/tiago_ring_controller/src/__pycache__/compositional_fourier_decoder.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/compositional_fourier_decoder.cpython-38.pyc",
+      "bytes": 49756,
+      "mode": "0o644",
+      "sha256": "59c204d155082f8da86d499d0f998a895c4bd1879614132ffed82979d0dee0b9"
+    },
+    "src/tiago_ring_controller/src/__pycache__/experiment_camera.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/experiment_camera.cpython-38.pyc",
+      "bytes": 4562,
+      "mode": "0o644",
+      "sha256": "685715db9525dad45f74c13d64480745b8d31e6619e6dc61726f37ea37f862fa"
+    },
+    "src/tiago_ring_controller/src/__pycache__/gain_modulation.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/gain_modulation.cpython-38.pyc",
+      "bytes": 3603,
+      "mode": "0o644",
+      "sha256": "2f4ba460a1b56ff50a52319a730ea01bff958da80aeac00b5b91b83f68acf033"
+    },
+    "src/tiago_ring_controller/src/__pycache__/gain_modulation_analysis.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/gain_modulation_analysis.cpython-38.pyc",
+      "bytes": 14580,
+      "mode": "0o644",
+      "sha256": "25064470fc45acbd27eb86980c1431feec3f6d63044a69635998d32c93069b7a"
+    },
+    "src/tiago_ring_controller/src/__pycache__/homeostasis.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/homeostasis.cpython-38.pyc",
+      "bytes": 3953,
+      "mode": "0o644",
+      "sha256": "8401426bcd6bdc289b44d7bff39a6494754def8d665556ef43aa0083c0b58c7f"
+    },
+    "src/tiago_ring_controller/src/__pycache__/multi_ring_component.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/multi_ring_component.cpython-38.pyc",
+      "bytes": 22888,
+      "mode": "0o644",
+      "sha256": "c49a5a78ced9db52dbdcd7b5a240e4bced8f756f800e880ab6783d34077b01f6"
+    },
+    "src/tiago_ring_controller/src/__pycache__/readout_mean_std_analysis.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/readout_mean_std_analysis.cpython-38.pyc",
+      "bytes": 7262,
+      "mode": "0o644",
+      "sha256": "a52c05737f580a8218543edec865c87eff15f4d0ece56ec927fdad51e21025ab"
+    },
+    "src/tiago_ring_controller/src/__pycache__/ring_attractor.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/ring_attractor.cpython-38.pyc",
+      "bytes": 4868,
+      "mode": "0o644",
+      "sha256": "40b81fa6ba99f8722c2f5b0f8355e5978ee80fc54c10e88fa54aa19ef5a4da61"
+    },
+    "src/tiago_ring_controller/src/__pycache__/ring_component.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/ring_component.cpython-38.pyc",
+      "bytes": 4973,
+      "mode": "0o644",
+      "sha256": "f19cfc307f29c6ad79ef19698c3f9d0fb01124fe81a0a3f5236fb249982c8215"
+    },
+    "src/tiago_ring_controller/src/__pycache__/ring_model.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/ring_model.cpython-38.pyc",
+      "bytes": 17966,
+      "mode": "0o644",
+      "sha256": "88438788a0cbd2d793a927980d1143de220fd34508ee59a6a29a049e6bd07c00"
+    },
+    "src/tiago_ring_controller/src/__pycache__/single_joint_data_collector.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/single_joint_data_collector.cpython-38.pyc",
+      "bytes": 19035,
+      "mode": "0o644",
+      "sha256": "0e83e65b431b8bf3460fa7178bb7b91200cb15b39494017c7bc3135998e2cff1"
+    },
+    "src/tiago_ring_controller/src/__pycache__/single_joint_data_visualizer.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/single_joint_data_visualizer.cpython-38.pyc",
+      "bytes": 15986,
+      "mode": "0o644",
+      "sha256": "b7a6d6fbc02dadd81aa2fb67480eefca3e0620d4b68a90ee821409368473664e"
+    },
+    "src/tiago_ring_controller/src/__pycache__/single_ring.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/single_ring.cpython-38.pyc",
+      "bytes": 23447,
+      "mode": "0o644",
+      "sha256": "7cd6272fd74f8fec4440ab3ad85aa609cd9595d5d1660e66d1eb91c6a6aedd3f"
+    },
+    "src/tiago_ring_controller/src/__pycache__/single_ring_bennch.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/single_ring_bennch.cpython-38.pyc",
+      "bytes": 40642,
+      "mode": "0o644",
+      "sha256": "eac6630e56b069d5f83270593e29a43a6c8a6923e22744d0916506891c14e9dc"
+    },
+    "src/tiago_ring_controller/src/__pycache__/test_single_ring.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/test_single_ring.cpython-38.pyc",
+      "bytes": 42800,
+      "mode": "0o644",
+      "sha256": "a7053bea9f197f3ca6484db47da4196805c90245f164f541cff54ef18d45ebe2"
+    },
+    "src/tiago_ring_controller/src/__pycache__/tiago_controller.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/tiago_controller.cpython-38.pyc",
+      "bytes": 11416,
+      "mode": "0o644",
+      "sha256": "48b8d461430ea145f3bb5d98552db80ceef8e067f433013062b269d44905c978"
+    },
+    "src/tiago_ring_controller/src/__pycache__/train_homeostasis.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/train_homeostasis.cpython-38.pyc",
+      "bytes": 15373,
+      "mode": "0o644",
+      "sha256": "a49320160d7e70834cd38e9d5d490539833734b7e308f66e37e0a85c562e9248"
+    },
+    "src/tiago_ring_controller/src/__pycache__/train_ring_model.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/__pycache__/train_ring_model.cpython-38.pyc",
+      "bytes": 13108,
+      "mode": "0o644",
+      "sha256": "2db3fdf9eec3219d643e101877b9ea197c361cf623d99f49c0c101f37d0cbeed"
+    },
+    "src/tiago_ring_controller/src/analysis_single_joint.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/analysis_single_joint.py",
+      "bytes": 59091,
+      "mode": "0o644",
+      "sha256": "c3a643bd37d5ae6f6a59ea47f64ace025ae2fe27644f5c9bb777e07a9a1ffb32"
+    },
+    "src/tiago_ring_controller/src/builders/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/builders/__init__.py",
+      "bytes": 81,
+      "mode": "0o644",
+      "sha256": "e0cf6811ee3841a562165431b64f61157946fc59654e621104b9855496205aab"
+    },
+    "src/tiago_ring_controller/src/builders/__pycache__/ring_attractor.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/builders/__pycache__/ring_attractor.cpython-38.pyc",
+      "bytes": 7488,
+      "mode": "0o644",
+      "sha256": "9e524c7afd16aad0c024c5be8d87e51fdaae23bf0f5bbc95867e5e7f809b18e4"
+    },
+    "src/tiago_ring_controller/src/builders/ring_attractor.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/builders/ring_attractor.py",
+      "bytes": 6862,
+      "mode": "0o644",
+      "sha256": "c118e2d60ec84ff4d36983c825561830f2f40aabaf93f503b1b1df20eca7ae32"
+    },
+    "src/tiago_ring_controller/src/builders/single_joint/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/builders/single_joint/__init__.py",
+      "bytes": 64,
+      "mode": "0o644",
+      "sha256": "09aad399aa234271337e3478f70eb521e67739b9962f237a9101c39bfe4ee481"
+    },
+    "src/tiago_ring_controller/src/builders/single_joint/__pycache__/ring_component.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/builders/single_joint/__pycache__/ring_component.cpython-38.pyc",
+      "bytes": 3834,
+      "mode": "0o644",
+      "sha256": "b4d70500ddc8f59ec7f24d8ce943ed2ffdba53d9bcdeb9a6a34bb5999a721784"
+    },
+    "src/tiago_ring_controller/src/builders/single_joint/ring_component.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/builders/single_joint/ring_component.py",
+      "bytes": 4208,
+      "mode": "0o644",
+      "sha256": "45b8ffe70b2a61fd2cbe81ccce2a5bfca6f8e4eb7c71b210831fd10bbbe12f51"
+    },
+    "src/tiago_ring_controller/src/builders_analysis/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/builders_analysis/__init__.py",
+      "bytes": 61,
+      "mode": "0o644",
+      "sha256": "fc05a38517f5bffb79c714435fb76aff3436fb9e01d7fd5ce2ae9c634ebf7c35"
+    },
+    "src/tiago_ring_controller/src/builders_analysis/ring_attractor_analysis.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/builders_analysis/ring_attractor_analysis.py",
+      "bytes": 2167,
+      "mode": "0o644",
+      "sha256": "51760d7b5d61b6b595abdf81d2723e3a28a0594335a63df1aca641ba2da46458"
+    },
+    "src/tiago_ring_controller/src/builders_analysis/single_joint_ring_component_analysis.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/builders_analysis/single_joint_ring_component_analysis.py",
+      "bytes": 4126,
+      "mode": "0o644",
+      "sha256": "db02796568804d83ce9efa874fc2331bea02642163b6e9d2291db2f9b9f4a0c5"
+    },
+    "src/tiago_ring_controller/src/calibrate_single_joint.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/calibrate_single_joint.py",
+      "bytes": 49459,
+      "mode": "0o644",
+      "sha256": "30484d3e9c10225bc377adfbc91d96c5a8912050d8d81760650967f486bf23f4"
+    },
+    "src/tiago_ring_controller/src/compositional_fourier_decoder.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/compositional_fourier_decoder.py",
+      "bytes": 59736,
+      "mode": "0o644",
+      "sha256": "4f8c43c8e895efaf6ad023f90158f8fe8db16bc2e6233439499a1ff1bb9bcdd1"
+    },
+    "src/tiago_ring_controller/src/config/calibration/velocity_calibration.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/calibration/velocity_calibration.json",
+      "bytes": 11324,
+      "mode": "0o644",
+      "sha256": "44a323ab153df6698b61a58bf47b06f04dfe1845d080497927e133daa02cfbaf"
+    },
+    "src/tiago_ring_controller/src/config/homeostasis/N_100_homeostasis_metadata.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/homeostasis/N_100_homeostasis_metadata.json",
+      "bytes": 510,
+      "mode": "0o644",
+      "sha256": "0033f42001ef02687d9bd77eb57fdea414a8b50611a4452f261b00cd56d72ef8"
+    },
+    "src/tiago_ring_controller/src/config/homeostasis/N_100_homeostasis_weights.npy": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/homeostasis/N_100_homeostasis_weights.npy",
+      "bytes": 448,
+      "mode": "0o644",
+      "sha256": "daecbfd9d4618b86654c764ec4ab173007f2a8cfdc7dda50ed243ceff7ed9580"
+    },
+    "src/tiago_ring_controller/src/config/homeostasis/N_200_homeostasis_metadata.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/homeostasis/N_200_homeostasis_metadata.json",
+      "bytes": 1075,
+      "mode": "0o644",
+      "sha256": "35851785c5c870cc783055cd6e933b2d55291614d7638449189a521dec2a278b"
+    },
+    "src/tiago_ring_controller/src/config/homeostasis/N_200_homeostasis_weights.npy": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/homeostasis/N_200_homeostasis_weights.npy",
+      "bytes": 1408,
+      "mode": "0o644",
+      "sha256": "e3cb8b30f4f4392bf4788ebf5f99b65e7757ff7f387d38a89378d52dde25428a"
+    },
+    "src/tiago_ring_controller/src/config/model_params/gain_modulation_params.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/model_params/gain_modulation_params.json",
+      "bytes": 654,
+      "mode": "0o644",
+      "sha256": "beeb08a5a72a7661bc24bac2808ae2d33fd8ffa6d78a2cd8ddda23bd58ea6b9b"
+    },
+    "src/tiago_ring_controller/src/config/model_params/homeostasis_params.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/model_params/homeostasis_params.json",
+      "bytes": 372,
+      "mode": "0o644",
+      "sha256": "4f0cbf5b34f0fa0e82bc41ab069b25aa146925014f0823580e16a4e5212d303d"
+    },
+    "src/tiago_ring_controller/src/config/model_params/multi_ring_params.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/model_params/multi_ring_params.json",
+      "bytes": 966,
+      "mode": "0o644",
+      "sha256": "d1b6e7ba4c5f51431d69b73d3726523fed497f552a3461cea348c4383f94793d"
+    },
+    "src/tiago_ring_controller/src/config/model_params/neuron_params.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/model_params/neuron_params.json",
+      "bytes": 627,
+      "mode": "0o644",
+      "sha256": "6be85bc9d68d886ae09c4c62a076ecf9cf74e4ed809727dbcb5308855d6ac595"
+    },
+    "src/tiago_ring_controller/src/config/model_params/ring_params.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/model_params/ring_params.json",
+      "bytes": 353,
+      "mode": "0o644",
+      "sha256": "64d4d2d631996e3ebbd1d773dfcfbc0cc75249250562346ef5ae7035bc64dfa5"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_compositional_metadata.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_compositional_metadata.json",
+      "bytes": 1691,
+      "mode": "0o644",
+      "sha256": "4dbeaf6dad19352c563bc633307bca61e81d98fadcd9ce2619943931916a4128"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_compositional_weights.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_compositional_weights.npz",
+      "bytes": 2460004,
+      "mode": "0o644",
+      "sha256": "2d7411916b9df1627b169d803b2067172cd5a97a1355f9845c463f4859a2695b"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_metadata.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_metadata.json",
+      "bytes": 9387,
+      "mode": "0o644",
+      "sha256": "a57119e17cf47c2895e5badb3b8d343b701d8ea2188c4a22b9f980acac0b842d"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_scalar_metadata.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_scalar_metadata.json",
+      "bytes": 3656,
+      "mode": "0o644",
+      "sha256": "be184f639b3919bf72ee94b2c34b53a82baaeec89d42a13fe27e9a8aa55da0f5"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_scalar_weights.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_scalar_weights.npz",
+      "bytes": 3294,
+      "mode": "0o644",
+      "sha256": "dbbed659c6f6211d291bffd5301ee2e5907862ac1503b579b5b378e1bb15d6c0"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_weights.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_weights.npz",
+      "bytes": 39325435,
+      "mode": "0o644",
+      "sha256": "5bf6d3da243595a385c92c62707ac9e61ffaa060b2717ec4b66755a9213ae3eb"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_fourier_metadata.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_fourier_metadata.json",
+      "bytes": 220,
+      "mode": "0o644",
+      "sha256": "64787883923ba4f2f787e7bcc0d9c255dfc4287dbab6a04352a7a1e5ae2cda25"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_fourier_weights.npy": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_100_fourier_weights.npy",
+      "bytes": 8128,
+      "mode": "0o644",
+      "sha256": "371eefbf89e3433024e80d075ad417c7904005712beac7b76bc465179a48da67"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_200_fourier_metadata.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_200_fourier_metadata.json",
+      "bytes": 221,
+      "mode": "0o644",
+      "sha256": "4657d1997718038657e77fcb62c0eb2dc1ed9c7bcb1e84586d67b1ef430ee826"
+    },
+    "src/tiago_ring_controller/src/config/ring_decoding_weights/N_200_fourier_weights.npy": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/ring_decoding_weights/N_200_fourier_weights.npy",
+      "bytes": 64128,
+      "mode": "0o644",
+      "sha256": "550c1d53328a153ae092788c405c1f1d90fc7b14e2f3f7c480d5b2e304ce306f"
+    },
+    "src/tiago_ring_controller/src/config/two_joints_ring_decoding_weights/N_100_two_joint_fourier_metadata.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/two_joints_ring_decoding_weights/N_100_two_joint_fourier_metadata.json",
+      "bytes": 302,
+      "mode": "0o644",
+      "sha256": "dd68caa0f695658f1a2da97e7357ea86a3939591e6c7b907cefd18d0e444c1aa"
+    },
+    "src/tiago_ring_controller/src/config/two_joints_ring_decoding_weights/N_100_two_joint_fourier_weights.npy": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/config/two_joints_ring_decoding_weights/N_100_two_joint_fourier_weights.npy",
+      "bytes": 16128,
+      "mode": "0o644",
+      "sha256": "74b642c7ce00c47b01553046edfd106b0d3198c20f553ccf1e3699bd9fc9b447"
+    },
+    "src/tiago_ring_controller/src/demo_graphs.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/demo_graphs.py",
+      "bytes": 26770,
+      "mode": "0o644",
+      "sha256": "5623f8fc183831a08303347dc04df9efe12cc33a6036f9207f1371104f2b9600"
+    },
+    "src/tiago_ring_controller/src/experiment_camera.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/experiment_camera.py",
+      "bytes": 4034,
+      "mode": "0o644",
+      "sha256": "9ae20bcad96b38cb53fcc425a5049282722916f3729bfd117bc7de1d6713a26f"
+    },
+    "src/tiago_ring_controller/src/gain_modulation.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/gain_modulation.py",
+      "bytes": 3839,
+      "mode": "0o644",
+      "sha256": "ea5ed354a0edb35d5d09f142f73e60ab62025ae9af64321418d9047fe96378d2"
+    },
+    "src/tiago_ring_controller/src/gain_modulation_analysis.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/gain_modulation_analysis.py",
+      "bytes": 17049,
+      "mode": "0o644",
+      "sha256": "ad63e2f3e7b8a76f93adacc87005999501da8fe3d867220909edd196ace70c1c"
+    },
+    "src/tiago_ring_controller/src/helpers/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/helpers/__init__.py",
+      "bytes": 70,
+      "mode": "0o644",
+      "sha256": "05768e2a25ce6bbf978157a2b8cf1739050f097aba39693dc3cdc9cad53c3c1e"
+    },
+    "src/tiago_ring_controller/src/helpers/__pycache__/__init__.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/helpers/__pycache__/__init__.cpython-38.pyc",
+      "bytes": 232,
+      "mode": "0o644",
+      "sha256": "ccdde02fa4c48a581a5ca5d64d8e0375935ac656344be13c36538860042c369f"
+    },
+    "src/tiago_ring_controller/src/helpers/__pycache__/file_manipulation.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/helpers/__pycache__/file_manipulation.cpython-38.pyc",
+      "bytes": 1688,
+      "mode": "0o644",
+      "sha256": "398508d8a388654613242c0083880f60f445371a8f65cc63809fea3b560833e8"
+    },
+    "src/tiago_ring_controller/src/helpers/file_manipulation.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/helpers/file_manipulation.py",
+      "bytes": 1755,
+      "mode": "0o644",
+      "sha256": "ccd2af1b9acbd18cb6dd8916464943452108e5801509aa9add62b0f280eceb15"
+    },
+    "src/tiago_ring_controller/src/homeostasis.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/homeostasis.py",
+      "bytes": 4202,
+      "mode": "0o644",
+      "sha256": "fb337207582d45e8229b96508103a88b36080db834a0df83b5c2fd555b64a6d2"
+    },
+    "src/tiago_ring_controller/src/multi_ring_component.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/multi_ring_component.py",
+      "bytes": 28940,
+      "mode": "0o644",
+      "sha256": "104a60d69d962eb915364075110d7d917e1309418113b162964ee2bb51d89eb4"
+    },
+    "src/tiago_ring_controller/src/multi_ring_sawtooth_scalar_decoder.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/multi_ring_sawtooth_scalar_decoder.py",
+      "bytes": 31063,
+      "mode": "0o644",
+      "sha256": "3f48afb5fbc2f3b3bf6742be4e0b964df5ee13d09044202af8ec9d8bdd258822"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/benchmark_settings.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/benchmark_settings.json",
+      "bytes": 856,
+      "mode": "0o644",
+      "sha256": "1a139327306c234f311bc5d5ba7918d58e8ebc5c34fc299d6f1d752b11dbecce"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/condition_summary.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/condition_summary.csv",
+      "bytes": 5232,
+      "mode": "0o644",
+      "sha256": "014aff6e270a33828bd76090f84d1d8678c9eba43be9c72c7c282b5a7ddc5c34"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/energy_proxy_vs_threads.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/energy_proxy_vs_threads.png",
+      "bytes": 82693,
+      "mode": "0o644",
+      "sha256": "e7a8514e367f4ea654143bd2ab679bdaf11402b66aec09a5f614f64cea4cfe0e"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/energy_vs_task_error_scatter.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/energy_vs_task_error_scatter.png",
+      "bytes": 100126,
+      "mode": "0o644",
+      "sha256": "37a01f98543b476726134b50ba2e6c6d1845f62fdb3db8db6f2c99be38662a95"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/memory_vs_scale.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/memory_vs_scale.png",
+      "bytes": 79967,
+      "mode": "0o644",
+      "sha256": "0b6804320768475d27e849396eac5c54b88fb60737ca61c762377ec619a783c5"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/real_time_factor_vs_threads.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/real_time_factor_vs_threads.png",
+      "bytes": 88443,
+      "mode": "0o644",
+      "sha256": "6990e12056f06d11dcb077d092203611aec3102a56d6a53ae4316bc51fbabf31"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/timing_breakdown_bar.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/timing_breakdown_bar.png",
+      "bytes": 67001,
+      "mode": "0o644",
+      "sha256": "3ae87a1d62a4e812830330dd6459235f6993a11815a639b6820a628a1abc21b1"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/wallclock_vs_threads.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/plots/wallclock_vs_threads.png",
+      "bytes": 150749,
+      "mode": "0o644",
+      "sha256": "741e9980b2d572a195483f9b5569a993facf44dd7e2958d3e9108121a0203849"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/raw_results.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/raw_results.csv",
+      "bytes": 12269,
+      "mode": "0o644",
+      "sha256": "3db34544b0cb456eec787fa80e29aaefd0f1d2de947e5be8264f5476ca0dc592"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/tmp_configs/neuron_params.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/tmp_configs/neuron_params.json",
+      "bytes": 627,
+      "mode": "0o644",
+      "sha256": "6be85bc9d68d886ae09c4c62a076ecf9cf74e4ed809727dbcb5308855d6ac595"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/tmp_configs/ring_params_N100.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/tmp_configs/ring_params_N100.json",
+      "bytes": 352,
+      "mode": "0o644",
+      "sha256": "2073cc71f0288886c914697240621c4427db883b751d6f2dcf8497b084fe7dca"
+    },
+    "src/tiago_ring_controller/src/outputs/benchmark_single_ring/tmp_configs/ring_params_N200.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/benchmark_single_ring/tmp_configs/ring_params_N200.json",
+      "bytes": 353,
+      "mode": "0o644",
+      "sha256": "12b398f1e69d8c974f35030de3fcb756870ae47fe17842ebcdd7442dd7e14884"
+    },
+    "src/tiago_ring_controller/src/outputs/gain_modulation/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/gain_modulation/raster.png",
+      "bytes": 215250,
+      "mode": "0o644",
+      "sha256": "6382fe965b8c35a13a2a2898ba09f1420753d25a8d5bc25025778d4f16bc7c71"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/condition_summary.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/condition_summary.csv",
+      "bytes": 701,
+      "mode": "0o644",
+      "sha256": "db9166c1c776e5433c955d689b7d28f9745db17c44d79ea712f4e95882d61046"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/experiment_settings.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/experiment_settings.json",
+      "bytes": 657,
+      "mode": "0o644",
+      "sha256": "f4aed7c256989f9def7d8ac6a25c89f7479df04dcfee891546b14d075405cfc2"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "df41c9b0b9e02b124ffce4524cda08bdff2c720425b80d6d29bdf8235522b68e"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 173152,
+      "mode": "0o644",
+      "sha256": "a1ba44f743ba58d858690ae964e06dc2d5ab8a941d0e96e904f153bd5be8ca66"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/perturbation_manifest.json",
+      "bytes": 19950,
+      "mode": "0o644",
+      "sha256": "1f908dee147dd6e71b8c8a2c5c1276245f5d7bae00603d34831ed4b86cc082aa"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/representative_run/raster.png",
+      "bytes": 461873,
+      "mode": "0o644",
+      "sha256": "8c92915e5c1792f073f2ab0d298a34fd1c6fa652e79436c056d3c971b83689f5"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 249062,
+      "mode": "0o644",
+      "sha256": "d9380751c824f66861c8ae28ddee82918622fcee482a11a073338061121d337b"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 153300,
+      "mode": "0o644",
+      "sha256": "f4a0fd30f097f0e2c24c0f620e700c19023c984eaeb66923da61e3b7b67637ac"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000005.0/run_level_metrics.csv",
+      "bytes": 1346,
+      "mode": "0o644",
+      "sha256": "b5c2d28ed6605c61c2240e0f586e6b48258d984647163e9c1370e72a32d9e102"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "98bfb5f3870a0e743a8ca7658cf330ca7c982dd2bc37ec04b2bd3a9897f6e972"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 148071,
+      "mode": "0o644",
+      "sha256": "17865228aac98a30c01c9acb195ce4bf936d6db5c1c82fe18f879bd3a4cb49ab"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/perturbation_manifest.json",
+      "bytes": 19948,
+      "mode": "0o644",
+      "sha256": "b5e2b5dfb781b324b9255a9f0fffb028dfe95f7456b143285b717103adbdde09"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/representative_run/raster.png",
+      "bytes": 457782,
+      "mode": "0o644",
+      "sha256": "b5f6741286565298dcab2946945f77a39a7b920b1f63a75b45ba223bc50f9472"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 244823,
+      "mode": "0o644",
+      "sha256": "c4d8cca73ca98ff635366e399b6f845c38766d918f1c2b28c17fc0f1116dd958"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 143921,
+      "mode": "0o644",
+      "sha256": "b9879b7e4a403b0aca1d416253bc79d976d684c946623bb2d17fd143273fe99c"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000010.0/run_level_metrics.csv",
+      "bytes": 1345,
+      "mode": "0o644",
+      "sha256": "9a6b14bde0294cee6ca4cbfc780c35882a94fe787916a8000368c6a4c72d7a85"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "3ee2e3ce6a7c2e5bfc0a9d3fd2f154f0d429c2136b86b4a1266fe0129fb53ae6"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 141012,
+      "mode": "0o644",
+      "sha256": "3356704f0cf9034d7002f514d1629ce6c5085783f88b1ffac9aee4168cb9fa56"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/perturbation_manifest.json",
+      "bytes": 20259,
+      "mode": "0o644",
+      "sha256": "6c1094f4f27ec48d5642cdb403cc142ae6f97bdf037a37041b28f6d360b9641e"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/representative_run/raster.png",
+      "bytes": 461876,
+      "mode": "0o644",
+      "sha256": "f277875ef6b818529a3a4448dfc081508c559193674be7db5d1e79cf72bd761b"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 244352,
+      "mode": "0o644",
+      "sha256": "12d315f2a7c0ae99f35bf0bd3c03fc4d93fa8587478c81d8bef04f5b5535f6b9"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 150002,
+      "mode": "0o644",
+      "sha256": "b897c38b5b0a6adf72d0b53d1e5d9a151742a0305f2084351c7c68b6e6552744"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000015.0/run_level_metrics.csv",
+      "bytes": 1658,
+      "mode": "0o644",
+      "sha256": "31e8e4b2c0085446fd7c02c95587c23ef0e6df184cac38e2fa76127be0aca9ed"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "c8454d133479434565941e1732e807b87ce3ce777c88171e8741dd9c7bbe4936"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 171582,
+      "mode": "0o644",
+      "sha256": "2f0ebf7d8a49fb1882bb90d20a39a1ec855ddf4a23b589b0b137494c1f954e16"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/perturbation_manifest.json",
+      "bytes": 19928,
+      "mode": "0o644",
+      "sha256": "1860c41cd31505f13c4e304ed16ec2a44c5aba45a5f351d0daa5637737e05ad4"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/representative_run/raster.png",
+      "bytes": 460477,
+      "mode": "0o644",
+      "sha256": "98c61a5591ecadf7b953ec6cee95e82e568d1352ed15e7770d6d7be164311c0c"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 249731,
+      "mode": "0o644",
+      "sha256": "ff4221590c238e21d1621bfbebabceb6d1320363c855836646db9e5f6be1700c"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 147184,
+      "mode": "0o644",
+      "sha256": "69e886ccb323cdf24cc7b1489ebe5f3dc92cd50a0b518be5678d52ae16964bab"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/noise_hz_000020.0/run_level_metrics.csv",
+      "bytes": 1345,
+      "mode": "0o644",
+      "sha256": "3d24d545be6782d46b5257672b8085917dda1f80006438ca97a4db72fa56794e"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/robustness_curve_goal_distance_after_t.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/robustness_curve_goal_distance_after_t.png",
+      "bytes": 89524,
+      "mode": "0o644",
+      "sha256": "d86e30ecfd54027791aa73a4c2eea5cc35d1fad6bf3b9329fdba3f0cc922f5f3"
+    },
+    "src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/robustness_curve_relative_error.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/global_noise/schedule_persistent/robustness_curve_relative_error.png",
+      "bytes": 89040,
+      "mode": "0o644",
+      "sha256": "ae290711c4ac6cd621a720d34f9ab53e711521705b2ca9374506931a91aa56b1"
+    },
+    "src/tiago_ring_controller/src/outputs/homeostasis/homeostasis_comparator_readout.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/homeostasis/homeostasis_comparator_readout.png",
+      "bytes": 142534,
+      "mode": "0o644",
+      "sha256": "e611b6924bb33991dca734fbdf209901ef4c99369b47fa4dd63ec679e2aa6b43"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/condition_summary.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/condition_summary.csv",
+      "bytes": 710,
+      "mode": "0o644",
+      "sha256": "e11be25259bc3a635540e7196572de6d50f473bba30ba3d27d2faac7432a63e5"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/experiment_settings.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/experiment_settings.json",
+      "bytes": 738,
+      "mode": "0o644",
+      "sha256": "e92009483b1097664cc41dfaa900c37f73d84f38f7699a2aae800c2d71587458"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "ec1b7f26fa54547b6a53c0cf416c47c79276cfb88fe51a4e835c2b1d44a5c8ab"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 132858,
+      "mode": "0o644",
+      "sha256": "d7b5b1e2288f4241ef023395e22033390ed6ee450085f9cde4ced9e5d8298548"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/perturbation_manifest.json",
+      "bytes": 14139,
+      "mode": "0o644",
+      "sha256": "57da59f4396d62531fe2b4bcee43d0d681231f345ea3474a6977c36ee3e1b231"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/representative_run/raster.png",
+      "bytes": 460162,
+      "mode": "0o644",
+      "sha256": "5ba36b519c2e96ba053cabf0c9543fa22937c7da197b0026bd7e1eafca671037"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 245124,
+      "mode": "0o644",
+      "sha256": "d8a52cbad08cdaff1c7aedc95ccd853e113e939ff6059bf8c2687d524d5571f1"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 152803,
+      "mode": "0o644",
+      "sha256": "2149595c8cc4e6209181dc39fc85730e9b93093dba6681c04119eaef93f5fb58"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000005.0/run_level_metrics.csv",
+      "bytes": 1377,
+      "mode": "0o644",
+      "sha256": "00037d56e9f44e8bef0249b61557a48ca45d92d8c3f80ff6ca5681bbc6bfe686"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "cd2b709f824bca59525f95863aa7e5ac9127e4933ddd9ed0d4e90eac0ef9dff8"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 139523,
+      "mode": "0o644",
+      "sha256": "159fca06d88d9bd5d35e36993a6e4291e400fb45e9db46cde1e1afe4f46a886c"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/perturbation_manifest.json",
+      "bytes": 14375,
+      "mode": "0o644",
+      "sha256": "edd50e93ccad8512e37dd52b3fb356ae39a987bde42f6d4d21176c9296ba12ee"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/representative_run/raster.png",
+      "bytes": 458159,
+      "mode": "0o644",
+      "sha256": "c8e11843d3b442bfdf40bda5b70e49cd25ce2748e0f7c429ab0ed1b2f19c5cbb"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 243152,
+      "mode": "0o644",
+      "sha256": "c007e981290173136a9e25ada798e7982824ec7efe05e6ff371362f2f47e4637"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 140318,
+      "mode": "0o644",
+      "sha256": "3ecd0b09d0e51724a45f3c9ee84932a8545a7902067c6f45b052d31c54565e46"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000010.0/run_level_metrics.csv",
+      "bytes": 1369,
+      "mode": "0o644",
+      "sha256": "5c48f9e36785d3f2af5fc13a58a76290207a2470eb2dd01e8f838998cb7577af"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "8784d929b9eccb7c40491f39716ab143145bee31553f88c2fc0b0d298ecbe28d"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 166152,
+      "mode": "0o644",
+      "sha256": "9d7d7abb9259af57a51662ce3ee94b2f08922ef66bebc71c872f54f3b5a0cd21"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/perturbation_manifest.json",
+      "bytes": 14868,
+      "mode": "0o644",
+      "sha256": "2ac74a8ae5724ac7da92a22a09e931d5b072b782797a894e1fe76be1b2088304"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/representative_run/raster.png",
+      "bytes": 467117,
+      "mode": "0o644",
+      "sha256": "af2a48ab2f1db008e59bf696dcaae530bdc54947414db1be1e97df14ad5bf836"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 247521,
+      "mode": "0o644",
+      "sha256": "f1e93a5caf380b54c8d4dd9783cc785e3c49544cfdc2c6e45cbba058bb2527f1"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 160746,
+      "mode": "0o644",
+      "sha256": "81a2e411ab245458071c3a1aea7e441022c9e2e37489a40de678f5aa80543b01"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000015.0/run_level_metrics.csv",
+      "bytes": 1609,
+      "mode": "0o644",
+      "sha256": "518b019e35dad08b79bd0187084c11f0a18e6de89b7cd77ecc6b91c2b2bf17ec"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "fb507cadda5ce8ea567c605227e74faac623753f9b69909907935c45f65074ee"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 171316,
+      "mode": "0o644",
+      "sha256": "068facdda2c3e76833851dc4eab0a50946f6585eab99347539beaf9ac04166f3"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/perturbation_manifest.json",
+      "bytes": 14576,
+      "mode": "0o644",
+      "sha256": "1295cd30e58f3a4ebcaa0e22acb597109919239f101808b2cf5611f052793015"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/representative_run/raster.png",
+      "bytes": 456448,
+      "mode": "0o644",
+      "sha256": "8e705484a5999a7cbfe316e065a8c4d13fb82d31077cc525f447aea15399aaf3"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 250802,
+      "mode": "0o644",
+      "sha256": "42c7afe083ea0fc1b01dc40fb86aa646c0b2334d7a591f13a1d74cfcf7648070"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 155356,
+      "mode": "0o644",
+      "sha256": "fb17ae5fe62a83326768470e0f26dbab4506f1b1d7ba9a2592292577bb2cebb4"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/noise_hz_000020.0/run_level_metrics.csv",
+      "bytes": 1391,
+      "mode": "0o644",
+      "sha256": "62b1cf903cc417c82fc8f0d439e2007eb4cd60055f5fdcaee9777f0b189a1c40"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/robustness_curve_goal_distance_after_t.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/robustness_curve_goal_distance_after_t.png",
+      "bytes": 86552,
+      "mode": "0o644",
+      "sha256": "1ea4043b256639750e59de9ba38794152e84322f35abc572da005977786e497b"
+    },
+    "src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/robustness_curve_relative_error.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/localized_noise/schedule_persistent/robustness_curve_relative_error.png",
+      "bytes": 83015,
+      "mode": "0o644",
+      "sha256": "388bce7b6b2d3ba1498a8931b6bd7570e8926166b56a7efc9a314dee8223c45b"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/condition_summary.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/condition_summary.csv",
+      "bytes": 1173,
+      "mode": "0o644",
+      "sha256": "75016fb81bb290fcf6f75253e133f5414c0ca9b544b76a350a5edbd8ce7bc069"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/experiment_settings.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/experiment_settings.json",
+      "bytes": 623,
+      "mode": "0o644",
+      "sha256": "a7dbcd077c5203b398f66aef4d82a1608a914d8cf6998ce70e58161d6753a9b8"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "1355c30bcb79ffe7beeb039e8947f0b04cc08010c2002175c7b24c9854ad380c"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 111524,
+      "mode": "0o644",
+      "sha256": "f862fe5966e6970d2c8b9fdbe57cd0c73ef954ded10663a01951380152cde782"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/perturbation_manifest.json",
+      "bytes": 7667,
+      "mode": "0o644",
+      "sha256": "7ed57b020106a54e0c3ade423b59b5183de199400ec462a050083cc226899dc2"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/representative_run/raster.png",
+      "bytes": 318322,
+      "mode": "0o644",
+      "sha256": "3292df3b1b478cbce6a2d3ff914b5f6f8f8ac77b831009d945a8b7d2bf43199e"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 109038,
+      "mode": "0o644",
+      "sha256": "3e468a0d18efeee988f368533bb7511ca61e2274019f54c6015bba0352921215"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 191556,
+      "mode": "0o644",
+      "sha256": "643427a44c58811855796ac0c68cecca1d5b06f350c9682cad5a8ab3c1c3f0ca"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_001.0/run_level_metrics.csv",
+      "bytes": 1268,
+      "mode": "0o644",
+      "sha256": "a273f1af67a7d2822eb23b8567e0a5c7bd527557d11ecd9c925a2af4d6bf2b3d"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "ee9f2803aa33e94a3787ce616cdf444ff1c99d1472e860feba525bb0531dc61e"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 108173,
+      "mode": "0o644",
+      "sha256": "ad8b8bf103bf91de63dfffcca04fc543afaf07e9eff5bf6309517c9bfeb4a58e"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/perturbation_manifest.json",
+      "bytes": 7938,
+      "mode": "0o644",
+      "sha256": "6f9fe37ae3ec62e696b8a0cb7b65f517041c1bf8b6428895afde812a49adf976"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/representative_run/raster.png",
+      "bytes": 318148,
+      "mode": "0o644",
+      "sha256": "2329e61e3f2e646116fd41ed37ba6d4a27837e0a8b949f0647259497088e9aa1"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 110963,
+      "mode": "0o644",
+      "sha256": "8172305f66a5b242543cbafe305a426aef595457c81b1d61d7a4042dc5301cc6"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 169886,
+      "mode": "0o644",
+      "sha256": "1c7007af9611766d9c24d6fb70a713ded35b6587c18b673cf01e90e43f40175f"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_002.0/run_level_metrics.csv",
+      "bytes": 1277,
+      "mode": "0o644",
+      "sha256": "92724081fd6eafb553a08c7c6d8f662673590cd394707ae444fa6d0660476f48"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "991f70fd2eb91d749b85a577d7a30941cd3bc2739d044eb9acbb00c2a4e7f559"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 107302,
+      "mode": "0o644",
+      "sha256": "01774a81d8ed44a8452121dda9a36750e5918a7cabfaec7e58d734f6a87d5388"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/perturbation_manifest.json",
+      "bytes": 8176,
+      "mode": "0o644",
+      "sha256": "b5ac005eee1222b08bb434839ab4794ecbda886ae842f91163624f332c3715c0"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/representative_run/raster.png",
+      "bytes": 312522,
+      "mode": "0o644",
+      "sha256": "80e1398a9cd416dd69988ca5bc25ea04afb276d36adf7ba2ecc424184d50bc5e"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 107625,
+      "mode": "0o644",
+      "sha256": "6004ef1cc55a5a3676a47b9e16d3680e9533dda12f70d1a1ea0279e92251183f"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 194431,
+      "mode": "0o644",
+      "sha256": "b19146b97a0696e7545ba9f367c3dd4a18dfb05fce349a6a70605040555bb290"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_003.0/run_level_metrics.csv",
+      "bytes": 1275,
+      "mode": "0o644",
+      "sha256": "d4f7a2277b90cefc34dd4b1642dae7ceca61c9f5c0b1f27d8edd5a69a5e8fd1a"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "554de256cdee08d46a4d1c91787d1f9b8058d649210945844410821278f32d1d"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 102647,
+      "mode": "0o644",
+      "sha256": "a9fa8ef4d996d3e55d784bb9c6657b069014ea553c54a54111d43216315a3000"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/perturbation_manifest.json",
+      "bytes": 8430,
+      "mode": "0o644",
+      "sha256": "899147b4022c2c9544ed6f9422efc3987991caeb37f1ef67d42745aba6d209a7"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/representative_run/raster.png",
+      "bytes": 315082,
+      "mode": "0o644",
+      "sha256": "d07555f2378ced9c6c681c211c8793548fc6bee3096f1c58f4f21da85aaeefd7"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 110356,
+      "mode": "0o644",
+      "sha256": "a23a99868d72c2260c8e9fa2c42826873e3ece0f4af633b57be27611024a6201"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 163719,
+      "mode": "0o644",
+      "sha256": "dccc6cc548dc4666c0c47f75793d573ffac672b629f2f3dd3b1178111f714d26"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_004.0/run_level_metrics.csv",
+      "bytes": 1277,
+      "mode": "0o644",
+      "sha256": "c483efdb12f24682d854cd7cba3acb99363a74e3a54f9e530ab54cb22859fc00"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "7aac8485520ccedbbec3250e754c4b555f3dd197166a755199eddcb1eb94b7ab"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 97218,
+      "mode": "0o644",
+      "sha256": "211d4e4d90047715c76544456d3eb8c5519624a5a20456ea6959c30f6aeb8375"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/perturbation_manifest.json",
+      "bytes": 8694,
+      "mode": "0o644",
+      "sha256": "8697925956a86cf28c0bfab08eeacb21d1a70cedc1e9c1a70070422843e4a3f4"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/representative_run/raster.png",
+      "bytes": 330029,
+      "mode": "0o644",
+      "sha256": "11975899f1786e58ac36f9423830c9fd946d6cc81512fb915e91c5870ebb1b40"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 119456,
+      "mode": "0o644",
+      "sha256": "e86f7eef8cae23f27e5b63607abd4c1dd98531ab881a6cab64e0133468497bae"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 184903,
+      "mode": "0o644",
+      "sha256": "c11fdc753ad4666027460c8a9af7a1b5262bb55669344e3e7c0a3ce4cfe66cfc"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_005.0/run_level_metrics.csv",
+      "bytes": 1279,
+      "mode": "0o644",
+      "sha256": "f96b702e86813f8406dd0b1793cb358df2513ec8c0bcb11b035a211ec2b98551"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "1ba2d3e90365819ef238699f435d1ef77040ef28193a70b293af54638237ed24"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 96580,
+      "mode": "0o644",
+      "sha256": "04b30fad3df16993e32f486ea20e1793adcfda1bfd73d8b22098226de8007bab"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/perturbation_manifest.json",
+      "bytes": 9950,
+      "mode": "0o644",
+      "sha256": "12685347190070c4646b13788df5610eb6c4c30166074cfebd0b40b6f6792034"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/representative_run/raster.png",
+      "bytes": 345944,
+      "mode": "0o644",
+      "sha256": "90c63ff4a0fa7004f547c1dff51e850cbe4f29aa382c2ebf6b8f6fd80ee2fa7a"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 114107,
+      "mode": "0o644",
+      "sha256": "3f4efe920519ad77cee1efa83120b5ee5259318319492197b6e2cc35c8c794ae"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 146896,
+      "mode": "0o644",
+      "sha256": "6b4af7d04bae22f8ef9296ce470b1ea2d266041f7e2bcb4836d19731c926df65"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_010.0/run_level_metrics.csv",
+      "bytes": 1295,
+      "mode": "0o644",
+      "sha256": "279cbb46a4064cdd8bac61be8a2b876e1d7d01007cad0dfeec28d64226927377"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "65de60eb44cc17584c3d039d2509fea27d6265efa38f103dc733c47d7acd6fc7"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 95431,
+      "mode": "0o644",
+      "sha256": "c575243b8687151670b15038472df980cf51ed9d276229a8c4ea1e6d09b6548f"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/perturbation_manifest.json",
+      "bytes": 12442,
+      "mode": "0o644",
+      "sha256": "163b5b8952ed933b38de270770220d5c30c642137b7d2edf4aca120fef45de52"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/representative_run/raster.png",
+      "bytes": 323594,
+      "mode": "0o644",
+      "sha256": "eda74b496f301b0686069ed4c8a43958d1453878c9a0f40e0c6250315e9419bb"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 108249,
+      "mode": "0o644",
+      "sha256": "c1fa8d118d1c32fb0b4809f00ec82beb25b4e6aaf8431c98f930beed7627e7ca"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 216354,
+      "mode": "0o644",
+      "sha256": "99da3a88a9b00160a8c9d39db3bd049d7f0eb41d842fcceb709efc9c65f1c532"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_020.0/run_level_metrics.csv",
+      "bytes": 1300,
+      "mode": "0o644",
+      "sha256": "fdf6784d8c12c9f26dbbc47fcc14c4e9c6b3d044ca05ddb6206bb9362b12e66b"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "208ff40693569925fd3231733363b5e4a36b76d6e7b0f363895132318edbf0a2"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 90895,
+      "mode": "0o644",
+      "sha256": "dde1f15bd69533e024bf80839bc5e9f4629f7f2cbf730d81e9f0d9a622599d50"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/perturbation_manifest.json",
+      "bytes": 14926,
+      "mode": "0o644",
+      "sha256": "2c738d7e1da7c28214d977a2734936c752294f24adb02f99405d594ada2eb99c"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/representative_run/raster.png",
+      "bytes": 310729,
+      "mode": "0o644",
+      "sha256": "5d7924613ee90adfe3662688be16875ac1bed08cca5c4400b2f4002d567acbe8"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 109594,
+      "mode": "0o644",
+      "sha256": "766dbd0c80a6d433dc55c06385d5df25e1264a01c5865a3193d65ca917764df2"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 188024,
+      "mode": "0o644",
+      "sha256": "d904fb4984191913be23348fb6c2bd25cb13e9c8d899dfd234b81c1bc09abac5"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_030.0/run_level_metrics.csv",
+      "bytes": 1301,
+      "mode": "0o644",
+      "sha256": "512b5c87ea81212c14aa99ed9ea754c3f76f28b79b189c81389ea3f0163ad304"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "82f3f14f3c7a9edb3759f61f93c4fca1323deed05c5b978f5a5ad33178857046"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 95000,
+      "mode": "0o644",
+      "sha256": "e7a1f1c3e986255949d78a5930e83031920d8b0d3c7fe75ec068879ace5bdeda"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/perturbation_manifest.json",
+      "bytes": 17418,
+      "mode": "0o644",
+      "sha256": "949c759e2ff788de5fee54304218c7f237449009152d79136635b62bd24f5f76"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/representative_run/raster.png",
+      "bytes": 320033,
+      "mode": "0o644",
+      "sha256": "8f3c91753c41d8721e334cf580efef125274e89f220f4ff9969cbe0d63f48056"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 112343,
+      "mode": "0o644",
+      "sha256": "4642301d2bcc99e3558e9a88b67f7f959da8d9ef7caeef5df1462eed498d0707"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 240028,
+      "mode": "0o644",
+      "sha256": "efca464bd61c3f0f42e298858965fe5960c2280b149c755ddaab16550b76cfbe"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_040.0/run_level_metrics.csv",
+      "bytes": 1305,
+      "mode": "0o644",
+      "sha256": "fd1a9964e60b64db4a0337515ff57a09d2c30b1796c012a2ce02345c1850f484"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/goal_distance_all_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/goal_distance_all_runs.csv",
+      "bytes": 5000,
+      "mode": "0o644",
+      "sha256": "ca97102babd7f93edd963b02209038812957ea233070408766cc4e283e8ef3ba"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/goal_distance_mean_std_across_runs.png",
+      "bytes": 93120,
+      "mode": "0o644",
+      "sha256": "0f6dbab0cbdbe21b748dd66961dbed24312cad50b2a97e5351c3941cc195c5dd"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/perturbation_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/perturbation_manifest.json",
+      "bytes": 19910,
+      "mode": "0o644",
+      "sha256": "96da46b507db8ac07ad17e0c5879c76819def18d3ac5cc0e64451b5853025f9b"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/representative_run/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/representative_run/raster.png",
+      "bytes": 303382,
+      "mode": "0o644",
+      "sha256": "49944ced65754b19c12d2c82406cd3bc563f682d97290ef41903a70554cc74c7"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/representative_run/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/representative_run/ring_activity_heatmap.png",
+      "bytes": 108548,
+      "mode": "0o644",
+      "sha256": "708c5a4dc8d2472c1b9d562061b0bcd37260ad903552dd66831e5ea31357f5bd"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/representative_run/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/representative_run/ring_centroid_change_over_time.png",
+      "bytes": 185670,
+      "mode": "0o644",
+      "sha256": "d2dc325ca8775c77a4c90202894c3c49b7c7e4aa79f7499ff658094184601d33"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/run_level_metrics.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/loss_pct_050.0/run_level_metrics.csv",
+      "bytes": 1315,
+      "mode": "0o644",
+      "sha256": "75acdfe9853899d7f4403826d74bad03fffa785cc9848cb49e0b78948fa88493"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/robustness_curve_goal_distance_after_t.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/robustness_curve_goal_distance_after_t.png",
+      "bytes": 95182,
+      "mode": "0o644",
+      "sha256": "d9722e76f7400e2ef64f9d1555e50482ef9a8bd1c3bdaffe4cfc7f4927565ea7"
+    },
+    "src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/robustness_curve_relative_error.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/neuron_loss/random_connection_removal/robustness_curve_relative_error.png",
+      "bytes": 92573,
+      "mode": "0o644",
+      "sha256": "2a48bf86c23ace601738fc90da494442e03a9329eee9685e422c7a01d0227c35"
+    },
+    "src/tiago_ring_controller/src/outputs/ring_decoding/decoder_error_per_position.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/ring_decoding/decoder_error_per_position.png",
+      "bytes": 54058,
+      "mode": "0o644",
+      "sha256": "ec96da174a892f7b33834bc89732cf1c58e3a228eca7d19197de36677dc14b9f"
+    },
+    "src/tiago_ring_controller/src/outputs/ring_decoding/fourier_results.npz": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/ring_decoding/fourier_results.npz",
+      "bytes": 996,
+      "mode": "0o644",
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/tiago_ring_controller/src/outputs/ring_decoding/sin_readout_activity.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/ring_decoding/sin_readout_activity.png",
+      "bytes": 103578,
+      "mode": "0o644",
+      "sha256": "1724aa659d4d4d3adb8c990ff26ffa114238c561d830f4433f11f9a82c800b08"
+    },
+    "src/tiago_ring_controller/src/outputs/single_ring/goal_distance_mean_std_across_runs.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/single_ring/goal_distance_mean_std_across_runs.csv",
+      "bytes": 1545,
+      "mode": "0o644",
+      "sha256": "fdf240aafc6e7aabf5e3452c360cc63e7f9a42344d403072feffc5d68f78d6e3"
+    },
+    "src/tiago_ring_controller/src/outputs/single_ring/goal_distance_mean_std_across_runs.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/single_ring/goal_distance_mean_std_across_runs.png",
+      "bytes": 130349,
+      "mode": "0o644",
+      "sha256": "d1839448502c9d72224745e396880b6bb532314ff346a79dc8989137dae5c576"
+    },
+    "src/tiago_ring_controller/src/outputs/single_ring/raster.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/single_ring/raster.png",
+      "bytes": 364048,
+      "mode": "0o644",
+      "sha256": "6422e869bc9467a24f3c31e2368c1e7c07de54760592aa8aa99101a1bb678054"
+    },
+    "src/tiago_ring_controller/src/outputs/single_ring/relative_goal_error_boxplot.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/single_ring/relative_goal_error_boxplot.png",
+      "bytes": 105890,
+      "mode": "0o644",
+      "sha256": "2508522a1a0470174646e7a48475d5f4a6002730d21507d77e81ad47302411fb"
+    },
+    "src/tiago_ring_controller/src/outputs/single_ring/relative_goal_error_per_run.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/single_ring/relative_goal_error_per_run.csv",
+      "bytes": 2645,
+      "mode": "0o644",
+      "sha256": "c57e1e91f53c8972bb512a29df6977a581ac3d0ecd950e2d6fc125c3e8bb49ee"
+    },
+    "src/tiago_ring_controller/src/outputs/single_ring/relative_goal_error_summary.csv": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/single_ring/relative_goal_error_summary.csv",
+      "bytes": 488,
+      "mode": "0o644",
+      "sha256": "293db700ccf043f9deb755455166ed403687b3f6da6b051116c433de2b52d4f8"
+    },
+    "src/tiago_ring_controller/src/outputs/single_ring/ring_activity_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/single_ring/ring_activity_heatmap.png",
+      "bytes": 131288,
+      "mode": "0o644",
+      "sha256": "4065fafd45143c91b721b177719d4d3fff244f29484fe3bf7d07a1c84d08a778"
+    },
+    "src/tiago_ring_controller/src/outputs/single_ring/ring_centroid_change_over_time.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/single_ring/ring_centroid_change_over_time.png",
+      "bytes": 173616,
+      "mode": "0o644",
+      "sha256": "957edc2712558a6e88732a26265f6d46086dbb19fe046f8ba74a3946cf9a5d03"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/combined.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/combined.png",
+      "bytes": 134942,
+      "mode": "0o644",
+      "sha256": "970c1d27eb035f037c21c42b47b157b8a3086d07b309b53b9391da3398806023"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/left_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/left_heatmap.png",
+      "bytes": 64666,
+      "mode": "0o644",
+      "sha256": "85cea9fa123e9c449d37086181df8d273ed343017a84517ce12e205c76ddb7a5"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2010.png",
+      "bytes": 146542,
+      "mode": "0o644",
+      "sha256": "6ad85a171b52aec03fb32cab1b8f5418c6029cc16d8f16c141ce0512d48979c5"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2030.png",
+      "bytes": 149188,
+      "mode": "0o644",
+      "sha256": "a4d229ffd22e7901fd812118c1f86d4c7fdbeb2f117dfae615a4740e70b0392a"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2050.png",
+      "bytes": 153467,
+      "mode": "0o644",
+      "sha256": "488c57c8017850b50a5b9de5d3ef46721f6043886a61e0d0a7e4841f1cb556d4"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2070.png",
+      "bytes": 157528,
+      "mode": "0o644",
+      "sha256": "ec85deaf610bfd8fbd0efe751dca9d2a40dc4ab2acdf8212abe20be7dd334986"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2090.png",
+      "bytes": 159797,
+      "mode": "0o644",
+      "sha256": "44c2620757af4a8f5cc64062d4b946012fb6b7ffa72df257dcfb493fdbc0418e"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2110.png",
+      "bytes": 160660,
+      "mode": "0o644",
+      "sha256": "2684406978f91a02ed076d02c2da4328d797fd9930f11f5c79ef40a568810266"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2130.png",
+      "bytes": 161405,
+      "mode": "0o644",
+      "sha256": "c41ba2673cbea4a93295553c4b9f97d92156232fc75ae8fe6842465e0b83bbdb"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2150.png",
+      "bytes": 161417,
+      "mode": "0o644",
+      "sha256": "3f9c48e6d01d9c2b2fa22d8265e0d4aa3250ef35c9643aada17f11a3b93318b7"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2170.png",
+      "bytes": 163599,
+      "mode": "0o644",
+      "sha256": "6d543744fc6031dbee6034accf824c0c79378aa6ec0ad6528d72e99ac4f598f9"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1010_r2190.png",
+      "bytes": 163417,
+      "mode": "0o644",
+      "sha256": "17e5fd81c0fe7d255cc9f950553a9dfd5354c4297620a10007a3566ab6ab246b"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2010.png",
+      "bytes": 146534,
+      "mode": "0o644",
+      "sha256": "3012df7033979e84a92d068ecc5dd95ccd33f072cc33ec1d560dd9084daf04c5"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2030.png",
+      "bytes": 145279,
+      "mode": "0o644",
+      "sha256": "2471958af899b9d8e372fff87bf30e0702ee855fe650b5ba00581229a4d210a0"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2050.png",
+      "bytes": 149960,
+      "mode": "0o644",
+      "sha256": "c0886f81782f3e71cc84c381d56a8016af7ce87c96b93ff62849b3a23be53c89"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2070.png",
+      "bytes": 155159,
+      "mode": "0o644",
+      "sha256": "cc3ab546d2925dd1ffa4da5da67d655119aad1a3565f9b6094e541cad38c5999"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2090.png",
+      "bytes": 157293,
+      "mode": "0o644",
+      "sha256": "9c1f70ec8728e27df30ce65d75e17cc5df1ee70bfca95c0fa927352fb30c50fb"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2110.png",
+      "bytes": 158531,
+      "mode": "0o644",
+      "sha256": "39f4c32a1ec6cfa45aad21f0d00ca9f4214f1285b96ff552c58e30f694824cff"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2130.png",
+      "bytes": 159829,
+      "mode": "0o644",
+      "sha256": "adda48eaf0ff0b279d18c96a4ec98132374e4c6c4d4d5616ef6e62e0d1bdce80"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2150.png",
+      "bytes": 161494,
+      "mode": "0o644",
+      "sha256": "65f018d2176d48fbf0383f558fb506828e7b9079f1a8f1acaacecbbc5f69bb9d"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2170.png",
+      "bytes": 161180,
+      "mode": "0o644",
+      "sha256": "71c4a24fba237532c6b8d6ce33a645207f61bc707072a7b71871007b55afd90d"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1030_r2190.png",
+      "bytes": 162624,
+      "mode": "0o644",
+      "sha256": "d489e4a3fad042adae84bc86753a3320b34862477fed73fae8b3f49fc4b56ace"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2010.png",
+      "bytes": 149943,
+      "mode": "0o644",
+      "sha256": "b8b49f9c4594223733ee7c1ef6add3c9b0c1fc2a466dc6727765becbff11c90e"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2030.png",
+      "bytes": 149179,
+      "mode": "0o644",
+      "sha256": "b77d03673553425f9f94bda9c9e82051b542717c70f5acd8b6eac26ab220eb8e"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2050.png",
+      "bytes": 146633,
+      "mode": "0o644",
+      "sha256": "73695dbff8d5df73352edf0c803b1111fec8e1913c69c65c1887dd886ac33b0d"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2070.png",
+      "bytes": 153981,
+      "mode": "0o644",
+      "sha256": "a27c96bcc6b1c1791c335511d293e87676209af7ed3513c9f8efa38619ee8ba4"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2090.png",
+      "bytes": 156099,
+      "mode": "0o644",
+      "sha256": "ece09e178d8b3b6f161fa513354d2bc5217ef649a3bd49d30d2da2fd422e59b9"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2110.png",
+      "bytes": 156586,
+      "mode": "0o644",
+      "sha256": "dc7202d78f779a21b917b141037ffc16d3b39b2bc02df0d6ab87edf11e16466d"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2130.png",
+      "bytes": 160929,
+      "mode": "0o644",
+      "sha256": "d7568096f862fc23a5cf5b6ebfa16385d82e5452d2b9e40b6b10b95d91518257"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2150.png",
+      "bytes": 161360,
+      "mode": "0o644",
+      "sha256": "974e826756aa8d8dec0e4578d56390de944b976cadfbef816793d9c68e87b077"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2170.png",
+      "bytes": 161344,
+      "mode": "0o644",
+      "sha256": "7f87bd3580c7d76b266ee0f50682032a1261f3cecf7ebfc23517432d11739477"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1050_r2190.png",
+      "bytes": 162444,
+      "mode": "0o644",
+      "sha256": "eb7c42e8ee01fdd0b8fd85fa4efc26f7cb50920e36dd104d5e5d224895851afc"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2010.png",
+      "bytes": 153292,
+      "mode": "0o644",
+      "sha256": "a8b6c79551a472aa2bc33a4790f2680695116f034aabf0055a01e38d53d874ec"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2030.png",
+      "bytes": 152382,
+      "mode": "0o644",
+      "sha256": "d7b3f491defed175fc246b6bca0c63d49bc0cab0e9153855ff52fdcb83bf5299"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2050.png",
+      "bytes": 150576,
+      "mode": "0o644",
+      "sha256": "7b543e96f92f4c8b17f78d9566201f0fe8b9c2263e8e6fbe5f523b043f8a0c93"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2070.png",
+      "bytes": 145353,
+      "mode": "0o644",
+      "sha256": "299b7348d1cb1b3a56cdf84ecb31d02c79778ac674da84014ef7feda4e279c6a"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2090.png",
+      "bytes": 148428,
+      "mode": "0o644",
+      "sha256": "ca23fa9725f644e9998cab3177c133022c9e65d774430f1ab01de96f3e3bfe53"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2110.png",
+      "bytes": 152253,
+      "mode": "0o644",
+      "sha256": "96420ab187ae6cbd0f48d95e8b25b850fb87059f4cc8a31e44d9e9813cf9ccae"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2130.png",
+      "bytes": 158874,
+      "mode": "0o644",
+      "sha256": "71428ec6e3560b76b0bbb2c3becf7e0a9d11428a6c00027a4c1ce6c896d7a7f2"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2150.png",
+      "bytes": 161130,
+      "mode": "0o644",
+      "sha256": "9fa5ede01c0d707f26a45d57a355b2cdbb6a73125d0b32035895dd7eb4ff8551"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2170.png",
+      "bytes": 160686,
+      "mode": "0o644",
+      "sha256": "d4c4168ce8af1c78c962003bab8c258ac57a1871e5da06b5b598ea522bed0e5f"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1070_r2190.png",
+      "bytes": 159843,
+      "mode": "0o644",
+      "sha256": "1c204e9d7b80267fe24b9be50ce78ee0637e6a7468dcb548aa09d7111a96ef49"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2010.png",
+      "bytes": 156701,
+      "mode": "0o644",
+      "sha256": "f265174dd1da973f0008b01a3e28c4422f3adedad8c972cc2fd9af78b3dd48b2"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2030.png",
+      "bytes": 154785,
+      "mode": "0o644",
+      "sha256": "d81065fbe41ff435b14221a94606663d70414f67a248fd095380f1a0106f1130"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2050.png",
+      "bytes": 153349,
+      "mode": "0o644",
+      "sha256": "c5d7bf4432fd6b15d25dcb3251997ba74ca6553e7f9ac32ba89e885f17e9768f"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2070.png",
+      "bytes": 151528,
+      "mode": "0o644",
+      "sha256": "f52210f93aa0a7e24134ac816c9dea69d6a5d08d4eb9c27a170b890da82f03e2"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2090.png",
+      "bytes": 144300,
+      "mode": "0o644",
+      "sha256": "965e8019a6263dff4f05b66fa43192e2bd6fa3a1ae35953e66968e14212907d6"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2110.png",
+      "bytes": 148612,
+      "mode": "0o644",
+      "sha256": "b1bc97a961fd4e05416ff71281bf0a842d8bdd95f898173f05ec31d9a4c8d480"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2130.png",
+      "bytes": 154930,
+      "mode": "0o644",
+      "sha256": "5b98a468c5f844bdd25dcc7863f6bf4a09b02f8357e658254180d9b3b9fb504c"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2150.png",
+      "bytes": 157694,
+      "mode": "0o644",
+      "sha256": "c3d426de1100bdc6bdc3569742e606bf0a603571a438921967c70e79ebd4eb35"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2170.png",
+      "bytes": 160083,
+      "mode": "0o644",
+      "sha256": "c014c9777634a90042097791eb133a28e48327d259efdc93e2e666096a3cdcb1"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1090_r2190.png",
+      "bytes": 158086,
+      "mode": "0o644",
+      "sha256": "e867471dbee508f495f6b9b89a8cd570f3dd4ed2529cd3716c7c75a95cb65585"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2010.png",
+      "bytes": 156775,
+      "mode": "0o644",
+      "sha256": "9c317aa6f4427fcd951a3cb6aed619919ad5ddc3729648f6b1907b18edd41c2f"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2030.png",
+      "bytes": 155793,
+      "mode": "0o644",
+      "sha256": "e5a0a1461af02d68b1137ed4defb8a04c61d105aba45c5e722dd50e21e2d5d63"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2050.png",
+      "bytes": 154207,
+      "mode": "0o644",
+      "sha256": "0a393726c6e096f6e23753eaeb2b09a66beac49f19b66145a91eb19f4ea63889"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2070.png",
+      "bytes": 152776,
+      "mode": "0o644",
+      "sha256": "37a4c0376e6d7e1c2d7f1e837869e099d7588b304b918475531b76a04039ddfc"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2090.png",
+      "bytes": 150940,
+      "mode": "0o644",
+      "sha256": "ce9aa9583a8f852296fb9a0de66031e93e0a9c1b7b9c57db65ecf387f92341aa"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2110.png",
+      "bytes": 140676,
+      "mode": "0o644",
+      "sha256": "dea352d6b9aaa9f6cc6927c2480504a42b6d767c27c788e5e7ed4254666792bd"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2130.png",
+      "bytes": 154349,
+      "mode": "0o644",
+      "sha256": "1c21316423e379ca091d60cd7bcf4aec82155f59d736797b577eb2ac76279a02"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2150.png",
+      "bytes": 158047,
+      "mode": "0o644",
+      "sha256": "d9ea6b0a0053fbb4867f27bcee7466e7d600ad5574558801276295e362565fe7"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2170.png",
+      "bytes": 157831,
+      "mode": "0o644",
+      "sha256": "1e2e8fa480edf61349a6dac1139a686af461d758321b567a32f238459aa4196d"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1110_r2190.png",
+      "bytes": 160458,
+      "mode": "0o644",
+      "sha256": "1e380baa1134c8f15ffd0aa7b81180b89719aaeab97fd0958219c0de6a021df7"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2010.png",
+      "bytes": 157391,
+      "mode": "0o644",
+      "sha256": "1b181c55befc7444737852b607284e72d209defbc5ec9b6db411ef7981abb492"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2030.png",
+      "bytes": 158864,
+      "mode": "0o644",
+      "sha256": "9a3adcd7bb281042260f2434e4eff79324f9d186c728039b3aea1545a88f52d2"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2050.png",
+      "bytes": 156599,
+      "mode": "0o644",
+      "sha256": "c74d45fb535f08329115ec4190b7aaf7ccddb215ac770baffe683463f08fc29a"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2070.png",
+      "bytes": 156945,
+      "mode": "0o644",
+      "sha256": "de1600496378ed0141e1f93759e2e01ce46129b20e5d1f507c3e9182cf0010bc"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2090.png",
+      "bytes": 155538,
+      "mode": "0o644",
+      "sha256": "d4905821dd314a31732d682895257065af2439c8b6c94bb214bb4d0a663e94eb"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2110.png",
+      "bytes": 154311,
+      "mode": "0o644",
+      "sha256": "5dd43c03ba2712caaef4c03c1a1cf67a9275e8d76a1fb6703e3772031dea8da9"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2130.png",
+      "bytes": 141220,
+      "mode": "0o644",
+      "sha256": "7a4d8c0a1f5eb69f236cd0b36119a11e62cd4474f2808aed65faf2c4727d0621"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2150.png",
+      "bytes": 154314,
+      "mode": "0o644",
+      "sha256": "b7b2ce8a7607b8424d64585b6606387d655065127dd4186312a599ab2da00d65"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2170.png",
+      "bytes": 156874,
+      "mode": "0o644",
+      "sha256": "146e0c8ba34bc02f745fe6aba4ccd91d13da58832aada548b6006a8cb8e44407"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1130_r2190.png",
+      "bytes": 159876,
+      "mode": "0o644",
+      "sha256": "eb7db1b34ba86a9b64e7a5091707298608a0a7297f9fdcb27b3474d25de55c77"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2010.png",
+      "bytes": 159180,
+      "mode": "0o644",
+      "sha256": "b3b9774042e3a2a04d4bc5839f6dfac031411821213b7ea12d9418cb4a19519e"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2030.png",
+      "bytes": 157988,
+      "mode": "0o644",
+      "sha256": "f8bc04f3efaa9b7adaa3934c09eb2dd957b340da59c28788b4cea49bdbdd0e94"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2050.png",
+      "bytes": 158407,
+      "mode": "0o644",
+      "sha256": "0eec7f8dd6d02e0133a9c894d6c1e71dc110ad7a8a7b84218ec058ad9b19e6fc"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2070.png",
+      "bytes": 158745,
+      "mode": "0o644",
+      "sha256": "625c96ed5b24087a70014ebbe0f999e9f705f0e5498c88c4a64c55c99274f72e"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2090.png",
+      "bytes": 157801,
+      "mode": "0o644",
+      "sha256": "dcd043fdb4a4dc7bf2c5adc9a952fa55806bf135d799b59747c9f11c3b44e9ff"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2110.png",
+      "bytes": 155283,
+      "mode": "0o644",
+      "sha256": "6226b9726a6d83be74535c070ed464a83b4c77fda72a7968729b8b4405aed81a"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2130.png",
+      "bytes": 154230,
+      "mode": "0o644",
+      "sha256": "2c5e6e4f03b1ae8cf79540f1421fe521017c143d5ada94f16af73739a4951d34"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2150.png",
+      "bytes": 140462,
+      "mode": "0o644",
+      "sha256": "5807a616da6a928a7e631b0d695ac41fc54a1d612cdeecc42ff14580ca70555a"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2170.png",
+      "bytes": 151555,
+      "mode": "0o644",
+      "sha256": "ad05a634d8e4228a9d3fd8ce34ca5ace02855f299fa19c446da885844c28954f"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1150_r2190.png",
+      "bytes": 155439,
+      "mode": "0o644",
+      "sha256": "27ead2db2bde0f10470c1eda620c48018d96997bab86868f802f81e6335ac557"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2010.png",
+      "bytes": 158455,
+      "mode": "0o644",
+      "sha256": "7c28eb9c55799b8df26545d91632c48dafd5214635c7f37389f1f257cf69dc03"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2030.png",
+      "bytes": 158498,
+      "mode": "0o644",
+      "sha256": "967494784142792443849468ea4d25b64c8539e5e6f5f76bb627b049199e2559"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2050.png",
+      "bytes": 158652,
+      "mode": "0o644",
+      "sha256": "9f788a21a7a0ef3f7acc23113f32d186d1918841b4d016f109ef1abadedb65c6"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2070.png",
+      "bytes": 159045,
+      "mode": "0o644",
+      "sha256": "74a806aa2b5df187e0fb65744db7bd9bdfe7e2661059115d351c65e0774536a4"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2090.png",
+      "bytes": 158916,
+      "mode": "0o644",
+      "sha256": "223caaceb207be48f3fdfddc5113cde1135205999c721e9afef9b87974f7cfe6"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2110.png",
+      "bytes": 158285,
+      "mode": "0o644",
+      "sha256": "78c903e6fca1092a60fe4d8c49b38624369d5ea6a646386a02f25f054a6e80f5"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2130.png",
+      "bytes": 156908,
+      "mode": "0o644",
+      "sha256": "5e3563309529e047c1e14a251f3ddc8251f283964ec4791db80e6510382be989"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2150.png",
+      "bytes": 154123,
+      "mode": "0o644",
+      "sha256": "623a0e56c9ab8faa805a6f917d2691fe8dff099b63d3d86a625a6774c7e7ab68"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2170.png",
+      "bytes": 140333,
+      "mode": "0o644",
+      "sha256": "9ea73bb8b35a9f482a300427af1db7bcdb86148013875a8ab49d210dbaceea92"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1170_r2190.png",
+      "bytes": 144818,
+      "mode": "0o644",
+      "sha256": "681a45b602e50d8224c4658c1bda51c8bb7ecc6a15f90ee43be2d2a5ed9ce5a8"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2010.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2010.png",
+      "bytes": 159735,
+      "mode": "0o644",
+      "sha256": "480c53488dd86fab84c5e7f03c2c040016d7c90e2a209f2f5e5380152802f6c6"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2030.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2030.png",
+      "bytes": 159694,
+      "mode": "0o644",
+      "sha256": "7e2684af7cd8db685003066049bee903227cb15147e1a8404a08fd4c74b12cba"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2050.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2050.png",
+      "bytes": 159714,
+      "mode": "0o644",
+      "sha256": "4ae448dd83e9cf723bb52df70b26fd6d433ee144c7a335795be0e72b61f62ed9"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2070.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2070.png",
+      "bytes": 159932,
+      "mode": "0o644",
+      "sha256": "682a4ee130424245def2e465599abf06cf0d5b7c7eba341fd036be54659b2e34"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2090.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2090.png",
+      "bytes": 159438,
+      "mode": "0o644",
+      "sha256": "1be41c2b045eba4d27e6f4cdf31923a8b0e1dce6b07bf1478346f39fb8d1f241"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2110.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2110.png",
+      "bytes": 156784,
+      "mode": "0o644",
+      "sha256": "68cad00532d78f8bcb2d6323e553dfcbb11516b6041f7543d62b0c79f55c8060"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2130.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2130.png",
+      "bytes": 157101,
+      "mode": "0o644",
+      "sha256": "f843647ab63b67809381325d6f2b7d0896e6784a056bc52cc30bf0377dce7609"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2150.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2150.png",
+      "bytes": 149606,
+      "mode": "0o644",
+      "sha256": "a02f7a44fdebd0ebf8835c398f0e05716124238ec646e4457794e2afec56faba"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2170.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2170.png",
+      "bytes": 155216,
+      "mode": "0o644",
+      "sha256": "1d34645def428fe1096d9178830a4fc60e307f3c48d521cac16145257365a9a1"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2190.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/rasters/raster_r1190_r2190.png",
+      "bytes": 152337,
+      "mode": "0o644",
+      "sha256": "93150ea64f55255a2242f3638851eb6ccb7927478970c6da199b1d7222c4c3d4"
+    },
+    "src/tiago_ring_controller/src/outputs/sweep_gain_modulation/right_heatmap.png": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/outputs/sweep_gain_modulation/right_heatmap.png",
+      "bytes": 63896,
+      "mode": "0o644",
+      "sha256": "fe00a6636d2a6503a4eeafad8b5de6a627f4a1071293a529870d6975dc9b4f5b"
+    },
+    "src/tiago_ring_controller/src/readout_mean_std_analysis.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/readout_mean_std_analysis.py",
+      "bytes": 7622,
+      "mode": "0o644",
+      "sha256": "afa2165b708379650b4d8130bc297cc3e2262af2ae79440d7fe29f317ea8d8f1"
+    },
+    "src/tiago_ring_controller/src/record_experiments.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/record_experiments.py",
+      "bytes": 2939,
+      "mode": "0o755",
+      "sha256": "9727e159f029354120d13af620b8aaede4b37ff6a6a928aeaf8efa525f563ff6"
+    },
+    "src/tiago_ring_controller/src/ring_attractor.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/ring_attractor.py",
+      "bytes": 4241,
+      "mode": "0o644",
+      "sha256": "8b59ce7e336ec0eef610a3c5b5343ac0e6d1e2d727be28d5d3a333fa5812240b"
+    },
+    "src/tiago_ring_controller/src/ring_component.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/ring_component.py",
+      "bytes": 4601,
+      "mode": "0o644",
+      "sha256": "778c1da9e3221836d821eba4232a4a4be07d0a877923a5645112ed438adf0103"
+    },
+    "src/tiago_ring_controller/src/single_joint_data_collector.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/single_joint_data_collector.py",
+      "bytes": 23635,
+      "mode": "0o644",
+      "sha256": "28ebbdd7f1dccc27353430385630b74415ea4abe8748bf3f0f7fe94f1a8cbe9b"
+    },
+    "src/tiago_ring_controller/src/single_joint_data_visualizer.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/single_joint_data_visualizer.py",
+      "bytes": 17201,
+      "mode": "0o644",
+      "sha256": "e8dd8b70e3ed6ca2b07e159936154e05163dee1da680a0a7abddb32036dae8c5"
+    },
+    "src/tiago_ring_controller/src/single_joint_pid_data_collector.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/single_joint_pid_data_collector.py",
+      "bytes": 13115,
+      "mode": "0o644",
+      "sha256": "19065cc968c3b7698286ee8c685394a6aad456a90c3dc2aba031f3a5d8887bb0"
+    },
+    "src/tiago_ring_controller/src/single_ring.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/single_ring.py",
+      "bytes": 32804,
+      "mode": "0o644",
+      "sha256": "0d46bb4c45ab776b92a4b8d74b1950275230d4fff4486e4acfd1cb296234e21e"
+    },
+    "src/tiago_ring_controller/src/single_ring_bennch.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/single_ring_bennch.py",
+      "bytes": 56647,
+      "mode": "0o644",
+      "sha256": "086fc9c392382411caecf9e7c83b44b5af79b7398d2f844a8357f69ce1632a98"
+    },
+    "src/tiago_ring_controller/src/test_single_ring.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/test_single_ring.py",
+      "bytes": 66612,
+      "mode": "0o644",
+      "sha256": "a66652827d8e9c80cbad370bf53fa11111a92f3800fb8d3144fdb8a34ebc545c"
+    },
+    "src/tiago_ring_controller/src/tiago_controller.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_controller.py",
+      "bytes": 13645,
+      "mode": "0o755",
+      "sha256": "d7edd85a9eedbe264a8655cb86fabc39ce1c5a8b52371ba87a59d0ed63677c9d"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/__init__.py",
+      "bytes": 808,
+      "mode": "0o644",
+      "sha256": "a7872939ec8d82f5b660d312c5c608751732b4c0706fe40e765818d8cd730c44"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/__pycache__/__init__.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/__pycache__/__init__.cpython-38.pyc",
+      "bytes": 921,
+      "mode": "0o644",
+      "sha256": "e2694530cbe25408232d363e503dffe6b484d6fec29e756dff27e66abe3f22ab"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/__pycache__/artifacts.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/__pycache__/artifacts.cpython-38.pyc",
+      "bytes": 7785,
+      "mode": "0o644",
+      "sha256": "4ea8208cb205fe8bd2160b07fbc92984cb9c96b96d22bcec2285c479a947a6c0"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/__pycache__/config.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/__pycache__/config.cpython-38.pyc",
+      "bytes": 10963,
+      "mode": "0o644",
+      "sha256": "3fd0b7034933b00fe54a8f8db939996791b807ce54869776cf6b7f1d91126306"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/__pycache__/contracts.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/__pycache__/contracts.cpython-38.pyc",
+      "bytes": 5127,
+      "mode": "0o644",
+      "sha256": "72c1834b8b196327dcca8a5f57bb4101e4b1a4d42694b78e853e7416fcdcd813"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/artifacts.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/artifacts.py",
+      "bytes": 6646,
+      "mode": "0o644",
+      "sha256": "bd1fbf4d930fe6529fe2965129b1a655b0f11e3cf44711b9b90dea76373db9e9"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/config.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/config.py",
+      "bytes": 13353,
+      "mode": "0o644",
+      "sha256": "fa4671765a511083f9c2bd909f828d686a252f9a57ac4455d43d420ac00b1ffe"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/contracts.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/contracts.py",
+      "bytes": 3658,
+      "mode": "0o644",
+      "sha256": "0da0c02f1dcea8713f854f4824a1aa5b09fe9b7dd6613ad8073a35cd63e5da1d"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/control/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/control/__init__.py",
+      "bytes": 1309,
+      "mode": "0o644",
+      "sha256": "c644545af9f2fb07dfd3be8d5fad080936c6b6fba981640451c82ef62f4c3ac5"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/control/controller.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/control/controller.py",
+      "bytes": 7965,
+      "mode": "0o644",
+      "sha256": "ded3f50573426f84f4ab3a431857fdad327c32f5f0f87ca3fb5782a1aeed1ce4"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/control/profiles.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/control/profiles.py",
+      "bytes": 6583,
+      "mode": "0o644",
+      "sha256": "82ccf444c38c5de5b58df4593524add7298403b9176559af9d8fa5c3828ca638"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/control/trajectory.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/control/trajectory.py",
+      "bytes": 5959,
+      "mode": "0o644",
+      "sha256": "364e660ee91e2f65881826a5600765f94424fccc50ac3c5eea988f92bf6190be"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__init__.py",
+      "bytes": 2407,
+      "mode": "0o644",
+      "sha256": "633137374e7fa5239d6db5d4ba9e8964021b09b18f1da3d918385a407c5dd9fd"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__pycache__/__init__.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__pycache__/__init__.cpython-38.pyc",
+      "bytes": 2014,
+      "mode": "0o644",
+      "sha256": "e9e08653f0895410201d225b34be2c77a8d24ea3f558591b3c6e62124c143c2d"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__pycache__/metrics.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__pycache__/metrics.cpython-38.pyc",
+      "bytes": 11895,
+      "mode": "0o644",
+      "sha256": "dd6fdeab6c2e75b800e951ed1aadadf4e308b9dfe9721a024787fbc11360e006"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__pycache__/plots.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__pycache__/plots.cpython-38.pyc",
+      "bytes": 5122,
+      "mode": "0o644",
+      "sha256": "921a22fd01c525f977d283ca1301df39a2b57b322d2d68385eeef947743cf66f"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__pycache__/serialization.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/evaluation/__pycache__/serialization.cpython-38.pyc",
+      "bytes": 5330,
+      "mode": "0o644",
+      "sha256": "13a284acb830775d51d8b0b39d4fc35b0126b266fc06081942a36f740b67bc53"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/evaluation/metrics.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/evaluation/metrics.py",
+      "bytes": 14245,
+      "mode": "0o644",
+      "sha256": "d519caa183cf3195574a9ad96069f700fe50cb8c07e96a2d06244e15c54cb9fb"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/evaluation/plots.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/evaluation/plots.py",
+      "bytes": 5672,
+      "mode": "0o644",
+      "sha256": "2c90ff152265582086fb0775569f61a207bff707fcbda9facf7b3dc39db2b73f"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/evaluation/serialization.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/evaluation/serialization.py",
+      "bytes": 5497,
+      "mode": "0o644",
+      "sha256": "ed97601403b946d8fd41f183768fb392ac1a36c34ddd58b79c7021db857cae97"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/features.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/features.py",
+      "bytes": 6728,
+      "mode": "0o644",
+      "sha256": "95b2d85d583cd4bc751293449df270c576a59402f0c46d02e57c99efc081d8f4"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/__init__.py",
+      "bytes": 1045,
+      "mode": "0o644",
+      "sha256": "fda56a2f8db873e7df1b698d48c0e7783ea17ebc163ec6d4c0e1ef6f33aedd66"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/__init__.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/__init__.cpython-38.pyc",
+      "bytes": 1023,
+      "mode": "0o644",
+      "sha256": "d0598bd4a981e5c5d2d9f367d67a6f96a8abb49cf9ffd288e8c4f47762235a2e"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/circular.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/circular.cpython-38.pyc",
+      "bytes": 3564,
+      "mode": "0o644",
+      "sha256": "965e97855259fed302c3e3c6d6a7bf676070a69867ca9769cff6f333f2a4228b"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/control.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/control.cpython-38.pyc",
+      "bytes": 3605,
+      "mode": "0o644",
+      "sha256": "99d9c2d90920186e60c36e61d3237952424cd248ff844b022f6e86fce6ae8c2b"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/fourier.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/fourier.cpython-38.pyc",
+      "bytes": 2526,
+      "mode": "0o644",
+      "sha256": "4d1511b2ae10cd28207025665cf59b3e61cf1a1c0aa4c2b4fcbaa2c104345cb3"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/ring.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/__pycache__/ring.cpython-38.pyc",
+      "bytes": 3628,
+      "mode": "0o644",
+      "sha256": "6ad67ae1423a4e1ca743897d234277ae436128420e5f18ec9a1fa5332227fbbe"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/circular.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/circular.py",
+      "bytes": 3380,
+      "mode": "0o644",
+      "sha256": "2f5fadb091a284bcaa62e408ff35670e330eaadfd3ff8b65752fbc41b86066cb"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/control.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/control.py",
+      "bytes": 3795,
+      "mode": "0o644",
+      "sha256": "f530ae78b71ad4233eae6acaf7b1dbe80495d12a118829419b829696336034f4"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/fourier.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/fourier.py",
+      "bytes": 1869,
+      "mode": "0o644",
+      "sha256": "2d6b0d182558c1af231f85523c89122c52da8ec883935ca76612b83b5087c057"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/kinematics.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/kinematics.py",
+      "bytes": 1590,
+      "mode": "0o644",
+      "sha256": "5fc324aafd6ccb1a7680d0ca822047e23eb25e20b6b72bd606d844e1f75d5daf"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/math/ring.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/math/ring.py",
+      "bytes": 3956,
+      "mode": "0o644",
+      "sha256": "587ee6e58ff2c1041962a5b0ff23efe66db4b7b2fc97526850b6e6c66fc44a16"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/__init__.py",
+      "bytes": 1030,
+      "mode": "0o644",
+      "sha256": "9816ec00bdab9fbf1564084ea4e167ad38e3931239198b973dc0274a698c6a96"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/__init__.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/__init__.cpython-38.pyc",
+      "bytes": 1046,
+      "mode": "0o644",
+      "sha256": "a290657e1fca9ade21ed67e21a7970482dc854f20441988f052b583972d4bba7"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/comparator.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/comparator.cpython-38.pyc",
+      "bytes": 2686,
+      "mode": "0o644",
+      "sha256": "855a3f76ec62b25f59c8204bd72c8ea9873ca7c8f070bb963a4989408fb09c34"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/gain.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/gain.cpython-38.pyc",
+      "bytes": 2871,
+      "mode": "0o644",
+      "sha256": "8ae51d251904c5daa99f3ded1e750d848a2a80de6934c907ebcbd6269791e938"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/kernel.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/kernel.cpython-38.pyc",
+      "bytes": 1831,
+      "mode": "0o644",
+      "sha256": "017f50727086a7c249acabda1a32747ae274981374bf6ac4c8cc7904ff8a7876"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/readout.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/readout.cpython-38.pyc",
+      "bytes": 2537,
+      "mode": "0o644",
+      "sha256": "1af6bc27e03e3f76d12f203eabd8d919a35457dcc92c8b7936164c8e4e37e4db"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/ring.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/__pycache__/ring.cpython-38.pyc",
+      "bytes": 3965,
+      "mode": "0o644",
+      "sha256": "0397f6e7abf8b97f031f062a3b9ed6fc823018cd827ba8fc2a34373d41083cf8"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/comparator.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/comparator.py",
+      "bytes": 3441,
+      "mode": "0o644",
+      "sha256": "972a8ad495ede7e85381c54f3f7f7de9f0360e2cf57f22b7ef3d30cb10ae7bd7"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/gain.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/gain.py",
+      "bytes": 3711,
+      "mode": "0o644",
+      "sha256": "fb1d8b99963d759145ba7048b91737abbe8728443d37efb391f1d94cafb20080"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/kernel.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/kernel.py",
+      "bytes": 1630,
+      "mode": "0o644",
+      "sha256": "61d7c2ad39b67cb3dec6255edffd9e68c50867488517f65ec513fd24b95a16f3"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/multi_ring.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/multi_ring.py",
+      "bytes": 6280,
+      "mode": "0o644",
+      "sha256": "d9954c30be14508c9a464151fa9c26e4ecb87811dc1d28e6c2e9aa69ae60902b"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/readout.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/readout.py",
+      "bytes": 3030,
+      "mode": "0o644",
+      "sha256": "613e2f0018681e00dc81b025d77bfed6acbafddbacfbd57c36bbabb0d333a403"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/nest/ring.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/nest/ring.py",
+      "bytes": 4941,
+      "mode": "0o644",
+      "sha256": "3355060fb14b16c1944a5083a5bc1ad54ca996bf60e7f0ea2d249b084bdc4020"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/ros/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/ros/__init__.py",
+      "bytes": 1562,
+      "mode": "0o644",
+      "sha256": "6723ec86b4b7dee7b7dd98157420c074af197bf9043472a5fa88f6e59c5c4420"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/__init__.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/__init__.cpython-38.pyc",
+      "bytes": 1384,
+      "mode": "0o644",
+      "sha256": "e3a924ba46ee368b05c1b3979f4b508c4d4bf751ed55e183378907b4d92d2ed1"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/camera.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/camera.cpython-38.pyc",
+      "bytes": 2357,
+      "mode": "0o644",
+      "sha256": "4a7aa75d6d9718510d82584334aec2a738b0159ba23a3f9133856d32be4afd2f"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/logging.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/logging.cpython-38.pyc",
+      "bytes": 3235,
+      "mode": "0o644",
+      "sha256": "0604d0e8645bc116f800f4624c2eab45a3790bc03b0ad82655a47db19f603ede"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/transport.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/transport.cpython-38.pyc",
+      "bytes": 5433,
+      "mode": "0o644",
+      "sha256": "0db803f9db02d4b69e84971dd34171f9589bc4d5e51ceac3fee4be10fc867544"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/ros/camera.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/ros/camera.py",
+      "bytes": 2194,
+      "mode": "0o644",
+      "sha256": "fee8d1298f1465709dcef9dfa86efc5fcc791c4c3ccb4deda05bd8b8d6b646ee"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/ros/logging.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/ros/logging.py",
+      "bytes": 3044,
+      "mode": "0o644",
+      "sha256": "b7927b6b8f9766588895c3ab9098c7a2c33675124767052307560a36a81ef746"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/ros/transport.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/ros/transport.py",
+      "bytes": 5514,
+      "mode": "0o644",
+      "sha256": "b6ff97c0b9c82653f639a328a93db82d44cef3c7314f6c6a57c1e27cd8c38236"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/training/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/training/__init__.py",
+      "bytes": 694,
+      "mode": "0o644",
+      "sha256": "3395470ce56740ecc97c867480550b8b4f55ea9b8e317f064559c050aacd7bab"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/training/analytic.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/training/analytic.py",
+      "bytes": 790,
+      "mode": "0o644",
+      "sha256": "28985bcbc5c25e2ff17335213d916f6b3b6a5c421ab3af4e42d0981c757b60d5"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/training/calibration.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/training/calibration.py",
+      "bytes": 5014,
+      "mode": "0o644",
+      "sha256": "eb11fe2195bd2349ebc42ab01a4bb5b6568f724ae5649ae2e663a959af07acb5"
+    },
+    "src/tiago_ring_controller/src/tiago_ring_controller/training/ridge.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/tiago_ring_controller/training/ridge.py",
+      "bytes": 2171,
+      "mode": "0o644",
+      "sha256": "d947c6b2960ac55beb93a97eade2036ad0213af76f05f965103500f33789738c"
+    },
+    "src/tiago_ring_controller/src/train_homeostasis.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/train_homeostasis.py",
+      "bytes": 13788,
+      "mode": "0o644",
+      "sha256": "fe3c90adbda7c78e0d1a986a585ec3773958e7fbaf14bcfa7708b7f0d2d31221"
+    },
+    "src/tiago_ring_controller/src/train_ring_model.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/train_ring_model.py",
+      "bytes": 16201,
+      "mode": "0o644",
+      "sha256": "ca1ff9411e1e32fbdc03e83b4091e2745fee5df3d2bbf492ea42965e07dd192e"
+    },
+    "src/tiago_ring_controller/src/trainer/__init__.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/trainer/__init__.py",
+      "bytes": 53,
+      "mode": "0o644",
+      "sha256": "23857912822802df3d456129294698bfea2700d6700b1b8c04388e7a00b27c0b"
+    },
+    "src/tiago_ring_controller/src/trainer/__pycache__/train_ring_model.cpython-38.pyc": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/trainer/__pycache__/train_ring_model.cpython-38.pyc",
+      "bytes": 8042,
+      "mode": "0o644",
+      "sha256": "aa2b9b1f0109f25194f572e3cd9cd46578ece6bd25f8b624a347a12d6b08213c"
+    },
+    "src/tiago_ring_controller/src/trainer/train_ring_model.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/src/trainer/train_ring_model.py",
+      "bytes": 8414,
+      "mode": "0o644",
+      "sha256": "d73f84086c1a712b80ace25947f6adbbe6c75179f97404fe98bdd47a68e2de54"
+    },
+    "src/tiago_ring_controller/test/golden/api_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/golden/api_manifest.json",
+      "bytes": 215423,
+      "mode": "0o644",
+      "sha256": "d0320a30f26fae3e26c52edf9bd5b1209756e5b71132af2845c7e76a08938c28"
+    },
+    "src/tiago_ring_controller/test/golden/artifact_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/golden/artifact_manifest.json",
+      "bytes": 6420,
+      "mode": "0o644",
+      "sha256": "55cfdeb2b2ba9beb08b677ca564b6eae3b859dbd4b0a738811c2ca292eccffd7"
+    },
+    "src/tiago_ring_controller/test/golden/artifact_schema_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/golden/artifact_schema_manifest.json",
+      "bytes": 27055,
+      "mode": "0o644",
+      "sha256": "37dcdb79755115d11101f653977bd671941747324f9531f19f81c60f6710c3db"
+    },
+    "src/tiago_ring_controller/test/golden/bytecode_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/golden/bytecode_manifest.json",
+      "bytes": 6255,
+      "mode": "0o644",
+      "sha256": "70f7aabbe5dca10cb661ccc63875cb3cb29a5e93ee2bf0f8c07ebe5f865ff35a"
+    },
+    "src/tiago_ring_controller/test/golden/checked_output_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/golden/checked_output_manifest.json",
+      "bytes": 5908,
+      "mode": "0o644",
+      "sha256": "a3b0b4438ffa3e6543fa704e2b3cdafd6c5197cc43af264e46c377918c600fa9"
+    },
+    "src/tiago_ring_controller/test/golden/environment_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/golden/environment_manifest.json",
+      "bytes": 3299,
+      "mode": "0o644",
+      "sha256": "6a2b07abe71d63343c2720638460e88e6993191ec66502f5e64a5c6eb26b63ee"
+    },
+    "src/tiago_ring_controller/test/golden/import_graph_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/golden/import_graph_manifest.json",
+      "bytes": 9037,
+      "mode": "0o644",
+      "sha256": "ef8731e6117a02b94087161eaa654828e1f366db41907224f918b98191f2a816"
+    },
+    "src/tiago_ring_controller/test/golden/orphan_bytecode_manifest.json": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/golden/orphan_bytecode_manifest.json",
+      "bytes": 551,
+      "mode": "0o644",
+      "sha256": "b1c830a752b7c77b0c312d92c33385ad29bec7e77f19a90722b67e69d7f9de30"
+    },
+    "src/tiago_ring_controller/test/ros_interfaces.test": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/ros_interfaces.test",
+      "bytes": 233,
+      "mode": "0o644",
+      "sha256": "a60ac54a7c92395779393d2a90468ef014aad8567eca6909b2207d13a6ff5c88"
+    },
+    "src/tiago_ring_controller/test/ros_interfaces_runner.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/ros_interfaces_runner.py",
+      "bytes": 1093,
+      "mode": "0o755",
+      "sha256": "586690ec20a7a0adbb5e0218c586240fa1fac75176e40350a265de984223a5b7"
+    },
+    "src/tiago_ring_controller/test/support_fake_nest.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/support_fake_nest.py",
+      "bytes": 3200,
+      "mode": "0o644",
+      "sha256": "9b48774801c8fb900a0009dce02b36b585d863acca932ceee0c241e7d7eb8caa"
+    },
+    "src/tiago_ring_controller/test/test_api_compatibility.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_api_compatibility.py",
+      "bytes": 3476,
+      "mode": "0o644",
+      "sha256": "b284c4c36a74e2854f7109c7f1e7349c5a628a017f2ac4fa34f2eda29d2fd77c"
+    },
+    "src/tiago_ring_controller/test/test_artifact_contracts.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_artifact_contracts.py",
+      "bytes": 14888,
+      "mode": "0o644",
+      "sha256": "f4a0999bfc887492a91c99192128de93ad86d5c7e032713472eb1dea2df569ac"
+    },
+    "src/tiago_ring_controller/test/test_bytecode_provenance.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_bytecode_provenance.py",
+      "bytes": 2344,
+      "mode": "0o644",
+      "sha256": "11e636189904886ec910f56e53a2279fbbcdaf33b6ba6a1c7b88df0968da7c81"
+    },
+    "src/tiago_ring_controller/test/test_control_ros_contracts.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_control_ros_contracts.py",
+      "bytes": 43482,
+      "mode": "0o644",
+      "sha256": "12749a39d6d80c532434abbdb4d8918e7b13df800ce4a9faadb82bd12264b34a"
+    },
+    "src/tiago_ring_controller/test/test_environment_contracts.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_environment_contracts.py",
+      "bytes": 4385,
+      "mode": "0o644",
+      "sha256": "c7c8d206a37db3d42afb464ef8f11600a22f6596beb5df2be7c9c8e2601c45c0"
+    },
+    "src/tiago_ring_controller/test/test_evaluation_facade_plots.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_evaluation_facade_plots.py",
+      "bytes": 13688,
+      "mode": "0o644",
+      "sha256": "801c686e060c86e09dd679156d91c85f92d316d97c34287071b250e27915cd85"
+    },
+    "src/tiago_ring_controller/test/test_internal_config_profiles.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_internal_config_profiles.py",
+      "bytes": 13235,
+      "mode": "0o644",
+      "sha256": "c2765b6b7abb6ecd419c214d4bcb2f1c3ab0c14d3e09ce2f1478fbb0fd0bbe73"
+    },
+    "src/tiago_ring_controller/test/test_multi_ring_contracts.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_multi_ring_contracts.py",
+      "bytes": 14165,
+      "mode": "0o644",
+      "sha256": "4257d4f38a50480c35e3af374d87ea1ea6fa0e4f4b9b8c7ce5f1107bcdfdf0fd"
+    },
+    "src/tiago_ring_controller/test/test_nest_topology.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_nest_topology.py",
+      "bytes": 22223,
+      "mode": "0o644",
+      "sha256": "8aa8038bee281dd31f707c6263251be7db22fa668c3b95a8ef52903dcddaa76b"
+    },
+    "src/tiago_ring_controller/test/test_output_schemas.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_output_schemas.py",
+      "bytes": 9685,
+      "mode": "0o644",
+      "sha256": "248406146f482048299979562d1f7f4c89b9d7bc3b7806d96060d6e19c6f8d65"
+    },
+    "src/tiago_ring_controller/test/test_packaging_contracts.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_packaging_contracts.py",
+      "bytes": 2941,
+      "mode": "0o644",
+      "sha256": "0dcd81e585146cbde54f54102ca9e81498810ec8aaff45857d644d62a7e00962"
+    },
+    "src/tiago_ring_controller/test/test_real_nest_smoke.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_real_nest_smoke.py",
+      "bytes": 6662,
+      "mode": "0o644",
+      "sha256": "9c6b9151fde3f8d49f642e80c409f15c56ff1baf53655eaaa4b912c3d480ab7e"
+    },
+    "src/tiago_ring_controller/test/test_ring_math.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_ring_math.py",
+      "bytes": 11534,
+      "mode": "0o644",
+      "sha256": "cc85570d8a86dfc129728d4c079b0342518b1d5d5b285d2d64e28a318ed83491"
+    },
+    "src/tiago_ring_controller/test/test_training_evaluation_contracts.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/test_training_evaluation_contracts.py",
+      "bytes": 17488,
+      "mode": "0o644",
+      "sha256": "c3bd06dbc137a35bb12109da64a229070cc7a67d5b7be2581b9bc6e5c630dea6"
+    },
+    "src/tiago_ring_controller/test/unit_tests_runner.py": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/test/unit_tests_runner.py",
+      "bytes": 814,
+      "mode": "0o644",
+      "sha256": "07d6a6fa43dba87b04defc53792353053e21880bee2e5ee8696444a5d22f8f24"
+    },
+    "src/tiago_ring_controller/worlds/tiago_ring_controller.world": {
+      "source": "/tiago_public_ws/src/tiago_ring_controller/worlds/tiago_ring_controller.world",
+      "bytes": 1659,
+      "mode": "0o644",
+      "sha256": "54ba4f22eb73206070076251cd2fbeb13d7e6f56db76c75ccbb8a50d0f7c34d1"
+    },
+    "recovered/experiment_results/recorded_video/recording_20260320_084911.mp4": {
+      "source": "/tiago_public_ws/src/experiment_results/recorded_video/recording_20260320_084911.mp4",
+      "bytes": 925826,
+      "mode": "0o644",
+      "sha256": "35bd017e67f3b4556e3764492a4cece8cf439736e86df1f611818a8c7071241a"
+    },
+    "recovered/experiment_results/recorded_video/recording_20260320_085028.avi": {
+      "source": "/tiago_public_ws/src/experiment_results/recorded_video/recording_20260320_085028.avi",
+      "bytes": 7476174,
+      "mode": "0o644",
+      "sha256": "0df50cae9adcf5596fdf3350891f95388c248f72dd68d3ee41eddf6899092a09"
+    },
+    "overrides/pal_gazebo_worlds/worlds/tiago_ring_controller.world": {
+      "source": "/tiago_public_ws/src/pal_gazebo_worlds/worlds/tiago_ring_controller.world",
+      "bytes": 3063,
+      "mode": "0o644",
+      "sha256": "aad53fe06f7ae7b202894711cad6d3898efb09e0a7d596acbb5f9635a1d8a46b"
+    },
+    "overrides/tiago_robot/tiago_bringup/config/motions/tiago_motions.yaml.em": {
+      "source": "/tiago_public_ws/src/tiago_robot/tiago_bringup/config/motions/tiago_motions.yaml.em",
+      "bytes": 33622,
+      "mode": "0o644",
+      "sha256": "d6cd644d69bbcc79220ba41c75eefd0b7c8afb2c91c03d5309b4c6fecfe3b1dd"
+    },
+    "overrides/tiago_robot/tiago_bringup/config/motions/pmb2/tiago_motions_pal-hey5_schunk-ft.yaml": {
+      "source": "/tiago_public_ws/src/tiago_robot/tiago_bringup/config/motions/pmb2/tiago_motions_pal-hey5_schunk-ft.yaml",
+      "bytes": 12432,
+      "mode": "0o644",
+      "sha256": "7245ad25baf48e2c4900192365c4ed4e5b8093af34de9fc077534a368b04fdea"
+    },
+    "overrides/tiago_simulation/tiago_gazebo/scripts/tuck_arm.py": {
+      "source": "/tiago_public_ws/src/tiago_simulation/tiago_gazebo/scripts/tuck_arm.py",
+      "bytes": 784,
+      "mode": "0o755",
+      "sha256": "93a3a07006a9c185d2646b7a0ec6fa42b3f0992d636201a75bf0bbcd01db604c"
+    }
+  }
+}

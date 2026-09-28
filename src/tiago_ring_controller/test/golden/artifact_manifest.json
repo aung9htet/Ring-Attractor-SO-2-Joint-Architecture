@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "baseline": "pre-refactor repository state",
+  "hash_algorithm": "sha256",
+  "scope": [
+    "**/*.json",
+    "**/*.npy",
+    "**/*.npz",
+    "src/Neurips_2026.pdf",
+    "worlds/*.world"
+  ],
+  "files": {
+    "outputs/train/single_joint_ring_component/results_1/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "outputs/train/single_joint_ring_component/results_13/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "outputs/train/single_joint_ring_component/results_14/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "outputs/train/single_joint_ring_component/results_15/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "outputs/train/single_joint_ring_component/results_2/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "outputs/train/single_joint_ring_component/results_20/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "outputs/train/single_joint_ring_component/results_21/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "c62bd362cf8436d918a8c82c742b65bbeeeaecca39ac51847f6f9670472d652b"
+    },
+    "outputs/train/single_joint_ring_component/results_3/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "outputs/train/single_joint_ring_component/results_9/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "src/Neurips_2026.pdf": {
+      "bytes": 2654330,
+      "sha256": "c97b3a8b3612dc7d0fc9c585bc9395d4061a2a9497f94932b30eb4e09e397db5"
+    },
+    "src/config/calibration/velocity_calibration.json": {
+      "bytes": 11324,
+      "sha256": "44a323ab153df6698b61a58bf47b06f04dfe1845d080497927e133daa02cfbaf"
+    },
+    "src/config/homeostasis/N_100_homeostasis_metadata.json": {
+      "bytes": 510,
+      "sha256": "0033f42001ef02687d9bd77eb57fdea414a8b50611a4452f261b00cd56d72ef8"
+    },
+    "src/config/homeostasis/N_100_homeostasis_weights.npy": {
+      "bytes": 448,
+      "sha256": "daecbfd9d4618b86654c764ec4ab173007f2a8cfdc7dda50ed243ceff7ed9580"
+    },
+    "src/config/homeostasis/N_200_homeostasis_metadata.json": {
+      "bytes": 1075,
+      "sha256": "35851785c5c870cc783055cd6e933b2d55291614d7638449189a521dec2a278b"
+    },
+    "src/config/homeostasis/N_200_homeostasis_weights.npy": {
+      "bytes": 1408,
+      "sha256": "e3cb8b30f4f4392bf4788ebf5f99b65e7757ff7f387d38a89378d52dde25428a"
+    },
+    "src/config/model_params/gain_modulation_params.json": {
+      "bytes": 654,
+      "sha256": "beeb08a5a72a7661bc24bac2808ae2d33fd8ffa6d78a2cd8ddda23bd58ea6b9b"
+    },
+    "src/config/model_params/homeostasis_params.json": {
+      "bytes": 372,
+      "sha256": "4f0cbf5b34f0fa0e82bc41ab069b25aa146925014f0823580e16a4e5212d303d"
+    },
+    "src/config/model_params/multi_ring_params.json": {
+      "bytes": 966,
+      "sha256": "d1b6e7ba4c5f51431d69b73d3726523fed497f552a3461cea348c4383f94793d"
+    },
+    "src/config/model_params/neuron_params.json": {
+      "bytes": 627,
+      "sha256": "6be85bc9d68d886ae09c4c62a076ecf9cf74e4ed809727dbcb5308855d6ac595"
+    },
+    "src/config/model_params/ring_params.json": {
+      "bytes": 353,
+      "sha256": "64d4d2d631996e3ebbd1d773dfcfbc0cc75249250562346ef5ae7035bc64dfa5"
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_compositional_metadata.json": {
+      "bytes": 1691,
+      "sha256": "4dbeaf6dad19352c563bc633307bca61e81d98fadcd9ce2619943931916a4128"
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_compositional_weights.npz": {
+      "bytes": 2460004,
+      "sha256": "2d7411916b9df1627b169d803b2067172cd5a97a1355f9845c463f4859a2695b"
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_metadata.json": {
+      "bytes": 9387,
+      "sha256": "a57119e17cf47c2895e5badb3b8d343b701d8ea2188c4a22b9f980acac0b842d"
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_scalar_metadata.json": {
+      "bytes": 3656,
+      "sha256": "be184f639b3919bf72ee94b2c34b53a82baaeec89d42a13fe27e9a8aa55da0f5"
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_scalar_weights.npz": {
+      "bytes": 3294,
+      "sha256": "dbbed659c6f6211d291bffd5301ee2e5907862ac1503b579b5b378e1bb15d6c0"
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_weights.npz": {
+      "bytes": 39325435,
+      "sha256": "5bf6d3da243595a385c92c62707ac9e61ffaa060b2717ec4b66755a9213ae3eb"
+    },
+    "src/config/ring_decoding_weights/N_100_fourier_metadata.json": {
+      "bytes": 220,
+      "sha256": "64787883923ba4f2f787e7bcc0d9c255dfc4287dbab6a04352a7a1e5ae2cda25"
+    },
+    "src/config/ring_decoding_weights/N_100_fourier_weights.npy": {
+      "bytes": 8128,
+      "sha256": "371eefbf89e3433024e80d075ad417c7904005712beac7b76bc465179a48da67"
+    },
+    "src/config/ring_decoding_weights/N_200_fourier_metadata.json": {
+      "bytes": 221,
+      "sha256": "4657d1997718038657e77fcb62c0eb2dc1ed9c7bcb1e84586d67b1ef430ee826"
+    },
+    "src/config/ring_decoding_weights/N_200_fourier_weights.npy": {
+      "bytes": 64128,
+      "sha256": "550c1d53328a153ae092788c405c1f1d90fc7b14e2f3f7c480d5b2e304ce306f"
+    },
+    "src/config/two_joints_ring_decoding_weights/N_100_two_joint_fourier_metadata.json": {
+      "bytes": 302,
+      "sha256": "dd68caa0f695658f1a2da97e7357ea86a3939591e6c7b907cefd18d0e444c1aa"
+    },
+    "src/config/two_joints_ring_decoding_weights/N_100_two_joint_fourier_weights.npy": {
+      "bytes": 16128,
+      "sha256": "74b642c7ce00c47b01553046edfd106b0d3198c20f553ccf1e3699bd9fc9b447"
+    },
+    "src/outputs/ring_decoding/fourier_results.npz": {
+      "bytes": 996,
+      "sha256": "1c958f582683ca06c53f2111d3dca472856cef2ff35aa5e7a69d275b26674de8"
+    },
+    "worlds/tiago_ring_controller.world": {
+      "bytes": 1659,
+      "sha256": "54ba4f22eb73206070076251cd2fbeb13d7e6f56db76c75ccbb8a50d0f7c34d1"
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "decoder": "sawtooth_plus_scalar_ramp_readout",
+  "note": "The 100-neuron output rings remain the circular 0-to-2pi representation. The scalar readout neurons are downstream ramp readouts for magnitude-style comparison.",
+  "scalar_ramp_weight_scale": 100.0,
+  "scalar_dc_baseline": 200.0,
+  "output_ring_size": 100,
+  "population_size": 100,
+  "num_joints": 2,
+  "joint_axes": [
+    "x",
+    "y"
+  ],
+  "source_sawtooth_weights_path": "./config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_weights.npz",
+  "sawtooth_mae_per_slice": {
+    "q1_fixed": {
+      "sawtooth_mae_deg": {
+        "lift": 11.974122722291499,
+        "pitch": 2.040735284758576,
+        "yaw": 10.89175393432221
+      },
+      "signal_coverage_pct": 100.0
+    },
+    "q2_fixed": {
+      "sawtooth_mae_deg": {
+        "lift": 1.5187332328787224,
+        "pitch": 0.7606502925090118,
+        "yaw": 0.8910951239043257
+      },
+      "signal_coverage_pct": 100.0
+    },
+    "overall": {
+      "sawtooth_mae_deg": {
+        "lift": 6.7464279775851095,
+        "pitch": 1.4006927886337939,
+        "yaw": 5.8914245291132685
+      },
+      "signal_coverage_pct": 100.0
+    }
+  },
+  "scalar_readout_metrics": {
+    "q1_fixed": {
+      "lift": {
+        "sawtooth_mae_deg": 11.974122722291494,
+        "sawtooth_index_mae": 3.32614520063653,
+        "scalar_vs_sawtooth_correlation": -0.37212694689168957,
+        "scalar_vs_true_correlation": -0.5271546474553768,
+        "scalar_rmse_normalized": 0.5499164255096384,
+        "signal_coverage_pct": 100.0,
+        "scalar_count_min": 41.0,
+        "scalar_count_max": 50.0
+      },
+      "pitch": {
+        "sawtooth_mae_deg": 2.040735284758585,
+        "sawtooth_index_mae": 0.5668709124329392,
+        "scalar_vs_sawtooth_correlation": 0.6445037741831809,
+        "scalar_vs_true_correlation": 0.6506058488065719,
+        "scalar_rmse_normalized": 0.3303483617363864,
+        "signal_coverage_pct": 100.0,
+        "scalar_count_min": 26.0,
+        "scalar_count_max": 61.0
+      },
+      "yaw": {
+        "sawtooth_mae_deg": 10.891753934322203,
+        "sawtooth_index_mae": 3.0254872039783915,
+        "scalar_vs_sawtooth_correlation": 0.7794036635245536,
+        "scalar_vs_true_correlation": 0.7530452566365674,
+        "scalar_rmse_normalized": 0.23998256244045582,
+        "signal_coverage_pct": 100.0,
+        "scalar_count_min": 27.0,
+        "scalar_count_max": 47.0
+      }
+    },
+    "q2_fixed": {
+      "lift": {
+        "sawtooth_mae_deg": 1.5187332328787169,
+        "sawtooth_index_mae": 0.4218703424663086,
+        "scalar_vs_sawtooth_correlation": 0.4751761505154197,
+        "scalar_vs_true_correlation": 0.47263077739672665,
+        "scalar_rmse_normalized": 0.3740259513560245,
+        "signal_coverage_pct": 100.0,
+        "scalar_count_min": 17.0,
+        "scalar_count_max": 48.0
+      },
+      "pitch": {
+        "sawtooth_mae_deg": 0.7606502925090068,
+        "sawtooth_index_mae": 12.701801132360034,
+        "scalar_vs_sawtooth_correlation": 0.4716412417725543,
+        "scalar_vs_true_correlation": 0.1272184169994903,
+        "scalar_rmse_normalized": 0.5641408009254592,
+        "signal_coverage_pct": 100.0,
+        "scalar_count_min": 27.0,
+        "scalar_count_max": 43.0
+      },
+      "yaw": {
+        "sawtooth_mae_deg": 0.8910951239043277,
+        "sawtooth_index_mae": 25.118860547816332,
+        "scalar_vs_sawtooth_correlation": 0.6223510799207607,
+        "scalar_vs_true_correlation": 0.7752479680685561,
+        "scalar_rmse_normalized": 0.29805668398936375,
+        "signal_coverage_pct": 100.0,
+        "scalar_count_min": 31.0,
+        "scalar_count_max": 41.0
+      }
+    }
+  }
+}

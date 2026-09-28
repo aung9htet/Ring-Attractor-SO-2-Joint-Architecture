@@ -1,0 +1,413 @@
+{
+  "3": {
+    "velocity": 0.0018332955335828875,
+    "joint_min": -0.39271339638354874,
+    "joint_max": 2.356205376381638,
+    "last_calibrated": "2026-04-27 23:54:08",
+    "raw_drive_velocity_gain": 0.0022682938264488536,
+    "gain_model": "v_cmd_rad_s = raw_drive_velocity_gain * filtered_gain_drive",
+    "decoder_gain_positive": 0.0011,
+    "decoder_gain_negative": -0.0011,
+    "decoder_tau": 0.10000001047111369,
+    "decoder_delay_steps": 0,
+    "decoder_model": "d_t = exp(-dt/tau)*d_{t-1} + (1-exp(-dt/tau))*spike_t; v_cmd = k_pos*max(d_delay,0) + k_neg*max(-d_delay,0)",
+    "calibration_settings": {
+      "time_step_ms": 50.0,
+      "lookahead": 4,
+      "drive_threshold": 5.0,
+      "n_settle": 10,
+      "max_steps": 400,
+      "tau_candidates": [
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5,
+        0.8,
+        1.2
+      ],
+      "delay_candidates": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "last_saved": "2026-05-06 22:55:16",
+    "last_save_phase": "calibration_complete",
+    "calibration_progress": {
+      "timestamp": "2026-05-06 22:55:16",
+      "phase": "calibration_complete",
+      "region_idx": null,
+      "iteration_idx": null,
+      "beta": 0.5,
+      "current_decoder": {
+        "decoder_gain_positive": 0.0022682938264488536,
+        "decoder_gain_negative": -0.00812947624804033,
+        "decoder_tau": 0.10000001047111369,
+        "decoder_delay_steps": 0
+      },
+      "fit_result": null,
+      "latest_trial": null
+    },
+    "decoder_save_history": [
+      {
+        "timestamp": "2026-04-28 00:20:54",
+        "phase": "calibration_start",
+        "region_idx": null,
+        "iteration_idx": null,
+        "beta": 0.2,
+        "decoder": {
+          "decoder_gain_positive": 0.0013526355075297474,
+          "decoder_gain_negative": -0.0013526355075297474,
+          "decoder_tau": 0.3,
+          "decoder_delay_steps": 0
+        },
+        "fit_result": null
+      },
+      {
+        "timestamp": "2026-04-28 00:21:08",
+        "phase": "after_trial",
+        "region_idx": 1,
+        "iteration_idx": 1,
+        "beta": 0.2,
+        "decoder": {
+          "decoder_gain_positive": 0.0013526355075297474,
+          "decoder_gain_negative": -0.0013526355075297474,
+          "decoder_tau": 0.3,
+          "decoder_delay_steps": 0
+        },
+        "fit_result": null
+      },
+      {
+        "timestamp": "2026-04-28 00:21:41",
+        "phase": "after_trial",
+        "region_idx": 1,
+        "iteration_idx": 2,
+        "beta": 0.2,
+        "decoder": {
+          "decoder_gain_positive": 0.0013526355075297474,
+          "decoder_gain_negative": -0.0013526355075297474,
+          "decoder_tau": 0.3,
+          "decoder_delay_steps": 0
+        },
+        "fit_result": null
+      },
+      {
+        "timestamp": "2026-04-28 00:22:02",
+        "phase": "after_trial",
+        "region_idx": 1,
+        "iteration_idx": 3,
+        "beta": 0.2,
+        "decoder": {
+          "decoder_gain_positive": 0.0013526355075297474,
+          "decoder_gain_negative": -0.0013526355075297474,
+          "decoder_tau": 0.3,
+          "decoder_delay_steps": 0
+        },
+        "fit_result": null
+      }
+    ]
+  },
+  "2": {
+    "joint_min": -3.5348136904851106,
+    "joint_max": 1.2613053141677515,
+    "decoder_gain_positive": 0.0011,
+    "decoder_gain_negative": -0.0011,
+    "decoder_tau": 0.1689761702212334,
+    "decoder_delay_steps": 0,
+    "raw_drive_velocity_gain": 0.004887735031662793,
+    "decoder_model": "d_t = exp(-dt/tau)*d_{t-1} + (1-exp(-dt/tau))*spike_t; v_cmd = k_pos*max(d_delay,0) + k_neg*max(-d_delay,0)",
+    "calibration_settings": {
+      "time_step_ms": 50.0,
+      "lookahead": 4,
+      "drive_threshold": 5.0,
+      "n_settle": 10,
+      "max_steps": 400,
+      "tau_candidates": [
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5,
+        0.8,
+        1.2
+      ],
+      "delay_candidates": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "last_saved": "2026-05-06 22:05:41",
+    "last_save_phase": "calibration_complete",
+    "calibration_progress": {
+      "timestamp": "2026-05-06 22:05:41",
+      "phase": "calibration_complete",
+      "region_idx": null,
+      "iteration_idx": null,
+      "beta": 0.5,
+      "current_decoder": {
+        "decoder_gain_positive": 0.004887735031662793,
+        "decoder_gain_negative": -0.0030432648670043385,
+        "decoder_tau": 0.1689761702212334,
+        "decoder_delay_steps": 0
+      },
+      "fit_result": null,
+      "latest_trial": null
+    }
+  },
+  "0": {
+    "joint_min": -8.094148823012404e-05,
+    "joint_max": 2.748970474380153,
+    "decoder_gain_positive": 0.00105,
+    "decoder_gain_negative": -0.00105,
+    "decoder_tau": 0.15235931543524872,
+    "decoder_delay_steps": 0,
+    "raw_drive_velocity_gain": 0.0029384301556629115,
+    "decoder_model": "d_t = exp(-dt/tau)*d_{t-1} + (1-exp(-dt/tau))*spike_t; v_cmd = k_pos*max(d_delay,0) + k_neg*max(-d_delay,0)",
+    "calibration_settings": {
+      "time_step_ms": 50.0,
+      "lookahead": 4,
+      "drive_threshold": 5.0,
+      "n_settle": 10,
+      "max_steps": 400,
+      "tau_candidates": [
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5,
+        0.8,
+        1.2
+      ],
+      "delay_candidates": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "last_saved": "2026-05-06 21:16:10",
+    "last_save_phase": "calibration_complete",
+    "calibration_progress": {
+      "timestamp": "2026-05-06 21:16:10",
+      "phase": "calibration_complete",
+      "region_idx": null,
+      "iteration_idx": null,
+      "beta": 0.5,
+      "current_decoder": {
+        "decoder_gain_positive": 0.0029384301556629115,
+        "decoder_gain_negative": -0.005166318269572825,
+        "decoder_tau": 0.15235931543524872,
+        "decoder_delay_steps": 0
+      },
+      "fit_result": null,
+      "latest_trial": null
+    }
+  },
+  "1": {
+    "joint_min": -1.5714253397332918,
+    "joint_max": 1.0911721972233304,
+    "decoder_gain_positive": 0.0011,
+    "decoder_gain_negative": -0.0011,
+    "decoder_tau": 0.30526132583618165,
+    "decoder_delay_steps": 0,
+    "raw_drive_velocity_gain": 0.0018759367435392674,
+    "decoder_model": "d_t = exp(-dt/tau)*d_{t-1} + (1-exp(-dt/tau))*spike_t; v_cmd = k_pos*max(d_delay,0) + k_neg*max(-d_delay,0)",
+    "calibration_settings": {
+      "time_step_ms": 50.0,
+      "lookahead": 4,
+      "drive_threshold": 5.0,
+      "n_settle": 10,
+      "max_steps": 400,
+      "tau_candidates": [
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5,
+        0.8,
+        1.2
+      ],
+      "delay_candidates": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "last_saved": "2026-04-28 15:14:42",
+    "last_save_phase": "calibration_complete",
+    "calibration_progress": {
+      "timestamp": "2026-04-28 15:14:42",
+      "phase": "calibration_complete",
+      "region_idx": null,
+      "iteration_idx": null,
+      "beta": 0.5,
+      "current_decoder": {
+        "decoder_gain_positive": 0.0018759367435392674,
+        "decoder_gain_negative": -0.0016259827695970339,
+        "decoder_tau": 0.30526132583618165,
+        "decoder_delay_steps": 0
+      },
+      "fit_result": null,
+      "latest_trial": null
+    }
+  },
+  "4": {
+    "joint_min": -2.0945012771678044,
+    "joint_max": 2.0944328056118007,
+    "decoder_gain_positive": 0.0011,
+    "decoder_gain_negative": -0.0011,
+    "decoder_tau": 0.4705354690551758,
+    "decoder_delay_steps": 0,
+    "raw_drive_velocity_gain": 0.002695065582820669,
+    "decoder_model": "d_t = exp(-dt/tau)*d_{t-1} + (1-exp(-dt/tau))*spike_t; v_cmd = k_pos*max(d_delay,0) + k_neg*max(-d_delay,0)",
+    "calibration_settings": {
+      "time_step_ms": 50.0,
+      "lookahead": 4,
+      "drive_threshold": 5.0,
+      "n_settle": 10,
+      "max_steps": 400,
+      "tau_candidates": [
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5,
+        0.8,
+        1.2
+      ],
+      "delay_candidates": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "last_saved": "2026-04-28 17:15:42",
+    "last_save_phase": "calibration_complete",
+    "calibration_progress": {
+      "timestamp": "2026-04-28 17:15:42",
+      "phase": "calibration_complete",
+      "region_idx": null,
+      "iteration_idx": null,
+      "beta": 0.5,
+      "current_decoder": {
+        "decoder_gain_positive": 0.002695065582820669,
+        "decoder_gain_negative": 15.144424552335966,
+        "decoder_tau": 0.4705354690551758,
+        "decoder_delay_steps": 0
+      },
+      "fit_result": null,
+      "latest_trial": null
+    }
+  },
+  "5": {
+    "joint_min": -1.4172695167359413,
+    "joint_max": 1.4171452891568528,
+    "decoder_gain_positive": 0.0011,
+    "decoder_gain_negative": -0.0011,
+    "decoder_tau": 0.5125923387284963,
+    "decoder_delay_steps": 0,
+    "raw_drive_velocity_gain": 0.004643109576346709,
+    "decoder_model": "d_t = exp(-dt/tau)*d_{t-1} + (1-exp(-dt/tau))*spike_t; v_cmd = k_pos*max(d_delay,0) + k_neg*max(-d_delay,0)",
+    "calibration_settings": {
+      "time_step_ms": 50.0,
+      "lookahead": 4,
+      "drive_threshold": 5.0,
+      "n_settle": 10,
+      "max_steps": 400,
+      "tau_candidates": [
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5,
+        0.8,
+        1.2
+      ],
+      "delay_candidates": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "last_saved": "2026-05-06 23:51:05",
+    "last_save_phase": "calibration_complete",
+    "calibration_progress": {
+      "timestamp": "2026-05-06 23:51:05",
+      "phase": "calibration_complete",
+      "region_idx": null,
+      "iteration_idx": null,
+      "beta": 0.5,
+      "current_decoder": {
+        "decoder_gain_positive": 0.004643109576346709,
+        "decoder_gain_negative": -0.0071103535896080185,
+        "decoder_tau": 0.5125923387284963,
+        "decoder_delay_steps": 0
+      },
+      "fit_result": null,
+      "latest_trial": null
+    }
+  },
+  "6": {
+    "joint_min": -2.095829059115535,
+    "joint_max": 2.095868598302337,
+    "decoder_gain_positive": 0.0011,
+    "decoder_gain_negative": -0.0011,
+    "decoder_tau": 0.828525972366333,
+    "decoder_delay_steps": 4,
+    "raw_drive_velocity_gain": 0.004324924416761789,
+    "decoder_model": "d_t = exp(-dt/tau)*d_{t-1} + (1-exp(-dt/tau))*spike_t; v_cmd = k_pos*max(d_delay,0) + k_neg*max(-d_delay,0)",
+    "calibration_settings": {
+      "time_step_ms": 50.0,
+      "lookahead": 4,
+      "drive_threshold": 5.0,
+      "n_settle": 10,
+      "max_steps": 400,
+      "tau_candidates": [
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+        0.5,
+        0.8,
+        1.2
+      ],
+      "delay_candidates": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    "last_saved": "2026-04-28 18:38:58",
+    "last_save_phase": "calibration_complete",
+    "calibration_progress": {
+      "timestamp": "2026-04-28 18:38:58",
+      "phase": "calibration_complete",
+      "region_idx": null,
+      "iteration_idx": null,
+      "beta": 0.5,
+      "current_decoder": {
+        "decoder_gain_positive": 0.004324924416761789,
+        "decoder_gain_negative": -0.0018648354541464843,
+        "decoder_tau": 0.828525972366333,
+        "decoder_delay_steps": 4
+      },
+      "fit_result": null,
+      "latest_trial": null
+    }
+  }
+}

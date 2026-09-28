@@ -1,0 +1,24 @@
+{
+  "population_size": 100,
+  "feature_names": [
+    "sin_pos_k1",
+    "sin_neg_k1",
+    "sin_pos_k2",
+    "sin_neg_k2",
+    "sin_pos_k3",
+    "sin_neg_k3",
+    "sin_pos_k4",
+    "sin_neg_k4",
+    "sin_pos_k5",
+    "sin_neg_k5"
+  ],
+  "num_positions": 32,
+  "settle_ms": 300.0,
+  "stimulus_half_width": 5,
+  "ridge_lambda": 1e-06,
+  "train_r2": 0.9541704952220604,
+  "train_rmse": 0.0592981344907866,
+  "warm_cold_weight_scale": 5000000.0,
+  "warm_bias": 0.4953617478354756,
+  "cold_bias": 0.4953617478354756
+}

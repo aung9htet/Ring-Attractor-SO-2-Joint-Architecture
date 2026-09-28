@@ -1,0 +1,1027 @@
+{
+  "schema_version": 1,
+  "baseline": "pre-refactor artifact schemas",
+  "files": {
+    "outputs/train/single_joint_ring_component/results_1/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    },
+    "outputs/train/single_joint_ring_component/results_13/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    },
+    "outputs/train/single_joint_ring_component/results_14/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    },
+    "outputs/train/single_joint_ring_component/results_15/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    },
+    "outputs/train/single_joint_ring_component/results_2/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    },
+    "outputs/train/single_joint_ring_component/results_20/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    },
+    "outputs/train/single_joint_ring_component/results_21/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    },
+    "outputs/train/single_joint_ring_component/results_3/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    },
+    "outputs/train/single_joint_ring_component/results_9/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    },
+    "src/config/calibration/velocity_calibration.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "9f04b222196a3641ea4a34d2a55879ba2cb4d53902ba57a7c19bc9cf19df3f31",
+      "key_order": [
+        "3",
+        "2",
+        "0",
+        "1",
+        "4",
+        "5",
+        "6"
+      ],
+      "top_level_value_types": {
+        "3": "dict",
+        "2": "dict",
+        "0": "dict",
+        "1": "dict",
+        "4": "dict",
+        "5": "dict",
+        "6": "dict"
+      }
+    },
+    "src/config/homeostasis/N_100_homeostasis_metadata.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "2346c6dfca56c3cb510b0367081ff5dbf2c01799cc7984544957a3c8d672a47f",
+      "key_order": [
+        "population_size",
+        "feature_names",
+        "num_positions",
+        "settle_ms",
+        "stimulus_half_width",
+        "ridge_lambda",
+        "train_r2",
+        "train_rmse",
+        "warm_cold_weight_scale",
+        "warm_bias",
+        "cold_bias"
+      ],
+      "top_level_value_types": {
+        "population_size": "int",
+        "feature_names": "list",
+        "num_positions": "int",
+        "settle_ms": "float",
+        "stimulus_half_width": "int",
+        "ridge_lambda": "float",
+        "train_r2": "float",
+        "train_rmse": "float",
+        "warm_cold_weight_scale": "float",
+        "warm_bias": "float",
+        "cold_bias": "float"
+      }
+    },
+    "src/config/homeostasis/N_100_homeostasis_weights.npy": {
+      "kind": "npy",
+      "arrays": [
+        {
+          "shape": [
+            20,
+            2
+          ],
+          "dtype": "float64",
+          "fortran_order": false
+        }
+      ]
+    },
+    "src/config/homeostasis/N_200_homeostasis_metadata.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "ef7e8346c040153cdbfbfdce1bbf1608f0c8a712d3149a7c97866900330c83f2",
+      "key_order": [
+        "population_size",
+        "feature_names",
+        "num_positions",
+        "settle_ms",
+        "stimulus_half_width",
+        "ridge_lambda",
+        "train_r2",
+        "train_rmse",
+        "warm_cold_weight_scale",
+        "warm_bias",
+        "cold_bias"
+      ],
+      "top_level_value_types": {
+        "population_size": "int",
+        "feature_names": "list",
+        "num_positions": "int",
+        "settle_ms": "float",
+        "stimulus_half_width": "int",
+        "ridge_lambda": "float",
+        "train_r2": "float",
+        "train_rmse": "float",
+        "warm_cold_weight_scale": "float",
+        "warm_bias": "float",
+        "cold_bias": "float"
+      }
+    },
+    "src/config/homeostasis/N_200_homeostasis_weights.npy": {
+      "kind": "npy",
+      "arrays": [
+        {
+          "shape": [
+            80,
+            2
+          ],
+          "dtype": "float64",
+          "fortran_order": false
+        }
+      ]
+    },
+    "src/config/model_params/gain_modulation_params.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "aa539d7d90661ef3b4735c9704e6b5ee29c15e2bd368348f6c7b9ecefdd835eb",
+      "key_order": [
+        "left_homeostasis_gain_weight",
+        "right_homeostasis_gain_weight",
+        "ring_to_gain_weight",
+        "gain_to_ring_weight",
+        "cross_inhibition_weight",
+        "previous_params",
+        "previous_params_init"
+      ],
+      "top_level_value_types": {
+        "left_homeostasis_gain_weight": "float",
+        "right_homeostasis_gain_weight": "float",
+        "ring_to_gain_weight": "float",
+        "gain_to_ring_weight": "float",
+        "cross_inhibition_weight": "float",
+        "previous_params": "dict",
+        "previous_params_init": "dict"
+      }
+    },
+    "src/config/model_params/homeostasis_params.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "7574936ebe94ff6b362f44f7be6b9110275782881372b1a63d797a4c5cdc5891",
+      "key_order": [
+        "config_dir",
+        "tie_epsilon",
+        "warm_cold_weight_scale",
+        "warm_cold_bias_scale",
+        "warm_exc_weight",
+        "warm_inh_weight",
+        "cold_exc_weight",
+        "cold_inh_weight",
+        "decision_lateral_weight",
+        "label",
+        "left_label",
+        "right_label"
+      ],
+      "top_level_value_types": {
+        "config_dir": "str",
+        "tie_epsilon": "float",
+        "warm_cold_weight_scale": "float",
+        "warm_cold_bias_scale": "float",
+        "warm_exc_weight": "float",
+        "warm_inh_weight": "float",
+        "cold_exc_weight": "float",
+        "cold_inh_weight": "float",
+        "decision_lateral_weight": "float",
+        "label": "dict",
+        "left_label": "int",
+        "right_label": "int"
+      }
+    },
+    "src/config/model_params/multi_ring_params.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "e6363c153610ec79b30b5578affca945c6574fc941c7e1d4f1c22d9237a4414f",
+      "key_order": [
+        "population_size",
+        "num_positions",
+        "num_fourier_k",
+        "config_dir",
+        "samples_per_position",
+        "sim_settle_ms",
+        "stimulus_half_width",
+        "ridge_lambda",
+        "output_dir",
+        "harmonic_index",
+        "readout_weight_scale",
+        "output_dc_baseline",
+        "output_ring_size",
+        "output_rate_baseline",
+        "output_rate_amplitude",
+        "num_joints",
+        "joint_axes",
+        "max_train_samples",
+        "max_test_samples",
+        "n_vis_points",
+        "product_q1_weight",
+        "product_q2_weight",
+        "product_dc_baseline",
+        "product_output_weight_scale",
+        "product_population_size",
+        "signed_product_dc_baseline",
+        "signed_product_input_weight",
+        "signed_product_n_copies",
+        "run_software_phi",
+        "run_wpp_baseline",
+        "scalar_ramp_weight_scale",
+        "scalar_dc_baseline"
+      ],
+      "top_level_value_types": {
+        "population_size": "int",
+        "num_positions": "int",
+        "num_fourier_k": "int",
+        "config_dir": "str",
+        "samples_per_position": "int",
+        "sim_settle_ms": "float",
+        "stimulus_half_width": "int",
+        "ridge_lambda": "float",
+        "output_dir": "str",
+        "harmonic_index": "int",
+        "readout_weight_scale": "float",
+        "output_dc_baseline": "float",
+        "output_ring_size": "int",
+        "output_rate_baseline": "float",
+        "output_rate_amplitude": "float",
+        "num_joints": "int",
+        "joint_axes": "list",
+        "max_train_samples": "int",
+        "max_test_samples": "int",
+        "n_vis_points": "int",
+        "product_q1_weight": "float",
+        "product_q2_weight": "float",
+        "product_dc_baseline": "float",
+        "product_output_weight_scale": "float",
+        "product_population_size": "int",
+        "signed_product_dc_baseline": "float",
+        "signed_product_input_weight": "float",
+        "signed_product_n_copies": "int",
+        "run_software_phi": "bool",
+        "run_wpp_baseline": "bool",
+        "scalar_ramp_weight_scale": "float",
+        "scalar_dc_baseline": "float"
+      }
+    },
+    "src/config/model_params/neuron_params.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "a5bcdd2d755b09c3af8346dedc944138b84b5f45afcf7b06f7a36cb9074f8ed1",
+      "key_order": [
+        "ring",
+        "homeostasis",
+        "gain"
+      ],
+      "top_level_value_types": {
+        "ring": "dict",
+        "homeostasis": "dict",
+        "gain": "dict"
+      }
+    },
+    "src/config/model_params/ring_params.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "9ac3fecfce6ce4a55ea1e539e9143280d47dd881e12364b0b6a7b8fa60886ed8",
+      "key_order": [
+        "population_size",
+        "num_positions",
+        "num_fourier_k",
+        "config_dir",
+        "samples_per_position",
+        "sim_settle_ms",
+        "stimulus_half_width",
+        "ridge_lambda",
+        "output_dir",
+        "harmonic_index",
+        "readout_weight_scale",
+        "output_dc_baseline"
+      ],
+      "top_level_value_types": {
+        "population_size": "int",
+        "num_positions": "int",
+        "num_fourier_k": "int",
+        "config_dir": "str",
+        "samples_per_position": "int",
+        "sim_settle_ms": "float",
+        "stimulus_half_width": "int",
+        "ridge_lambda": "float",
+        "output_dir": "str",
+        "harmonic_index": "int",
+        "readout_weight_scale": "float",
+        "output_dc_baseline": "float"
+      }
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_compositional_metadata.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "3a4b9c676bceb43c591a0ec5d98bbbd17de67ddd3a19bd1cc7c8ffbf7e8bf6bd",
+      "key_order": [
+        "eval_split",
+        "n_eval_samples",
+        "model_config",
+        "centroid_decoder",
+        "sawtooth_decoder"
+      ],
+      "top_level_value_types": {
+        "eval_split": "str",
+        "n_eval_samples": "int",
+        "model_config": "dict",
+        "centroid_decoder": "dict",
+        "sawtooth_decoder": "dict"
+      }
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_compositional_weights.npz": {
+      "kind": "npz",
+      "key_order": [
+        "W_prod_lift",
+        "W_prod_pitch",
+        "W_prod_yaw",
+        "joint_axes",
+        "output_ring_size",
+        "prod_feature_dim",
+        "product_population_size",
+        "population_size",
+        "num_joints"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            1024,
+            100
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "W_prod_lift"
+        },
+        {
+          "shape": [
+            1024,
+            100
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "W_prod_pitch"
+        },
+        {
+          "shape": [
+            1024,
+            100
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "W_prod_yaw"
+        },
+        {
+          "shape": [
+            2
+          ],
+          "dtype": "<U1",
+          "fortran_order": false,
+          "key": "joint_axes"
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "output_ring_size",
+          "scalar_value": 100
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "prod_feature_dim",
+          "scalar_value": 1024
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "product_population_size",
+          "scalar_value": 32
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "population_size",
+          "scalar_value": 100
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "num_joints",
+          "scalar_value": 2
+        }
+      ]
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_metadata.json": {
+      "kind": "json",
+      "strict_json": false,
+      "top_level_type": "dict",
+      "structure_sha256": "90cbafeb3d712693fb7c8061a7ac0339328402ec510f5837133e97dd727b206f",
+      "key_order": [
+        "note",
+        "decoder",
+        "population_size",
+        "num_joints",
+        "joint_axes",
+        "output_ring_size",
+        "feature_grid_size",
+        "sim_settle_ms",
+        "baseline_burnin_ms",
+        "ridge_lambda",
+        "signed_product_dc_baseline",
+        "signed_product_input_weight",
+        "signed_product_output_weight_scale",
+        "output_weight_matrix_is_target_by_source",
+        "calibrated_signed_product_params",
+        "signed_product_feature_stats",
+        "signed_product_output_stats",
+        "q_joint_contribution_diagnostic",
+        "sawtooth_mae_per_slice",
+        "active_signed_product_terms",
+        "n_vis_points"
+      ],
+      "top_level_value_types": {
+        "note": "str",
+        "decoder": "str",
+        "population_size": "int",
+        "num_joints": "int",
+        "joint_axes": "list",
+        "output_ring_size": "int",
+        "feature_grid_size": "int",
+        "sim_settle_ms": "float",
+        "baseline_burnin_ms": "float",
+        "ridge_lambda": "float",
+        "signed_product_dc_baseline": "float",
+        "signed_product_input_weight": "float",
+        "signed_product_output_weight_scale": "float",
+        "output_weight_matrix_is_target_by_source": "bool",
+        "calibrated_signed_product_params": "dict",
+        "signed_product_feature_stats": "dict",
+        "signed_product_output_stats": "dict",
+        "q_joint_contribution_diagnostic": "list",
+        "sawtooth_mae_per_slice": "dict",
+        "active_signed_product_terms": "list",
+        "n_vis_points": "int"
+      }
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_scalar_metadata.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "ac7e1e2d834230f9e2d3bfd26eb560ae08de448164b562eabd6209a0b97d3dc6",
+      "key_order": [
+        "decoder",
+        "note",
+        "scalar_ramp_weight_scale",
+        "scalar_dc_baseline",
+        "output_ring_size",
+        "population_size",
+        "num_joints",
+        "joint_axes",
+        "source_sawtooth_weights_path",
+        "sawtooth_mae_per_slice",
+        "scalar_readout_metrics"
+      ],
+      "top_level_value_types": {
+        "decoder": "str",
+        "note": "str",
+        "scalar_ramp_weight_scale": "float",
+        "scalar_dc_baseline": "float",
+        "output_ring_size": "int",
+        "population_size": "int",
+        "num_joints": "int",
+        "joint_axes": "list",
+        "source_sawtooth_weights_path": "str",
+        "sawtooth_mae_per_slice": "dict",
+        "scalar_readout_metrics": "dict"
+      }
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_scalar_weights.npz": {
+      "kind": "npz",
+      "key_order": [
+        "scalar_ramp_weights",
+        "scalar_ramp_weight_scale",
+        "scalar_dc_baseline",
+        "output_ring_size",
+        "population_size",
+        "num_joints",
+        "joint_axes",
+        "source_sawtooth_weights_path"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            100
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "scalar_ramp_weights"
+        },
+        {
+          "shape": [],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "scalar_ramp_weight_scale",
+          "scalar_value": 100.0
+        },
+        {
+          "shape": [],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "scalar_dc_baseline",
+          "scalar_value": 200.0
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "output_ring_size",
+          "scalar_value": 100
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "population_size",
+          "scalar_value": 100
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "num_joints",
+          "scalar_value": 2
+        },
+        {
+          "shape": [
+            2
+          ],
+          "dtype": "<U1",
+          "fortran_order": false,
+          "key": "joint_axes"
+        },
+        {
+          "shape": [],
+          "dtype": "<U72",
+          "fortran_order": false,
+          "key": "source_sawtooth_weights_path",
+          "scalar_value": "./config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_weights.npz"
+        }
+      ]
+    },
+    "src/config/ring_decoding_weights/N_100_J_2_multi_ring_sawtooth_weights.npz": {
+      "kind": "npz",
+      "key_order": [
+        "W_signed_lift",
+        "W_signed_pitch",
+        "W_signed_yaw",
+        "signed_product_feature_order",
+        "signed_product_population_size",
+        "population_size",
+        "num_joints",
+        "joint_axes",
+        "output_ring_size",
+        "signed_product_output_weight_scale",
+        "output_weight_matrix_is_target_by_source"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            16384,
+            100
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "W_signed_lift"
+        },
+        {
+          "shape": [
+            16384,
+            100
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "W_signed_pitch"
+        },
+        {
+          "shape": [
+            16384,
+            100
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "W_signed_yaw"
+        },
+        {
+          "shape": [
+            16
+          ],
+          "dtype": "<U12",
+          "fortran_order": false,
+          "key": "signed_product_feature_order"
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "signed_product_population_size",
+          "scalar_value": 32
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "population_size",
+          "scalar_value": 100
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "num_joints",
+          "scalar_value": 2
+        },
+        {
+          "shape": [
+            2
+          ],
+          "dtype": "<U1",
+          "fortran_order": false,
+          "key": "joint_axes"
+        },
+        {
+          "shape": [],
+          "dtype": "int64",
+          "fortran_order": false,
+          "key": "output_ring_size",
+          "scalar_value": 100
+        },
+        {
+          "shape": [],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "signed_product_output_weight_scale",
+          "scalar_value": 1000.0
+        },
+        {
+          "shape": [],
+          "dtype": "bool",
+          "fortran_order": false,
+          "key": "output_weight_matrix_is_target_by_source",
+          "scalar_value": true
+        }
+      ]
+    },
+    "src/config/ring_decoding_weights/N_100_fourier_metadata.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "a62da69a57e748c977e8ff7d54c7148dc9eea25d15625f6806e616dd5ba54d2e",
+      "key_order": [
+        "population_size",
+        "num_fourier_k",
+        "readout_weight_scale",
+        "output_dc_baseline",
+        "num_positions",
+        "sim_settle_ms",
+        "stimulus_half_width",
+        "samples_per_position"
+      ],
+      "top_level_value_types": {
+        "population_size": "int",
+        "num_fourier_k": "int",
+        "readout_weight_scale": "float",
+        "output_dc_baseline": "float",
+        "num_positions": "int",
+        "sim_settle_ms": "float",
+        "stimulus_half_width": "int",
+        "samples_per_position": "int"
+      }
+    },
+    "src/config/ring_decoding_weights/N_100_fourier_weights.npy": {
+      "kind": "npy",
+      "arrays": [
+        {
+          "shape": [
+            100,
+            10
+          ],
+          "dtype": "float64",
+          "fortran_order": false
+        }
+      ]
+    },
+    "src/config/ring_decoding_weights/N_200_fourier_metadata.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "a62da69a57e748c977e8ff7d54c7148dc9eea25d15625f6806e616dd5ba54d2e",
+      "key_order": [
+        "population_size",
+        "num_fourier_k",
+        "readout_weight_scale",
+        "output_dc_baseline",
+        "num_positions",
+        "sim_settle_ms",
+        "stimulus_half_width",
+        "samples_per_position"
+      ],
+      "top_level_value_types": {
+        "population_size": "int",
+        "num_fourier_k": "int",
+        "readout_weight_scale": "float",
+        "output_dc_baseline": "float",
+        "num_positions": "int",
+        "sim_settle_ms": "float",
+        "stimulus_half_width": "int",
+        "samples_per_position": "int"
+      }
+    },
+    "src/config/ring_decoding_weights/N_200_fourier_weights.npy": {
+      "kind": "npy",
+      "arrays": [
+        {
+          "shape": [
+            200,
+            40
+          ],
+          "dtype": "float64",
+          "fortran_order": false
+        }
+      ]
+    },
+    "src/config/two_joints_ring_decoding_weights/N_100_two_joint_fourier_metadata.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "11b343c5d0f005d78cac3d655321023eb7fdfc0e8a8088d10810ca7298c2e3f4",
+      "key_order": [
+        "population_size",
+        "num_fourier_k",
+        "columns_per_harmonic",
+        "description"
+      ],
+      "top_level_value_types": {
+        "population_size": "int",
+        "num_fourier_k": "int",
+        "columns_per_harmonic": "list",
+        "description": "str"
+      }
+    },
+    "src/config/two_joints_ring_decoding_weights/N_100_two_joint_fourier_weights.npy": {
+      "kind": "npy",
+      "arrays": [
+        {
+          "shape": [
+            100,
+            20
+          ],
+          "dtype": "float64",
+          "fortran_order": false
+        }
+      ]
+    },
+    "src/outputs/ring_decoding/fourier_results.npz": {
+      "kind": "npz",
+      "key_order": [
+        "phi_true",
+        "phi_est"
+      ],
+      "arrays": [
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_true"
+        },
+        {
+          "shape": [
+            30
+          ],
+          "dtype": "float64",
+          "fortran_order": false,
+          "key": "phi_est"
+        }
+      ]
+    }
+  }
+}

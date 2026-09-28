@@ -1,0 +1,11 @@
+{
+  "population_size": 100,
+  "num_fourier_k": 5,
+  "columns_per_harmonic": [
+    "sin_pos",
+    "sin_neg",
+    "cos_pos",
+    "cos_neg"
+  ],
+  "description": "Per-joint Fourier readout weights. Use the same W separately for each joint ring. Do not mix two joint rings into the same readout neurons."
+}

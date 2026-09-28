@@ -1,0 +1,23 @@
+{
+  "test_type": "neuron_loss",
+  "variant": "random_connection_removal",
+  "param_label": "neuron_loss_percentage",
+  "param_values": [
+    1.0,
+    2.0,
+    3.0,
+    4.0,
+    5.0,
+    10.0,
+    20.0
+  ],
+  "n_runs_per_condition": 10,
+  "sim_t_ms": 100000.0,
+  "avg_after_t_ms": 30000.0,
+  "sample_ms": 5000.0,
+  "r1_inject": 20,
+  "goal_idx": 70,
+  "stimulus_half_width": 5,
+  "schedule_type": "persistent",
+  "mechanism": "Randomly choose param_value percent of ring neurons, then remove every connection touching them (ring<->ring recurrence and ring<->gain feedback, both directions) by zeroing the synaptic weight."
+}

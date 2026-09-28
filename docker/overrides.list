@@ -1,0 +1,4 @@
+pal_gazebo_worlds/worlds/tiago_ring_controller.world
+tiago_robot/tiago_bringup/config/motions/tiago_motions.yaml.em
+tiago_robot/tiago_bringup/config/motions/pmb2/tiago_motions_pal-hey5_schunk-ft.yaml
+tiago_simulation/tiago_gazebo/scripts/tuck_arm.py

@@ -1,0 +1,322 @@
+[
+  {
+    "run_idx": 0,
+    "seed": 696551528,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 696551528,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        6,
+        37,
+        61,
+        92,
+        97,
+        157
+      ],
+      "disconnected_connection_count": 2424,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  },
+  {
+    "run_idx": 1,
+    "seed": 1463095072,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 1463095072,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        5,
+        10,
+        80,
+        84,
+        93,
+        120
+      ],
+      "disconnected_connection_count": 2423,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  },
+  {
+    "run_idx": 2,
+    "seed": 1350538072,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 1350538072,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        35,
+        76,
+        98,
+        101,
+        124,
+        147
+      ],
+      "disconnected_connection_count": 2424,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  },
+  {
+    "run_idx": 3,
+    "seed": 1008680151,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 1008680151,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        88,
+        125,
+        129,
+        139,
+        179,
+        186
+      ],
+      "disconnected_connection_count": 2424,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  },
+  {
+    "run_idx": 4,
+    "seed": 1537919971,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 1537919971,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        38,
+        71,
+        92,
+        122,
+        182,
+        187
+      ],
+      "disconnected_connection_count": 2424,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  },
+  {
+    "run_idx": 5,
+    "seed": 1254321697,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 1254321697,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        2,
+        27,
+        81,
+        98,
+        115,
+        173
+      ],
+      "disconnected_connection_count": 2422,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  },
+  {
+    "run_idx": 6,
+    "seed": 1433052480,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 1433052480,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        1,
+        74,
+        80,
+        91,
+        93,
+        104
+      ],
+      "disconnected_connection_count": 2422,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  },
+  {
+    "run_idx": 7,
+    "seed": 1370094125,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 1370094125,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        24,
+        38,
+        50,
+        113,
+        118,
+        165
+      ],
+      "disconnected_connection_count": 2424,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  },
+  {
+    "run_idx": 8,
+    "seed": 92322953,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 92322953,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        10,
+        12,
+        16,
+        23,
+        114,
+        163
+      ],
+      "disconnected_connection_count": 2424,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  },
+  {
+    "run_idx": 9,
+    "seed": 1002076553,
+    "perturbation": {
+      "enabled": true,
+      "test_type": "neuron_loss",
+      "rng_seed": 1002076553,
+      "schedule_type": "persistent",
+      "neuron_loss_percentage": 3.0,
+      "neuron_loss_count": 6,
+      "lost_indices": [
+        2,
+        61,
+        124,
+        139,
+        142,
+        183
+      ],
+      "disconnected_connection_count": 2422,
+      "noise_rate_hz": 0.0,
+      "noise_weight": 0.0,
+      "noise_connection_fraction": 0.0,
+      "noise_region_centers": [],
+      "noise_region_half_width": 0,
+      "noise_target_indices": [],
+      "noise_coverage_fraction": 0.0,
+      "noise_window_count": 0,
+      "noise_active_duration_ms": 0.0,
+      "noise_integrated_drive_per_neuron": 0.0,
+      "noise_integrated_drive_total": 0.0
+    }
+  }
+]

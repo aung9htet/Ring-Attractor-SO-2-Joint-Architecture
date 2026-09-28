@@ -1,0 +1,14 @@
+{
+  "config_dir": "./config/homeostasis",
+  "tie_epsilon": 1e-9,
+  "warm_cold_weight_scale": 5000000.0,
+  "warm_cold_bias_scale": 0.0,
+  "warm_exc_weight": 20000.0,
+  "warm_inh_weight": -20000.0,
+  "cold_exc_weight": 20000.0,
+  "cold_inh_weight": -20000.0,
+  "decision_lateral_weight": -20000.0,
+  "label": {"left": 0, "right": 1},
+  "left_label": 0,
+  "right_label": 1
+}

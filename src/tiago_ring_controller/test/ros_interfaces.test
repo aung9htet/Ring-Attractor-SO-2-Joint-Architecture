@@ -1,0 +1,9 @@
+<launch>
+  <test
+    test-name="tiago_ring_controller_ros_contracts"
+    pkg="tiago_ring_controller"
+    type="ros_interfaces_runner.py"
+    time-limit="60.0">
+    <env name="PYTHONDONTWRITEBYTECODE" value="1" />
+  </test>
+</launch>

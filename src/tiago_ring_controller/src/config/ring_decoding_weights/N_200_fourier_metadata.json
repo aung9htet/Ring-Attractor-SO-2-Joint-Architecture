@@ -1,0 +1,10 @@
+{
+  "population_size": 200,
+  "num_fourier_k": 20,
+  "readout_weight_scale": 200.0,
+  "output_dc_baseline": 200.0,
+  "num_positions": 30,
+  "sim_settle_ms": 300.0,
+  "stimulus_half_width": 5,
+  "samples_per_position": 1
+}

@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "baseline": "pre-refactor checked-in Python bytecode cache",
+  "hash_algorithm": "sha256",
+  "files": {
+    "src/__pycache__/analysis_single_joint.cpython-38.pyc": {
+      "bytes": 41020,
+      "sha256": "7144184ae4d7eb828e2fdeff194b753cb355afeaaa8f4f78012e99c368c0e538",
+      "source_path": "src/analysis_single_joint.py",
+      "source_present": true
+    },
+    "src/__pycache__/calibrate_single_joint.cpython-38.pyc": {
+      "bytes": 31896,
+      "sha256": "f73b4410fc786396960400a67ba8a3c4617765b26c0ea09e582c5099049f6e64",
+      "source_path": "src/calibrate_single_joint.py",
+      "source_present": true
+    },
+    "src/__pycache__/calibrate_velocity_model.cpython-38.pyc": {
+      "bytes": 9270,
+      "sha256": "3e70e72b35fe18ebcd5f13db4dc621a043fede126725950087275052c3ca5c4c",
+      "source_path": "src/calibrate_velocity_model.py",
+      "source_present": false
+    },
+    "src/__pycache__/compositional_fourier_decoder.cpython-38.pyc": {
+      "bytes": 49756,
+      "sha256": "59c204d155082f8da86d499d0f998a895c4bd1879614132ffed82979d0dee0b9",
+      "source_path": "src/compositional_fourier_decoder.py",
+      "source_present": true
+    },
+    "src/__pycache__/experiment_camera.cpython-38.pyc": {
+      "bytes": 4562,
+      "sha256": "685715db9525dad45f74c13d64480745b8d31e6619e6dc61726f37ea37f862fa",
+      "source_path": "src/experiment_camera.py",
+      "source_present": true
+    },
+    "src/__pycache__/gain_modulation.cpython-38.pyc": {
+      "bytes": 3383,
+      "sha256": "608fea8d5ca6202643068f7a63f59d290e78146d078080d4925c4d3d658d55f0",
+      "source_path": "src/gain_modulation.py",
+      "source_present": true
+    },
+    "src/__pycache__/gain_modulation_analysis.cpython-38.pyc": {
+      "bytes": 14580,
+      "sha256": "25064470fc45acbd27eb86980c1431feec3f6d63044a69635998d32c93069b7a",
+      "source_path": "src/gain_modulation_analysis.py",
+      "source_present": true
+    },
+    "src/__pycache__/homeostasis.cpython-38.pyc": {
+      "bytes": 4189,
+      "sha256": "82e08e86b7bb6eb7f66807ec457221cca83b7056082846a8c0cdd620d8cdb88b",
+      "source_path": "src/homeostasis.py",
+      "source_present": true
+    },
+    "src/__pycache__/multi_ring_component.cpython-38.pyc": {
+      "bytes": 22888,
+      "sha256": "c49a5a78ced9db52dbdcd7b5a240e4bced8f756f800e880ab6783d34077b01f6",
+      "source_path": "src/multi_ring_component.py",
+      "source_present": true
+    },
+    "src/__pycache__/readout_mean_std_analysis.cpython-38.pyc": {
+      "bytes": 7262,
+      "sha256": "a52c05737f580a8218543edec865c87eff15f4d0ece56ec927fdad51e21025ab",
+      "source_path": "src/readout_mean_std_analysis.py",
+      "source_present": true
+    },
+    "src/__pycache__/ring_attractor.cpython-38.pyc": {
+      "bytes": 5697,
+      "sha256": "e81fa37f219e104da78b05140489f800e85050a542029d2f8c15e23e6f1df456",
+      "source_path": "src/ring_attractor.py",
+      "source_present": true
+    },
+    "src/__pycache__/ring_component.cpython-38.pyc": {
+      "bytes": 5025,
+      "sha256": "3a8c08fbbe238053303559f1f677906081e2d2bb2540734c47d489611bf4439d",
+      "source_path": "src/ring_component.py",
+      "source_present": true
+    },
+    "src/__pycache__/ring_model.cpython-38.pyc": {
+      "bytes": 17966,
+      "sha256": "88438788a0cbd2d793a927980d1143de220fd34508ee59a6a29a049e6bd07c00",
+      "source_path": "src/ring_model.py",
+      "source_present": false
+    },
+    "src/__pycache__/single_joint_data_collector.cpython-38.pyc": {
+      "bytes": 19035,
+      "sha256": "0e83e65b431b8bf3460fa7178bb7b91200cb15b39494017c7bc3135998e2cff1",
+      "source_path": "src/single_joint_data_collector.py",
+      "source_present": true
+    },
+    "src/__pycache__/single_joint_data_visualizer.cpython-38.pyc": {
+      "bytes": 15986,
+      "sha256": "b7a6d6fbc02dadd81aa2fb67480eefca3e0620d4b68a90ee821409368473664e",
+      "source_path": "src/single_joint_data_visualizer.py",
+      "source_present": true
+    },
+    "src/__pycache__/single_ring.cpython-38.pyc": {
+      "bytes": 23447,
+      "sha256": "7cd6272fd74f8fec4440ab3ad85aa609cd9595d5d1660e66d1eb91c6a6aedd3f",
+      "source_path": "src/single_ring.py",
+      "source_present": true
+    },
+    "src/__pycache__/tiago_controller.cpython-38.pyc": {
+      "bytes": 11416,
+      "sha256": "48b8d461430ea145f3bb5d98552db80ceef8e067f433013062b269d44905c978",
+      "source_path": "src/tiago_controller.py",
+      "source_present": true
+    },
+    "src/__pycache__/train_homeostasis.cpython-38.pyc": {
+      "bytes": 15373,
+      "sha256": "a49320160d7e70834cd38e9d5d490539833734b7e308f66e37e0a85c562e9248",
+      "source_path": "src/train_homeostasis.py",
+      "source_present": true
+    },
+    "src/__pycache__/train_ring_model.cpython-38.pyc": {
+      "bytes": 13108,
+      "sha256": "2db3fdf9eec3219d643e101877b9ea197c361cf623d99f49c0c101f37d0cbeed",
+      "source_path": "src/train_ring_model.py",
+      "source_present": true
+    },
+    "src/builders/__pycache__/ring_attractor.cpython-38.pyc": {
+      "bytes": 7488,
+      "sha256": "9e524c7afd16aad0c024c5be8d87e51fdaae23bf0f5bbc95867e5e7f809b18e4",
+      "source_path": "src/builders/ring_attractor.py",
+      "source_present": true
+    },
+    "src/builders/single_joint/__pycache__/ring_component.cpython-38.pyc": {
+      "bytes": 3834,
+      "sha256": "b4d70500ddc8f59ec7f24d8ce943ed2ffdba53d9bcdeb9a6a34bb5999a721784",
+      "source_path": "src/builders/single_joint/ring_component.py",
+      "source_present": true
+    },
+    "src/helpers/__pycache__/__init__.cpython-38.pyc": {
+      "bytes": 232,
+      "sha256": "ccdde02fa4c48a581a5ca5d64d8e0375935ac656344be13c36538860042c369f",
+      "source_path": "src/helpers/__init__.py",
+      "source_present": true
+    },
+    "src/helpers/__pycache__/file_manipulation.cpython-38.pyc": {
+      "bytes": 1688,
+      "sha256": "398508d8a388654613242c0083880f60f445371a8f65cc63809fea3b560833e8",
+      "source_path": "src/helpers/file_manipulation.py",
+      "source_present": true
+    },
+    "src/trainer/__pycache__/train_ring_model.cpython-38.pyc": {
+      "bytes": 8042,
+      "sha256": "aa2b9b1f0109f25194f572e3cd9cd46578ece6bd25f8b624a347a12d6b08213c",
+      "source_path": "src/trainer/train_ring_model.py",
+      "source_present": true
+    }
+  }
+}

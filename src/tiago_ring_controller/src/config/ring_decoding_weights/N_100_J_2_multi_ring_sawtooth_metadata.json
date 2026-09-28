@@ -1,0 +1,402 @@
+{
+  "note": "All inference and plotting use NEST spike_recorder count deltas.",
+  "decoder": "sawtooth",
+  "population_size": 100,
+  "num_joints": 2,
+  "joint_axes": [
+    "x",
+    "y"
+  ],
+  "output_ring_size": 100,
+  "feature_grid_size": 32,
+  "sim_settle_ms": 300.0,
+  "baseline_burnin_ms": 300.0,
+  "ridge_lambda": 1e-06,
+  "signed_product_dc_baseline": 120.0,
+  "signed_product_input_weight": 700.0,
+  "signed_product_output_weight_scale": 1000.0,
+  "output_weight_matrix_is_target_by_source": true,
+  "calibrated_signed_product_params": {
+    "signed_product_dc_baseline": 120.0,
+    "signed_product_input_weight": 700.0,
+    "active_signed_product_terms": [
+      "cos1",
+      "sin1",
+      "cos2",
+      "sin2",
+      "cos1cos2",
+      "cos1sin2",
+      "sin1cos2",
+      "sin1sin2"
+    ],
+    "active_terms_count": 8,
+    "activity_criterion": "term variation across q-test configurations",
+    "signed_product_output_weight_scale": 1000.0,
+    "output_scale_calibration_table": [
+      {
+        "scale": 1,
+        "sig_cov": 0.0,
+        "contrast_mean": 0.0,
+        "contrast_min": 0.0,
+        "mae_lift": NaN,
+        "mae_pitch": NaN,
+        "mae_yaw": NaN,
+        "mae_mean": NaN
+      },
+      {
+        "scale": 5,
+        "sig_cov": 0.0,
+        "contrast_mean": 0.0,
+        "contrast_min": 0.0,
+        "mae_lift": NaN,
+        "mae_pitch": NaN,
+        "mae_yaw": NaN,
+        "mae_mean": NaN
+      },
+      {
+        "scale": 10,
+        "sig_cov": 0.0,
+        "contrast_mean": 0.0,
+        "contrast_min": 0.0,
+        "mae_lift": NaN,
+        "mae_pitch": NaN,
+        "mae_yaw": NaN,
+        "mae_mean": NaN
+      },
+      {
+        "scale": 25,
+        "sig_cov": 0.0,
+        "contrast_mean": 0.0,
+        "contrast_min": 0.0,
+        "mae_lift": NaN,
+        "mae_pitch": NaN,
+        "mae_yaw": NaN,
+        "mae_mean": NaN
+      },
+      {
+        "scale": 50,
+        "sig_cov": 33.333333333333336,
+        "contrast_mean": 0.3333333333333333,
+        "contrast_min": 0.0,
+        "mae_lift": 10.365051177078007,
+        "mae_pitch": 12.677512185929933,
+        "mae_yaw": 21.165051177077974,
+        "mae_mean": 14.735871513361971
+      },
+      {
+        "scale": 100,
+        "sig_cov": 100.0,
+        "contrast_mean": 2.888888888888889,
+        "contrast_min": 1.0,
+        "mae_lift": 3.77205738455875,
+        "mae_pitch": 4.515074800230389,
+        "mae_yaw": 6.77157993846175,
+        "mae_mean": 5.0195707077502965
+      },
+      {
+        "scale": 200,
+        "sig_cov": 100.0,
+        "contrast_mean": 7.777777777777778,
+        "contrast_min": 5.0,
+        "mae_lift": 3.388839469387749,
+        "mae_pitch": 2.3510043392864337,
+        "mae_yaw": 4.531833136437067,
+        "mae_mean": 3.423892315037083
+      },
+      {
+        "scale": 500,
+        "sig_cov": 100.0,
+        "contrast_mean": 18.666666666666668,
+        "contrast_min": 14.0,
+        "mae_lift": 1.6586784353826485,
+        "mae_pitch": 1.3779575995927995,
+        "mae_yaw": 1.7045527600289412,
+        "mae_mean": 1.580396265001463
+      },
+      {
+        "scale": 1000,
+        "sig_cov": 100.0,
+        "contrast_mean": 31.555555555555557,
+        "contrast_min": 23.0,
+        "mae_lift": 0.9159152452556254,
+        "mae_pitch": 0.635900423333964,
+        "mae_yaw": 1.0781469527953176,
+        "mae_mean": 0.8766542071283023
+      }
+    ]
+  },
+  "signed_product_feature_stats": {
+    "mean_abs": 0.057041168212890625,
+    "max_abs": 11.0,
+    "active": 95572,
+    "silent_pct": 97.72138595581055,
+    "feature_dim": 16384
+  },
+  "signed_product_output_stats": {
+    "mean": 10.523333333333333,
+    "max": 36.0,
+    "mean_abs": 10.523333333333333,
+    "max_abs": 36.0,
+    "contrast": 36.0,
+    "silent_pct": 35.854166666666664,
+    "all_silent": false
+  },
+  "q_joint_contribution_diagnostic": [
+    {
+      "q": [
+        0.0,
+        0.0
+      ],
+      "q1_only": {
+        "cos1": 224.0,
+        "sin1": 0.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 0.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "q2_only": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 224.0,
+        "sin2": 0.0,
+        "cos1cos2": 0.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "both": {
+        "cos1": 224.0,
+        "sin1": 0.0,
+        "cos2": 224.0,
+        "sin2": 0.0,
+        "cos1cos2": 105.0,
+        "cos1sin2": -4.0,
+        "sin1cos2": -7.0,
+        "sin1sin2": 0.0
+      },
+      "q1_only_activity": {
+        "cos1": 224.0,
+        "sin1": 0.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 210.0,
+        "cos1sin2": 210.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "q2_only_activity": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 224.0,
+        "sin2": 0.0,
+        "cos1cos2": 210.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 210.0,
+        "sin1sin2": 0.0
+      },
+      "both_activity": {
+        "cos1": 224.0,
+        "sin1": 0.0,
+        "cos2": 224.0,
+        "sin2": 0.0,
+        "cos1cos2": 525.0,
+        "cos1sin2": 246.0,
+        "sin1cos2": 239.0,
+        "sin1sin2": 0.0
+      },
+      "expected_product_terms": {
+        "cos1cos2": 1.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "warnings": []
+    },
+    {
+      "q": [
+        0.7853981633974483,
+        -0.7853981633974483
+      ],
+      "q1_only": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 0.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "q2_only": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 0.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "both": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 94.0,
+        "cos1sin2": -90.0,
+        "sin1cos2": 88.0,
+        "sin1sin2": -83.0
+      },
+      "q1_only_activity": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 0.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "q2_only_activity": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 0.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "both_activity": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 94.0,
+        "cos1sin2": 90.0,
+        "sin1cos2": 88.0,
+        "sin1sin2": 83.0
+      },
+      "expected_product_terms": {
+        "cos1cos2": 0.5000000000000001,
+        "cos1sin2": -0.5,
+        "sin1cos2": 0.5,
+        "sin1sin2": -0.4999999999999999
+      },
+      "warnings": []
+    },
+    {
+      "q": [
+        -1.0471975511965976,
+        0.5235987755982988
+      ],
+      "q1_only": {
+        "cos1": 0.0,
+        "sin1": -128.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 0.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "q2_only": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 128.0,
+        "sin2": 0.0,
+        "cos1cos2": 0.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 0.0,
+        "sin1sin2": 0.0
+      },
+      "both": {
+        "cos1": 0.0,
+        "sin1": -128.0,
+        "cos2": 192.0,
+        "sin2": 0.0,
+        "cos1cos2": 86.0,
+        "cos1sin2": 31.0,
+        "sin1cos2": -107.0,
+        "sin1sin2": -73.0
+      },
+      "q1_only_activity": {
+        "cos1": 0.0,
+        "sin1": 128.0,
+        "cos2": 0.0,
+        "sin2": 0.0,
+        "cos1cos2": 0.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 120.0,
+        "sin1sin2": 120.0
+      },
+      "q2_only_activity": {
+        "cos1": 0.0,
+        "sin1": 0.0,
+        "cos2": 128.0,
+        "sin2": 0.0,
+        "cos1cos2": 120.0,
+        "cos1sin2": 0.0,
+        "sin1cos2": 120.0,
+        "sin1sin2": 0.0
+      },
+      "both_activity": {
+        "cos1": 0.0,
+        "sin1": 128.0,
+        "cos2": 192.0,
+        "sin2": 0.0,
+        "cos1cos2": 266.0,
+        "cos1sin2": 31.0,
+        "sin1cos2": 407.0,
+        "sin1sin2": 195.0
+      },
+      "expected_product_terms": {
+        "cos1cos2": 0.43301270189221946,
+        "cos1sin2": 0.25,
+        "sin1cos2": -0.75,
+        "sin1sin2": -0.43301270189221924
+      },
+      "warnings": []
+    }
+  ],
+  "sawtooth_mae_per_slice": {
+    "q1_fixed": {
+      "sawtooth_mae_deg": {
+        "lift": 11.974122722291499,
+        "pitch": 2.040735284758576,
+        "yaw": 10.89175393432221
+      },
+      "signal_coverage_pct": 100.0
+    },
+    "q2_fixed": {
+      "sawtooth_mae_deg": {
+        "lift": 1.5187332328787224,
+        "pitch": 0.7606502925090118,
+        "yaw": 0.8910951239043257
+      },
+      "signal_coverage_pct": 100.0
+    },
+    "overall": {
+      "sawtooth_mae_deg": {
+        "lift": 6.7464279775851095,
+        "pitch": 1.4006927886337939,
+        "yaw": 5.8914245291132685
+      },
+      "signal_coverage_pct": 100.0
+    }
+  },
+  "active_signed_product_terms": [
+    "cos1",
+    "sin1",
+    "cos2",
+    "sin2",
+    "cos1cos2",
+    "cos1sin2",
+    "sin1cos2",
+    "sin1sin2"
+  ],
+  "n_vis_points": 8
+}

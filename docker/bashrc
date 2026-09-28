@@ -1,0 +1,3 @@
+[[ -r /etc/bash.bashrc ]] && source /etc/bash.bashrc
+source /model_repo/docker/environment.bash
+export PS1='[tiago] \u@\h:\w\$ '
