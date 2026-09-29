@@ -321,6 +321,45 @@ def legacy_collector_record(
 
 
 # -- sessions ---------------------------------------------------------------
+class TrialWriter:
+    """Writes the collector's artifact layout plus one cosim JSON per trial."""
+
+    def __init__(self, out_dir: str, config: CosimConfig, num_iterations: Optional[int] = None) -> None:
+        self.out_dir = out_dir
+        self.trials_dir = os.path.join(out_dir, "trials")
+        os.makedirs(self.trials_dir, exist_ok=True)
+        save_json_legacy(
+            os.path.join(out_dir, "session_meta.json"),
+            {"joint_index": config.joint_index, "num_iterations": num_iterations,
+             "cosim": True, "config": config.to_dict()},
+        )
+        self._file = open(os.path.join(out_dir, "trials_summary.csv"), "w", newline="")
+        self._writer = csv.DictWriter(self._file, fieldnames=RING_TRIAL_SCALAR_FIELDS)
+        self._writer.writeheader()
+
+    def write(self, index: int, record: TrialRecord, legacy: Mapping[str, Any], row: Mapping[str, Any]) -> None:
+        self._writer.writerow({key: row[key] for key in RING_TRIAL_SCALAR_FIELDS})
+        self._file.flush()
+        save_npz_compressed_legacy(
+            os.path.join(self.trials_dir, "trial_%04d_timeseries.npz" % index), **legacy["timeseries"]
+        )
+        save_npz_compressed_legacy(
+            os.path.join(self.trials_dir, "trial_%04d_raster.npz" % index), **legacy["raster"]
+        )
+        with open(os.path.join(self.trials_dir, "trial_%04d_cosim.json" % index), "w", encoding="utf-8") as stream:
+            stream.write(record.to_json(indent=1))
+
+    def close(self) -> None:
+        if not self._file.closed:
+            self._file.close()
+
+
+def trial_row(config: CosimConfig, index: int, legacy: Mapping[str, Any]) -> Dict[str, Any]:
+    row = {"joint_index": config.joint_index, "batch_idx": 1, "iteration_idx": index}
+    row.update(legacy["scalars"])
+    return row
+
+
 def run_session(
     loop: FTILoop,
     config: CosimConfig,
@@ -331,47 +370,20 @@ def run_session(
     """Run several trials, writing the collector's artifact layout if asked."""
 
     results: List[Dict[str, Any]] = []
-    writer = None
-    summary_file = None
-    trials_dir = None
-    if out_dir is not None:
-        trials_dir = os.path.join(out_dir, "trials")
-        os.makedirs(trials_dir, exist_ok=True)
-        save_json_legacy(
-            os.path.join(out_dir, "session_meta.json"),
-            {"joint_index": config.joint_index, "num_iterations": len(goals),
-             "cosim": True, "config": config.to_dict()},
-        )
-        summary_file = open(os.path.join(out_dir, "trials_summary.csv"), "w", newline="")
-        writer = csv.DictWriter(summary_file, fieldnames=RING_TRIAL_SCALAR_FIELDS)
-        writer.writeheader()
-
+    writer = TrialWriter(out_dir, config, len(goals)) if out_dir is not None else None
     try:
         for index, goal in enumerate(goals, start=1):
             record = run_trial(loop, float(goal), config, meta={"iteration_idx": index})
             legacy = legacy_collector_record(record, config, trial_raster(loop))
-            row = {"joint_index": config.joint_index, "batch_idx": 1, "iteration_idx": index}
-            row.update(legacy["scalars"])
-            if writer is not None and summary_file is not None and trials_dir is not None:
-                writer.writerow({key: row[key] for key in RING_TRIAL_SCALAR_FIELDS})
-                summary_file.flush()
-                save_npz_compressed_legacy(
-                    os.path.join(trials_dir, "trial_%04d_timeseries.npz" % index),
-                    **legacy["timeseries"],
-                )
-                save_npz_compressed_legacy(
-                    os.path.join(trials_dir, "trial_%04d_raster.npz" % index),
-                    **legacy["raster"],
-                )
-                with open(os.path.join(trials_dir, "trial_%04d_cosim.json" % index), "w",
-                          encoding="utf-8") as stream:
-                    stream.write(record.to_json(indent=1))
+            row = trial_row(config, index, legacy)
+            if writer is not None:
+                writer.write(index, record, legacy, row)
             results.append({"record": record, "legacy": legacy, "row": json_safe(row)})
             if on_trial is not None:
                 on_trial(index, record, legacy)
     finally:
-        if summary_file is not None:
-            summary_file.close()
+        if writer is not None:
+            writer.close()
     return results
 
 
@@ -388,4 +400,6 @@ __all__ = [
     "run_session",
     "run_trial",
     "trial_raster",
+    "trial_row",
+    "TrialWriter",
 ]

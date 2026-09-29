@@ -374,6 +374,13 @@ Done:
   [--monitor-frames DIR] [--monitor-hold]`. Off-screen rendering is tested in
   `test/test_cosim_visualization.py`. This is also the hook `demo_graphs.py` needs
   for per-tick camera capture (phase 4).
+- **Browser dashboard** — `dashboard.py` / `dashboard_page.py`: a standard-library
+  HTTP server (JSON endpoints + server-sent events) and a single static page that
+  draws the same panels on canvases and starts / stops trials (`/api/start`,
+  `/api/stop`, `/api/goal`, `/api/quit`). `run_cosim_trial.py --dashboard` runs
+  trials on demand in the main thread; the loop is unchanged (an observer publishes
+  ticks, a stop condition honours the page's stop). Tested end to end with the fakes
+  in `test/test_cosim_dashboard.py`.
 
 Deviations from the design above (all deliberate):
 

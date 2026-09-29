@@ -42,10 +42,25 @@ python3 -B ../scripts/run_cosim_trial.py --engines full --goal 0.6 --out /tmp/co
 python3 -B ../scripts/run_cosim_trial.py --engines full --goal 0.6 --monitor --monitor-hold   # live ring view
 ```
 
-`--monitor` opens a Matplotlib window showing the state ring, a rolling raster, the
-gain counts and the joint angle against the goal; it needs a launcher started without
-`--headless`. `--monitor-frames DIR` saves a PNG per redraw instead, `--monitor-every N`
-redraws less often, `--monitor-hold` keeps the window open after the last trial.
+The browser dashboard is the easiest way to watch and drive trials, and it needs no
+X11 inside the container:
+
+```bash
+python3 -B ../scripts/run_cosim_trial.py --engines full --dashboard --out /tmp/cosim_full
+```
+
+Then open <http://localhost:8765/> on the host (the container uses host networking).
+The page shows the state ring, a rolling raster, the gain counts and the joint angle
+against the goal, updated every tick, and has *Start trial* / *Stop* buttons with a
+goal and an optional step budget; finished trials are listed with their timings.
+Trials run only when started from the page; Ctrl-C in the terminal ends the session.
+`--dashboard-port` changes the port and `--dashboard-host 0.0.0.0` exposes it beyond
+the machine.
+
+`--monitor` is the Matplotlib alternative (a window with the same panels; needs a
+launcher started without `--headless`). `--monitor-frames DIR` saves a PNG per redraw
+instead, `--monitor-every N` redraws less often, `--monitor-hold` keeps the window
+open after the last trial.
 Outputs use the collector's layout (`trials_summary.csv`, `trials/*.npz`) plus one
 `trial_XXXX_cosim.json` record per trial. Always run with `-B`: a golden test fails if
 new `.pyc` files appear under the package. Progress and design notes are in

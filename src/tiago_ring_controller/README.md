@@ -128,8 +128,13 @@ python3 ../scripts/run_cosim_trial.py --engines fake --goal 0.6     # no simulat
 python3 ../scripts/run_cosim_trial.py --engines nest --seed 13579   # real NEST, fake robot
 python3 ../scripts/run_cosim_trial.py --engines full --goal 0.6     # NEST + Gazebo (simulation running)
 python3 ../scripts/cosim_gazebo_smoke.py                            # lock-stepped Gazebo check
-python3 ../scripts/run_cosim_trial.py --engines full --goal 0.6 --monitor --monitor-hold   # live ring view
+python3 ../scripts/run_cosim_trial.py --engines full --dashboard             # browser dashboard, http://localhost:8765/
+python3 ../scripts/run_cosim_trial.py --engines full --goal 0.6 --monitor --monitor-hold   # Matplotlib window
 ```
+
+`--dashboard` serves a page (standard-library HTTP server, server-sent events)
+that shows the ring live and starts or stops trials on request; it needs no
+display inside the container.
 
 `--monitor` opens a matplotlib window (state ring, rolling raster, gain counts,
 joint angle versus goal) redrawn every tick; `--monitor-every N` redraws less

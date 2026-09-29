@@ -61,6 +61,10 @@ def parse_args(argv=None):
     parser.add_argument("--monitor-hold", action="store_true", help="keep the window open after the last trial")
     parser.add_argument("--monitor-backend", default=None,
                         help="matplotlib backend for the window (default: QtAgg, Qt5Agg, TkAgg, GTK3Agg in turn)")
+    parser.add_argument("--dashboard", action="store_true",
+                        help="serve a browser dashboard and run trials on request instead of --goal")
+    parser.add_argument("--dashboard-port", type=int, default=8765)
+    parser.add_argument("--dashboard-host", default="127.0.0.1", help="use 0.0.0.0 to reach it from another machine")
     return parser.parse_args(argv)
 
 
@@ -113,7 +117,15 @@ def main(argv=None):
             history=args.monitor_history, render_every=args.monitor_every,
             show=args.monitor, frame_dir=args.monitor_frames, backend=args.monitor_backend,
         )
-    loop = build_loop(config, engines, observers=[monitor] if monitor else None)
+    observers = [monitor] if monitor else []
+    dashboard = None
+    if args.dashboard:
+        from tiago_ring_controller.cosim.dashboard import DashboardObserver, DashboardServer, DashboardState
+        from tiago_ring_controller.cosim.runner import population_size_for
+
+        dashboard = DashboardState()
+        observers.append(DashboardObserver(dashboard, config.joint_index, population_size_for(engines, config)))
+    loop = build_loop(config, engines, observers=observers or None)
     print("config:", config.to_json(indent=None))
 
     def report_timing(index, record, legacy):
@@ -124,12 +136,40 @@ def main(argv=None):
               % (index, resets, timing.get("lead_wall_s", 0.0), len(walls), sum(walls),
                  1000.0 * sum(walls) / max(len(walls), 1)))
 
+    server = None
+    writer = None
     try:
         started = time.monotonic()
         loop.initialize()
         print("engines initialised in %.1f s (ROS node, joint states, NEST import)" % (time.monotonic() - started))
-        results = run_session(loop, config, goals, out_dir=args.out, on_trial=report_timing)
+        if dashboard is not None:
+            from tiago_ring_controller.cosim.dashboard import run_dashboard_session
+            from tiago_ring_controller.cosim.runner import TrialWriter, trial_row
+
+            server = DashboardServer(dashboard, args.dashboard_host, args.dashboard_port).start()
+            print("dashboard: %s  (start trials from the page; Ctrl-C or the quit endpoint ends the session)" % server.url)
+            if args.goal:
+                dashboard.set_status(next_goal=goals[0])
+            if args.out:
+                writer = TrialWriter(args.out, config)
+
+            def on_dashboard_trial(index, record, legacy):
+                report_timing(index, record, legacy)
+                if writer is not None:
+                    writer.write(index, record, legacy, trial_row(config, index, legacy))
+
+            try:
+                results = run_dashboard_session(loop, config, dashboard, on_trial=on_dashboard_trial)
+            except KeyboardInterrupt:
+                print("interrupted; stopping")
+                results = []
+        else:
+            results = run_session(loop, config, goals, out_dir=args.out, on_trial=report_timing)
     finally:
+        if writer is not None:
+            writer.close()
+        if server is not None:
+            server.stop()
         loop.shutdown()
     for index, result in enumerate(results, start=1):
         scalars = result["legacy"]["scalars"]
