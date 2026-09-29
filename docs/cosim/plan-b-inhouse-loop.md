@@ -316,8 +316,8 @@ class NestEngine:
 
 ## Progress
 
-*(Linux session: append dated entries here — phase, what was done, test status,
-numbers.)*
+Dated entries: phase, what was done, test status, numbers. Continued in
+`docs/blocks/progress.md` from phase 1 of the block plan onwards.
 
 ### 2026-09-29 — phases 1–2 done, phase 3 code written, phase 4 partial; model unchanged
 

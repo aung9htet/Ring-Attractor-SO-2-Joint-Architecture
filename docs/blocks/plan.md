@@ -1,8 +1,10 @@
 # Plan: block architecture, graph files and a visual editor (branch `blocks-refactor`)
 
 Parent branch: `cosim-loop` (lock-stepped co-simulation harness, dashboard).
-Date: 2026-09-29. Status: **plan, nothing implemented yet**. Phases below are meant to
-be executed and ticked off in order; each ends with green tests in the container.
+Date: 2026-09-29. Status: **implemented, phases 1–7 (2026-09-29/30)**; the record of
+each phase and its gate output is `progress.md`, the resulting layout is
+`architecture.md`. The text below is the plan as decided before implementation;
+deviations are noted in `progress.md`, not edited here.
 
 ## 1. Goal
 

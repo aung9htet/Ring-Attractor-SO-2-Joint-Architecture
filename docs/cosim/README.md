@@ -1,8 +1,8 @@
-# Co-simulation refactor (branch `cosim-loop`)
+# Co-simulation layer (branch `cosim-loop`, continued on `blocks-refactor`)
 
-This folder holds the plan for replacing the hand-written NEST → Gazebo control loop
-with a proper co-simulation layer. It is written so that a fresh session (human or
-Claude) on a Linux machine can take over without re-deriving anything.
+This folder holds the assessment of the original hand-written NEST → Gazebo
+control loop, the two candidate designs for its replacement, and the design and
+progress record of the one that was built.
 
 | File | Purpose |
 | --- | --- |
@@ -10,12 +10,13 @@ Claude) on a Linux machine can take over without re-deriving anything.
 | [plan-a-nrp-core.md](plan-a-nrp-core.md) | Option A: migrate onto the HBP Neurorobotics Platform (`nrp-core`). Feasibility, risks, step list, go/no-go gates. |
 | [plan-b-inhouse-loop.md](plan-b-inhouse-loop.md) | Option B (**recommended**): implement an NRP-style fixed-time-increment loop inside this package. Design, phased tasks, acceptance tests. |
 
-Implementation status is kept in the "Progress" section of plan B. As of
-2026-09-29 the loop, fakes, real-NEST engine and the Gazebo/ROS engine code exist
-under `src/tiago_ring_controller/src/tiago_ring_controller/cosim/`, with drivers in
-`src/tiago_ring_controller/scripts/` (`run_cosim_trial.py`, `cosim_gazebo_smoke.py`,
-`measure_legacy_tick.py`) and tests in `src/tiago_ring_controller/test/test_cosim_*.py`.
-The NEST model is unchanged; the legacy scripts still run their own loops.
+Implementation status is kept in the "Progress" section of plan B. The loop,
+fakes, real-NEST engine, Gazebo/ROS engine and dashboard live under
+`src/tiago_ring_controller/src/tiago_ring_controller/cosim/`, with drivers in
+`src/tiago_ring_controller/scripts/` and tests in
+`src/tiago_ring_controller/test/test_cosim_*.py`. On `blocks-refactor` the loop
+became the runtime of the block graphs (`docs/blocks/`), which replaced the
+flat scripts' own loops; plan B's phase 7 is marked superseded there.
 
 ## Decision summary
 
@@ -48,30 +49,27 @@ Work on a branch of this repository (`cosim-loop`), not a fork:
   rule"), do it on this branch behind the new loop and retire the legacy facades
   in the PR, rather than forking.
 
-## Environment for this work
+## Environment
 
-Linux amd64 only (Ubuntu VM or native). The existing Docker workflow in the top-level
-`README.md` is the runtime: `./run_model_docker.bash --software`. The image supplies
-Ubuntu 20.04, ROS Noetic, Gazebo 11, Python 3.8 and NEST `HEAD@41892a5`. Nothing in
-plan B needs a new image; the optional Gazebo step plugin (plan B, phase 2) builds
-with the existing `catkin build` of `tiago_ring_controller`.
+Linux amd64. The Docker workflow in the top-level `README.md` is the runtime:
+`./run_model_docker.bash --software`. The image supplies Ubuntu 20.04, ROS Noetic,
+Gazebo 11, Python 3.8 and NEST `HEAD@41892a5`. Nothing in plan B needs a new image;
+the optional Gazebo step plugin (plan B, phase 5) builds with the existing
+`catkin build` of `tiago_ring_controller`.
 
-## Hand-over checklist for the Linux session
+## Gazebo checks still open
 
-Do these first; each answers a question the plans depend on. Record answers in
-`assessment.md` under "Verified on Linux".
+The Gazebo engine has been run against the simulation once by hand, never by a
+test, and the answers below are not recorded in `assessment.md` §6. With the
+simulation launched (`roslaunch tiago_ring_controller tiago_ring_controller.launch
+gui:=false` inside the container):
 
-1. Start the simulation: `roslaunch tiago_ring_controller tiago_ring_controller.launch gui:=false`
-   inside the container. Then check:
-   - `rosparam get /use_sim_time` (expected `true`; gazebo_ros sets it).
-   - `rosservice list | grep gazebo` — confirm `/gazebo/pause_physics`,
-     `/gazebo/unpause_physics`, `/gazebo/get_physics_properties` exist.
-   - `rostopic hz /clock` and `rostopic hz /joint_states` (expected ~1000 Hz and
-     ~50-100 Hz).
-   - `rosservice call /gazebo/pause_physics` then `rostopic echo -n 2 /clock` —
-     confirm the clock stops.
-2. Run the legacy unit suite and the real-NEST smoke test as in the top-level README,
-   to confirm the baseline is green before touching anything.
-3. Measure the legacy loop's real tick period once (plan B, phase 0) so there is a
-   before/after number.
-4. Then follow `plan-b-inhouse-loop.md` phase by phase.
+- `rosparam get /use_sim_time` (expected `true`).
+- `rosservice list | grep gazebo` — `/gazebo/pause_physics`,
+  `/gazebo/unpause_physics`, `/gazebo/get_physics_properties`.
+- `rostopic hz /clock` and `rostopic hz /joint_states` (expected ~1000 Hz and
+  ~50–100 Hz); pause physics and confirm `/clock` stops.
+- `scripts/measure_legacy_tick.py` for the legacy loop's real tick period
+  (plan B phase 0), `scripts/cosim_gazebo_smoke.py` (phase 3 gate, `--joints 5 6`
+  for two joints), `scripts/run_graph.py --engines full --dashboard` for a graph
+  trial in Gazebo.

@@ -38,11 +38,11 @@ results are frozen under `src/tiago_ring_controller/legacy/` (see its README);
 
 ## Co-simulation refactor (branch `cosim-loop`)
 
-The NEST → Gazebo control loop is being replaced by a lock-stepped, NRP-style
-co-simulation layer. The assessment of the current loop, the two candidate plans
-(migrate to `nrp-core`, or an in-house loop — recommended) and the hand-over
-checklist for a Linux session are in [`docs/cosim/`](docs/cosim/README.md). `main`
-remains the frozen baseline behind the existing results.
+The original NEST → Gazebo control loop was replaced by a lock-stepped, NRP-style
+co-simulation layer. The assessment of the original loop, the two candidate
+designs (migrate to `nrp-core`, or the in-house loop that was built) and the open
+Gazebo checks are in [`docs/cosim/`](docs/cosim/README.md). `main` remains the
+frozen baseline behind the existing results.
 
 ### Running the co-simulation loop
 

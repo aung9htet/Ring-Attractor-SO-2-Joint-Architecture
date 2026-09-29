@@ -154,9 +154,10 @@ NEST `HEAD@41892a5` (NEST 3.x API), numpy 1.24.4.
 
 ## 6. Verified on Linux
 
-*(To be filled by the Linux session; see README checklist.)*
+Recorded as checks are done; the Gazebo items are listed in `README.md`
+("Gazebo checks still open").
 
-- `/use_sim_time`: not yet verified (no simulation launched in the 2026-09-29 session).
+- `/use_sim_time`: not yet verified (no simulation launched by the automated work).
 - Gazebo pause/unpause services present: not yet verified.
 - `/clock` rate, `/joint_states` rate: not yet verified.
 - Legacy loop real tick period (mean / p95 over one trial): not yet measured;
