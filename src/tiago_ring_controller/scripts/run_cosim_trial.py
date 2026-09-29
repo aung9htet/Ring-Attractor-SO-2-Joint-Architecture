@@ -21,6 +21,7 @@ plus one ``*_cosim.json`` TrialRecord per trial.
 import argparse
 import os
 import sys
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(os.path.dirname(HERE), "src")
@@ -114,8 +115,20 @@ def main(argv=None):
         )
     loop = build_loop(config, engines, observers=[monitor] if monitor else None)
     print("config:", config.to_json(indent=None))
+
+    def report_timing(index, record, legacy):
+        timing = record.meta.get("timing", {})
+        resets = ", ".join("%s %.1f s" % (name, secs) for name, secs in timing.get("reset_wall_s", {}).items())
+        walls = [tick.wall_s for tick in record.main_ticks]
+        print("trial %d timing: reset [%s]; lead %.2f s; %d ticks in %.1f s (%.1f ms/tick)"
+              % (index, resets, timing.get("lead_wall_s", 0.0), len(walls), sum(walls),
+                 1000.0 * sum(walls) / max(len(walls), 1)))
+
     try:
-        results = run_session(loop, config, goals, out_dir=args.out)
+        started = time.monotonic()
+        loop.initialize()
+        print("engines initialised in %.1f s (ROS node, joint states, NEST import)" % (time.monotonic() - started))
+        results = run_session(loop, config, goals, out_dir=args.out, on_trial=report_timing)
     finally:
         loop.shutdown()
     for index, result in enumerate(results, start=1):

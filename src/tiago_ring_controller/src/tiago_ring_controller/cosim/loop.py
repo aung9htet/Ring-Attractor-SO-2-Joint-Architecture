@@ -113,7 +113,7 @@ class TrialRecord:
             "end_state": datapacks_to_dict(self.end_state),
             "final_state": datapacks_to_dict(self.final_state),
             "stop_reason": self.stop_reason,
-            "meta": dict(self.meta),
+            "meta": {k: v for k, v in self.meta.items() if include_timing or k != "timing"},
         }
 
     @classmethod
@@ -263,6 +263,7 @@ class FTILoop:
         self.t_ms = 0.0
         self.tick_index = 0
         self.records: List[TickRecord] = []
+        self.reset_wall_s: Dict[str, float] = {}
         self._initialized = False
 
     # -- lifecycle --------------------------------------------------------
@@ -288,8 +289,11 @@ class FTILoop:
     def reset(self) -> None:
         if not self._initialized:
             self.initialize()
+        self.reset_wall_s = {}
         for engine in self.engines:
+            started = time.monotonic()
             engine.reset()
+            self.reset_wall_s[engine.name] = time.monotonic() - started
         for tf in self.tfs:
             tf.reset()
         self.t_ms = 0.0
@@ -408,9 +412,11 @@ class FTILoop:
         elif not self._initialized:
             self.initialize()
 
+        lead_started = time.monotonic()
         for lead_index in range(self.nest_lead_steps):
             self.lead_step(lead_index)
         self._check_clocks()
+        lead_wall_s = time.monotonic() - lead_started
 
         stop_reason: Optional[str] = None
         while True:
@@ -437,6 +443,10 @@ class FTILoop:
             final_state=final_state,
             stop_reason=stop_reason,
             meta=dict(meta or {}),
+        )
+        trial.meta.setdefault("timing", {})
+        trial.meta["timing"].update(
+            {"reset_wall_s": dict(self.reset_wall_s), "lead_wall_s": lead_wall_s}
         )
         for observer in self.observers:
             observer.on_trial_end(trial)

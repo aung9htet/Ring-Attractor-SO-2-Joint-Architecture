@@ -108,6 +108,7 @@ class RingMonitor(LoopObserver):
         if self.show:
             self._plt.ion()
             self.fig = self._plt.figure(figsize=figsize)
+            self._plt.show(block=False)
         else:
             from matplotlib.backends.backend_agg import FigureCanvasAgg
             from matplotlib.figure import Figure
@@ -299,8 +300,12 @@ class RingMonitor(LoopObserver):
 
         self.renders += 1
         if self.show:
-            self.fig.canvas.draw_idle()
+            # A synchronous draw plus a short pause services the GUI event
+            # loop from inside the tick loop; draw_idle alone can defer every
+            # repaint until the loop returns.
+            self.fig.canvas.draw()
             self.fig.canvas.flush_events()
+            self._plt.pause(0.001)
         else:
             self.fig.canvas.draw()
         if self.frame_dir:
