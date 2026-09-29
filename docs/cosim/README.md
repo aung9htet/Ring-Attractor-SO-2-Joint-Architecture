@@ -10,6 +10,13 @@ Claude) on a Linux machine can take over without re-deriving anything.
 | [plan-a-nrp-core.md](plan-a-nrp-core.md) | Option A: migrate onto the HBP Neurorobotics Platform (`nrp-core`). Feasibility, risks, step list, go/no-go gates. |
 | [plan-b-inhouse-loop.md](plan-b-inhouse-loop.md) | Option B (**recommended**): implement an NRP-style fixed-time-increment loop inside this package. Design, phased tasks, acceptance tests. |
 
+Implementation status is kept in the "Progress" section of plan B. As of
+2026-09-29 the loop, fakes, real-NEST engine and the Gazebo/ROS engine code exist
+under `src/tiago_ring_controller/src/tiago_ring_controller/cosim/`, with drivers in
+`src/tiago_ring_controller/scripts/` (`run_cosim_trial.py`, `cosim_gazebo_smoke.py`,
+`measure_legacy_tick.py`) and tests in `src/tiago_ring_controller/test/test_cosim_*.py`.
+The NEST model is unchanged; the legacy scripts still run their own loops.
+
 ## Decision summary
 
 - **Recommendation: Option B.** The defective part of the code is ~100 lines of tick

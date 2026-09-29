@@ -6,9 +6,19 @@ from copy import deepcopy
 class FakeNodes:
     """Minimal stand-in for a NEST ``NodeCollection``."""
 
-    def __init__(self, ids, events=None):
+    def __init__(self, ids, events=None, backend=None):
         self.ids = tuple(int(value) for value in ids)
         self.events = {} if events is None else events
+        # Optional owning backend so multi-node collections built through
+        # ``NodeCollection`` can resolve per-node recorder events.
+        self.backend = backend
+
+    def _events_for(self, global_id):
+        if self.backend is not None:
+            owner = self.backend._nodes.get(global_id)
+            if owner is not None:
+                return owner.events
+        return self.events
 
     def __getitem__(self, index):
         if isinstance(index, slice):
@@ -26,6 +36,12 @@ class FakeNodes:
             return self.ids[0] if len(self.ids) == 1 else list(self.ids)
         if key == "events":
             return self.events
+        if key == "n_events":
+            counts = [
+                len(self._events_for(global_id).get("times", []))
+                for global_id in self.ids
+            ]
+            return counts[0] if len(self.ids) == 1 else counts
         raise KeyError(key)
 
     def __repr__(self):  # pragma: no cover - used only in assertion diagnostics
@@ -54,6 +70,8 @@ class RecordingNest:
         self.connect_calls = []
         self.kernel_calls = []
         self.simulate_calls = []
+        self.run_calls = []
+        self.lifecycle_calls = []
         self.status_calls = []
         self._nodes = {}
 
@@ -96,6 +114,16 @@ class RecordingNest:
     def Simulate(self, duration):
         self.simulate_calls.append(duration)
 
+    def Prepare(self):
+        self.lifecycle_calls.append("Prepare")
+
+    def Run(self, duration):
+        self.run_calls.append(duration)
+        self.lifecycle_calls.append(("Run", duration))
+
+    def Cleanup(self):
+        self.lifecycle_calls.append("Cleanup")
+
     def SetStatus(self, nodes, value):
         self.status_calls.append((node_ids(nodes), deepcopy(value)))
 
@@ -107,4 +135,4 @@ class RecordingNest:
         return [{}]
 
     def NodeCollection(self, ids):
-        return FakeNodes(ids)
+        return FakeNodes(ids, backend=self)

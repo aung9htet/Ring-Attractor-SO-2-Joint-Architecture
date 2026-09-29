@@ -12,6 +12,45 @@ co-simulation layer. The assessment of the current loop, the two candidate plans
 checklist for a Linux session are in [`docs/cosim/`](docs/cosim/README.md). `main`
 remains the frozen baseline behind the existing results.
 
+### Running the co-simulation loop
+
+The loop lives in `src/tiago_ring_controller/src/tiago_ring_controller/cosim/` with
+drivers in `src/tiago_ring_controller/scripts/`. The NEST model is unchanged and the
+legacy scripts still run their own loops.
+
+Tests without any simulator (host Python with NumPy and Matplotlib is enough):
+
+```bash
+cd src/tiago_ring_controller
+PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s test -p "test_cosim*.py"
+```
+
+Inside the container (see "Start" below), from the package `src` directory:
+
+```bash
+python3 -B -m unittest discover -s ../test -p "test_cosim*.py"     # adds the real-NEST parity test
+python3 -B ../scripts/run_cosim_trial.py --engines fake --goal 0.6   # fake NEST + fake robot
+python3 -B ../scripts/run_cosim_trial.py --engines nest --seed 13579 --goal 0.6 --out /tmp/cosim_nest
+```
+
+With Gazebo (launch the simulation in the ready shell, then use a second terminal as
+described under "TIAGo simulation"):
+
+```bash
+python3 -B ../scripts/cosim_gazebo_smoke.py --joint 5 --out /tmp/smoke.json      # stepping check, no NEST
+python3 -B ../scripts/run_cosim_trial.py --engines full --goal 0.6 --out /tmp/cosim_full
+python3 -B ../scripts/run_cosim_trial.py --engines full --goal 0.6 --monitor --monitor-hold   # live ring view
+```
+
+`--monitor` opens a Matplotlib window showing the state ring, a rolling raster, the
+gain counts and the joint angle against the goal; it needs a launcher started without
+`--headless`. `--monitor-frames DIR` saves a PNG per redraw instead, `--monitor-every N`
+redraws less often, `--monitor-hold` keeps the window open after the last trial.
+Outputs use the collector's layout (`trials_summary.csv`, `trials/*.npz`) plus one
+`trial_XXXX_cosim.json` record per trial. Always run with `-B`: a golden test fails if
+new `.pyc` files appear under the package. Progress and design notes are in
+[`docs/cosim/plan-b-inhouse-loop.md`](docs/cosim/plan-b-inhouse-loop.md).
+
 ## Start
 
 Use Linux amd64 with Docker Engine accessible to your user. Desktop operation needs

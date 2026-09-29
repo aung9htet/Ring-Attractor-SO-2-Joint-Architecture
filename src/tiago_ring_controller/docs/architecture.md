@@ -75,6 +75,11 @@ Three legacy profiles must remain distinct:
 Trajectory messages always contain all seven arm joints. A four-point default
 horizon advances the internal command state by only its first point.
 
+On branch `cosim-loop`, `tiago_ring_controller.cosim` provides a lock-stepped
+alternative harness around the same model and trajectory contracts (engines,
+datapacks, transceiver functions, `FTILoop`; see the repository's `docs/cosim/`).
+The three entrypoints are unchanged until the parity report in plan B phase 4.
+
 ## Training and fitting boundaries
 
 - Ring Fourier masks are analytically derived, despite trainer naming.

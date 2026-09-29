@@ -112,6 +112,39 @@ python3 demo_graphs.py
 command sustained motion.  It is not an automated regression test.  Additional
 safety notes are in `docs/robot_safety.md`.
 
+## Co-simulation loop (branch `cosim-loop`, experimental)
+
+`src/tiago_ring_controller/cosim/` implements the NRP-style fixed-time-increment
+loop described in the repository's `docs/cosim/plan-b-inhouse-loop.md`: engines
+that own simulated time (`NestEngine`, `GazeboRosEngine`, and fakes), datapacks,
+transceiver functions, and `FTILoop`. It wraps the unchanged `SingleRingModel`
+and the existing `CommandState` / `build_receding_trajectory` contracts; the
+legacy entrypoints above still run their own loops. Importing the package needs
+neither NEST nor ROS.
+
+```bash
+cd /tiago_public_ws/src/tiago_ring_controller/src
+python3 ../scripts/run_cosim_trial.py --engines fake --goal 0.6     # no simulators
+python3 ../scripts/run_cosim_trial.py --engines nest --seed 13579   # real NEST, fake robot
+python3 ../scripts/run_cosim_trial.py --engines full --goal 0.6     # NEST + Gazebo (simulation running)
+python3 ../scripts/cosim_gazebo_smoke.py                            # lock-stepped Gazebo check
+python3 ../scripts/run_cosim_trial.py --engines full --goal 0.6 --monitor --monitor-hold   # live ring view
+```
+
+`--monitor` opens a matplotlib window (state ring, rolling raster, gain counts,
+joint angle versus goal) redrawn every tick; `--monitor-every N` redraws less
+often, `--monitor-frames DIR` saves a PNG per redraw (works headless), and
+`--monitor-hold` keeps the window open after the last trial. The monitor is a
+loop observer: it reads the recorded datapacks and never changes the trial.
+The window needs X11 inside the container, i.e. a launcher started *without*
+`--headless`; the image's matplotlib defaults to Agg even with a display, so the
+monitor forces QtAgg, Qt5Agg, TkAgg or GTK3Agg in turn (`--monitor-backend` picks
+one explicitly). Without a display it says so and only `--monitor-frames` works.
+
+Tests are `test/test_cosim_loop.py`, `test/test_cosim_engines.py` (fake NEST and a
+fake ROS transport) and `test/test_cosim_real_nest.py` (parity with the legacy
+per-tick loop; runs only with the pinned NEST).
+
 ## Artifacts and results
 
 Checked-in files under `src/config/` are scientific inputs and compatibility

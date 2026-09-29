@@ -310,3 +310,106 @@ class NestEngine:
 
 *(Linux session: append dated entries here — phase, what was done, test status,
 numbers.)*
+
+### 2026-09-29 — phases 1–2 done, phase 3 code written, phase 4 partial; model unchanged
+
+Scope decision for this step: change the harness, not the model. `inject_stimulus`
+still creates one generator per injection and runs `Simulate(50)` inside it; B.4's
+build-time generators and continuous proprioception stay behind a hook
+(`StimulusPort`, see below). Everything lives in
+`src/tiago_ring_controller/src/tiago_ring_controller/cosim/`; the flat scripts are
+untouched.
+
+Done:
+
+- **Phase 1** — `datapack.py`, `engine.py`, `loop.py` (`FTILoop`, `TickRecord`,
+  `TrialRecord`, stop conditions `MaxSteps` / `SettledFlag` / `AnyOf`), `tf.py`
+  (`GoalTF`, `ProprioceptionTF` with modes `once` / `continuous` / `off`, `MotorTF`),
+  `fakes.py` (`FakeRobotEngine` 7-joint first-order-lag model on the unchanged
+  `CommandState`; `FakeNestEngine` scripted or goal-seeking stub), `config.py`
+  (`CosimConfig.from_profile(profile, joint, calibration)`).
+  Tests `test/test_cosim_loop.py`: tick order, one-step delay, lead phase and clock
+  invariant, horizon/consumed-sample/settle/stop parity against an inline
+  re-implementation of the collector loop (collector and calibration profiles,
+  delayed decoder, step budget, lead 0), determinism, JSON round-trip.
+- **Phase 2** — `nest_engine.py`: `NestEngine(backend, model_factory)` builds the
+  unchanged `SingleRingModel` via `RingModelPorts.from_single_ring_model`;
+  `nest_step_mode="run"` (Prepare once, Run per tick, Cleanup at trial end; default)
+  or `"simulate"`; readout is NodeCollection `n_events` deltas (three calls per tick,
+  per-recorder fallback); bumps go through a `StimulusPort`. The default
+  `LegacyInjectStimulusPort` calls the model's `_inject_bump` and therefore only
+  accepts bumps before the first step of a trial; a mid-trial `state_bump` raises
+  `StimulusNotSupportedError`. **This is the hook for closing the loop**: a port
+  that sets generator rates plugs in without touching loop or TFs.
+  Real-NEST check `test/test_cosim_real_nest.py`: seed 13579, goal index 140, state
+  index 60, six 50 ms ticks — the engine's `left` / `right` / `r1_delta` sequence is
+  **identical** to the legacy `run_ring_simulation` sequence in both step modes.
+  (No RNG-stream difference, because the model and its generator nodes are
+  unchanged.)
+- **Phase 3 (code only)** — `stepping.py` (`ClockWaitStepper`; `PluginStepper` hook
+  that raises until the world plugin exists), `gazebo_ros_engine.py`
+  (`RosTransport` ABC; `RospyTransport` imports rospy lazily and keeps a locked
+  joint-state snapshot and a `/clock` condition variable; `GazeboRosEngine`: reset
+  runs unpaused with the `play_motion` result checked, then pauses; each tick
+  publishes the horizon stamped with sim time and steps `dt / max_step_size`
+  iterations; `stop_and_settle` steps physics instead of sleeping), `limits.py`
+  (joint limits from the URDF on the parameter server). Unit-tested against a fake
+  transport only — **not yet run against Gazebo**. Smoke script:
+  `scripts/cosim_gazebo_smoke.py`.
+- **Phase 4 (partial)** — `runner.py`: `build_loop`, `run_trial`, `run_session`,
+  `legacy_collector_record` (`TrialRecord` → the collector's
+  `{"scalars", "timeseries", "raster"}` with the exact `RING_*` field sets from
+  `evaluation/serialization.py`), `make_nest_engine` / `make_gazebo_engine` /
+  `make_fake_engines`. Driver `scripts/run_cosim_trial.py --engines fake|nest|full`
+  writes the collector layout plus one `trial_XXXX_cosim.json` per trial. The
+  `--cosim` flag in the three flat scripts waits for the Gazebo parity report
+  (their signatures and main blocks are frozen by the golden tests).
+- **Phase 0** — `scripts/measure_legacy_tick.py` written, not yet run (needs the
+  simulation).
+- **Live view** — `FTILoop` accepts `LoopObserver`s (`on_reset` / `on_tick` /
+  `on_trial_end`, read-only, called after the engines advanced). `visualization.py`
+  provides `RingMonitor` (polar state ring with goal / start / centroid markers,
+  rolling r1 raster, left/right gain counts and filtered drive, joint angle vs goal
+  with decoded velocity); `run_cosim_trial.py --monitor [--monitor-every N]
+  [--monitor-frames DIR] [--monitor-hold]`. Off-screen rendering is tested in
+  `test/test_cosim_visualization.py`. This is also the hook `demo_graphs.py` needs
+  for per-tick camera capture (phase 4).
+
+Deviations from the design above (all deliberate):
+
+- TF signature is `tf(inputs, ctx: TickContext)`; `ctx` carries `t_ms`, `tick`,
+  `phase` (`lead` / `main`) so `MotorTF` counts settled samples only on main ticks.
+- The horizon buffer holds `max(nest_lead_steps, 1)` samples, which is what the
+  legacy scripts publish (four points for lookahead 4), not `lead + 1`.
+- Lead phase: `FTILoop.run_trial` advances only the lead engine `nest_lead_steps`
+  times before tick 0, running the TFs at each sub-step; afterwards
+  `nest.t_ms == loop.t_ms + lead * dt` is asserted after every tick.
+- Two harmless differences from the legacy loop, both covered by the parity tests:
+  legacy publishes one more horizon after its last NEST step when the step budget
+  ends a trial, and runs no NEST step after the settle break; the loop stops after
+  the tick in which the settle flag was raised (one unconsumed NEST step).
+- Horizons, consumed samples and stop reasons otherwise match sample-for-sample.
+
+Test status (image `aung9htet/ubuntu-20.04:tiago_ring_forward` — the pinned `_2`
+digest is not present on this host; Python 3.8.10, NEST `HEAD@41892a5`, numpy 1.24.4;
+package bind-mounted at `/tiago_public_ws/src/tiago_ring_controller`;
+`python3 -B -m unittest discover -s test -p "test_*.py"`):
+
+- cosim tests: 37 passed in the container (including the two real-NEST parity
+  tests); 35 passed + 1 skipped on a host without the pinned NEST.
+- full suite: 178 tests, 59 failures — the same 59 (file-mode, checked-in PNG and
+  bytecode inventory subtests) fail on a clean `main` checkout under the same mount,
+  so none are new.
+
+Numbers:
+
+- Real NEST + fake robot, collector profile, seed 13579, 40 ticks: per-tick wall
+  time 6.3–8.7 ms (mean 6.95 ms), flat from the first to the last tick (A2).
+  Hidden stimulus time 100 ms per trial (two injections), recorded in the trial meta.
+- Fake engines: ≈0.13 ms per tick.
+
+Next: run `scripts/cosim_gazebo_smoke.py` and `scripts/measure_legacy_tick.py` in
+the container with the simulation launched (README checklist), then the first
+lock-stepped trial with `--engines full` and the phase-3 overshoot histogram; then
+phase 5 (plugin), then B.4 generators + a rate-setting `StimulusPort` for
+continuous proprioception (phase 6).

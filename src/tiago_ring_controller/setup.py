@@ -38,6 +38,7 @@ setup_args = generate_distutils_setup(
         "tiago_ring_controller.control",
         "tiago_ring_controller.ros",
         "tiago_ring_controller.evaluation",
+        "tiago_ring_controller.cosim",
         "helpers",
         "builders",
         "builders.single_joint",

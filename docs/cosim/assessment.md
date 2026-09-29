@@ -156,8 +156,16 @@ NEST `HEAD@41892a5` (NEST 3.x API), numpy 1.24.4.
 
 *(To be filled by the Linux session; see README checklist.)*
 
-- `/use_sim_time`:
-- Gazebo pause/unpause services present:
-- `/clock` rate, `/joint_states` rate:
-- Legacy loop real tick period (mean / p95 over one trial):
-- Baseline unit suite + real-NEST smoke: green / red (which tests):
+- `/use_sim_time`: not yet verified (no simulation launched in the 2026-09-29 session).
+- Gazebo pause/unpause services present: not yet verified.
+- `/clock` rate, `/joint_states` rate: not yet verified.
+- Legacy loop real tick period (mean / p95 over one trial): not yet measured;
+  `scripts/measure_legacy_tick.py` is ready.
+- Baseline unit suite + real-NEST smoke (2026-09-29, image
+  `aung9htet/ubuntu-20.04:tiago_ring_forward`, package bind-mounted from the git
+  checkout): 178 tests, 59 failures on `main` and the identical 59 on `cosim-loop`
+  (file-mode inventory subtests in `test_api_compatibility` /
+  `test_environment_contracts`, checked-in PNG inventory in
+  `test_artifact_contracts`, bytecode cache tree in `test_bytecode_provenance`);
+  the real-NEST smoke test passes. The cosim suite (`test/test_cosim_*.py`) passes,
+  including the real-NEST parity test against the legacy per-tick loop.
