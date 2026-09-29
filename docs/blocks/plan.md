@@ -137,6 +137,15 @@ Blocks and their fixed topology (what today's code builds):
 | `Joint` | none (robot engine) | joint index, limits (URDF or calibration) | `angle` (SIGNAL out), `velocity` (SIGNAL in) |
 | `Goal` | none | constant angle, or a schedule | `angle` (SIGNAL out) |
 | `Probe` | optional recorders | what to log | any in |
+| `FeatureEncoder` | 2K Poisson generators (rate 0) driving push-pull feature rates for an angle | K, rate scale, mapping | `angle` (SIGNAL in), `features` (SPIKES out) |
+| `SignedProduct` | 16 conjunction populations on a `g×g` grid over two rings (positive/negative per term), DC baseline, input weights (`nest/multi_ring.py`) | grid size, DC baseline, input weight | `ring_a`, `ring_b` (SPIKES in), `features` (SPIKES out, 16·g² cells), `counts` (SIGNAL out) |
+| `OutputRing` | one population with a ridge-fitted target-by-source weight matrix from a feature population, DC baseline | size, DC baseline, weight scale, fitted weights artifact | `features` (SPIKES in), `spikes` (SPIKES out), `profile` (SIGNAL out) |
+| `ProfileDecoder` | none (pure) | method: sawtooth / scalar ramp / centroid | `profile` (SIGNAL in), `angle` (SIGNAL out) |
+| `TaskGain` (research, section 5e) | bilinear gate: configuration features AND task-error direction, fitted feedback onto joint belief rings | fitted weights | `configuration`, `left_in`, `right_in` (SPIKES in), `feedback` (SPIKES out) |
+
+Composites (a block whose `build` creates several primitives and exposes their
+ports): `Transport` = Homeostasis + Gain; `JointTriple` = T/B/A rings, two encoders,
+two Transports.
 
 Signal edges have an implicit one-tick delay (the loop's semantics); spike edges are
 NEST synapses with the block's pattern. Cycles among spike edges are normal
@@ -287,6 +296,25 @@ Three levels, in order of cost; the first is engineering, the last is research.
    not, so a Jacobian-transpose-like descent under feedback. Research extension,
    documented as such.
 
+## 5f. Reference architectures as templates on one primitive set
+
+The three architectures are not separate codebases; they are `Graph`s assembled from
+the primitives above by template functions in `graph/templates.py`, each shipped as
+an example file and pinned by its own test:
+
+| Template | Blocks | Parity / gate |
+|---|---|---|
+| `two_ring_single_joint(joint)` | Ring ×2 (N=200), BumpEncoder ×2, FourierReadout ×2, Transport, Decoder, Goal, Joint | tick-for-tick equal to the cosim runner on the legacy `SingleRingModel` (phase 2 golden) |
+| `three_ring_single_joint(joint)` | + Ring (actual), continuous BumpEncoder, second Transport (`JointTriple`) | no legacy; characterised in phase 5 (section 5c/5d sweeps) |
+| `two_joint_forward_kinematics(joints)` | Ring ×2 (N=100), BumpEncoder ×2, SignedProduct, OutputRing ×3, ProfileDecoder | counts equal to legacy `MultiRingDecode` for the same injected angles |
+| `task_space_error(joints)` | the two above + TaskGain | research; builds and runs on the fakes, science open |
+
+Rules: a template only calls `Graph.add` / `Graph.connect` on primitives (or
+composites), never NEST; the editor opens the example files; a variation saved from
+the editor is just another graph file; the fitting tools (`fit_fourier.py`,
+`fit_homeostasis.py`, `fit_forward_kinematics.py`) regenerate the weight artifacts
+each template references, so nothing is hand-copied from the legacy folder.
+
 ## 6. Graph file (schema v1)
 
 ```json
@@ -379,12 +407,14 @@ Each item: measure before, change, measure after, add the equivalence test.
 7. Robustness: build errors carry the block id; every block has a unit test with
    the fake NEST, a real-NEST smoke and a parameter-range test.
 
-### Phase 3 — block API (2 days)
+### Phase 3 — block API (3–4 days)
 
-- `blocks/base.py` and the eight blocks of section 5, wrapping the existing
-  builders (`nest/*.py`) and control code (`control/`, `math/`). `Encoder` uses the
-  phase-2 generators; `Decoder` wraps `DriveControlCore`; `Joint`/`Goal` are thin
-  signal blocks bound to the robot engine and to the TFs.
+- `blocks/base.py` and the primitives of section 5 (including `SignedProduct`,
+  `OutputRing`, `ProfileDecoder` from `nest/multi_ring.py`), the `Transport` and
+  `JointTriple` composites, wrapping the existing builders (`nest/*.py`) and control
+  code (`control/`, `math/`). `BumpEncoder` uses the phase-2 generators; `Decoder`
+  wraps `DriveControlCore`; `Joint`/`Goal` are thin signal blocks bound to the robot
+  engine and to the TFs. `TaskGain` is a stub with the port contract only.
 - A `GraphNestEngine` in `cosim/` that holds any number of neural blocks (today's
   `NestEngine` holds the fixed `SingleRingModel`) and reads their `counts` ports.
 - Gate: building the single-joint architecture from blocks by hand (Python, no
@@ -392,15 +422,16 @@ Each item: measure before, change, measure after, add the equivalence test.
 
 ### Phase 4 — graph schema, compiler, run from file (2 days)
 
-- `graph/schema.py`, `graph/compile.py`, `graph/run.py`, `scripts/run_graph.py`,
-  `examples/single_joint.graph.json`.
+- `graph/schema.py`, `graph/compile.py`, `graph/run.py`, `graph/templates.py`,
+  `scripts/run_graph.py`, the three example files of section 5f.
 - `run_graph.py --engines fake|nest|full --dashboard` runs the file; the dashboard
   shows the graph name and lets you start/stop/reset as today.
 - The three legacy workflows are *not* ported; their outputs (collector layout) are
   produced by `cosim/runner.py` from graph runs, as now.
-- Gate: `run_graph.py examples/single_joint.graph.json --engines nest` equals the
-  phase-3 hand-built result tick for tick; validation errors are tested; a graph
-  with two rings driving two joints builds and runs on the fakes.
+- Gate: `run_graph.py examples/two_ring_single_joint.graph.json --engines nest`
+  equals the phase-3 hand-built result tick for tick; the forward-kinematics
+  template reproduces legacy `MultiRingDecode` counts; validation errors are
+  tested; the three-ring template builds and runs on the fakes.
 
 ### Phase 5 — robot binding and multi-joint (1–2 days)
 
@@ -432,7 +463,7 @@ Each item: measure before, change, measure after, add the equivalence test.
 - Update `architecture.md`, `robot_safety.md`, both READMEs; retire plan-B phase 7
   items that are now done; open the PR to `main` with the legacy tag noted.
 
-Rough total: 12–15 working days.
+Rough total: 14–17 working days.
 
 ## 8. Testing strategy
 
@@ -455,8 +486,9 @@ Q1. D1 deletes the freeze tests on this branch. Alternative: keep them pointing 
 Q2. Exact-spike goldens after phase 2: accept new pinned values (recommended) or
     require bit-exact reproduction of the legacy builders (rules out vectorised
     `Connect` if NEST's summation order changes results)?
-Q3. Multi-ring two-joint orientation stack: legacy only for now (recommended; see
-    section 5e level 2 for where it comes back), or blocks in this pass (+2 days)?
+Q3. Resolved: the multi-ring stack becomes primitives (`SignedProduct`,
+    `OutputRing`, `ProfileDecoder`) and a template in this pass, so the three
+    architectures share one primitive set (section 5f). Adds about two days.
 Q4. Editor stack: vanilla JS/SVG in the dashboard (recommended, no dependencies in
     the image) or a vendored graph library (single file, faster to build, one more
     licence to carry)?
