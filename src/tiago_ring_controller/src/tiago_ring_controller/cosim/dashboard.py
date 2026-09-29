@@ -28,6 +28,7 @@ import json
 import queue
 import threading
 import time
+from collections import deque
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Callable, Dict, List, Optional
 
@@ -39,11 +40,14 @@ from .dashboard_page import PAGE_HTML
 class DashboardState:
     """Thread-safe bridge between the loop (main thread) and HTTP threads."""
 
-    def __init__(self, max_queue: int = 200) -> None:
+    def __init__(self, max_queue: int = 200, history: int = 600) -> None:
         self._lock = threading.Lock()
         self._subscribers: List["queue.Queue[str]"] = []
         self._max_queue = max_queue
         self.snapshot: Optional[Dict[str, Any]] = None
+        #: messages of the current trial, replayed to late subscribers so a
+        #: page opened mid-trial or after it still shows the whole trial
+        self.history: "deque[str]" = deque(maxlen=history)
         self.status: Dict[str, Any] = {
             "status": "idle",
             "message": "",
@@ -70,8 +74,13 @@ class DashboardState:
     def publish(self, message: Dict[str, Any]) -> None:
         text = json.dumps(message)
         with self._lock:
-            if message.get("type") == "tick":
+            kind = message.get("type")
+            if kind == "trial_start":
+                self.history.clear()
+            if kind == "tick":
                 self.snapshot = message
+            if kind in ("trial_start", "tick", "trial_end"):
+                self.history.append(text)
             subscribers = list(self._subscribers)
         for subscriber in subscribers:
             try:
@@ -91,6 +100,10 @@ class DashboardState:
     def state_dict(self) -> Dict[str, Any]:
         with self._lock:
             return {"status": dict(self.status), "snapshot": self.snapshot}
+
+    def replay(self) -> List[str]:
+        with self._lock:
+            return list(self.history)
 
     # -- control ------------------------------------------------------------
     def request_stop(self) -> None:
@@ -224,8 +237,8 @@ class _Handler(BaseHTTPRequestHandler):
         try:
             current = state.state_dict()
             self._write_event(json.dumps(dict(current["status"], type="status")))
-            if current["snapshot"] is not None:
-                self._write_event(json.dumps(current["snapshot"]))
+            for item in state.replay():
+                self._write_event(item)
             while not self.server.shutting_down:
                 try:
                     item = subscriber.get(timeout=1.0)

@@ -145,7 +145,7 @@ PAGE_HTML = r"""<!doctype html>
       const a = angleOf(index); ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.setLineDash(dash || []);
       ctx.beginPath(); ctx.moveTo(cx + (r0 - 8) * Math.cos(a), cy + (r0 - 8) * Math.sin(a)); ctx.lineTo(cx + (r1 + 6) * Math.cos(a), cy + (r1 + 6) * Math.sin(a)); ctx.stroke(); ctx.setLineDash([]);
     };
-    marker(state.initIndex, color('start'), [6, 4]); marker(state.goalIndex, color('goal')); marker(state.centroid, color('centroid'));
+    marker(state.initIndex, color('start'), [6, 4]); marker(state.centroid, color('centroid')); marker(state.goalIndex, color('goal'));
     ctx.textAlign = 'left'; let y = 16;
     for (const [label, col] of [['goal', color('goal')], ['start', color('start')], ['centroid', color('centroid')]]) {
       ctx.fillStyle = col; ctx.fillRect(10, y - 9, 14, 3); ctx.fillStyle = color('fg'); ctx.fillText(label, 30, y); y += 16;
@@ -173,11 +173,11 @@ PAGE_HTML = r"""<!doctype html>
     ctx.fillStyle = color('muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'right';
     for (const f of [0, 0.5, 1]) ctx.fillText(Math.round(f * (N - 1)), L - 4, 10 + ph * (1 - f) + 4);
     ctx.textAlign = 'center'; const s0 = state.steps[state.steps.length - cols];
-    ctx.fillText('NEST step ' + s0 + ' … ' + state.steps[state.steps.length - 1], L + pw / 2, H - 6);
+    ctx.fillText('NEST step ' + s0 + ' … ' + state.steps[state.steps.length - 1], L + (W - L - 10) / 2, H - 6);
   }
 
   function lineChart(canvas, xs, series, opts) {
-    const ctx = canvas.getContext('2d'), W = canvas.width, H = canvas.height, L = 48, R = opts.right ? 48 : 10, T = 10, B = 26;
+    const ctx = canvas.getContext('2d'), W = canvas.width, H = canvas.height, L = 48, R = series.some(s => s.right) ? 52 : 10, T = 10, B = 26;
     ctx.clearRect(0, 0, W, H);
     if (xs.length < 2) return;
     const x0 = xs[0], x1 = xs[xs.length - 1], sx = x => L + (W - L - R) * (x - x0) / Math.max(x1 - x0, 1e-9);

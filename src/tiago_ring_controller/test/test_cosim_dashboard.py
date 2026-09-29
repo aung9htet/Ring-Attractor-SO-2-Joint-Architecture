@@ -148,11 +148,23 @@ class DashboardSessionTests(unittest.TestCase):
 
     def test_event_stream_serves_status_and_ticks(self):
         _wait_for(lambda: _get(self.url + "/state")["status"]["status"] == "idle")
+        # Run one trial first: a late subscriber gets the whole trial replayed.
+        _post(self.url + "/api/start", {"goal": 0.3, "max_steps": 8})
+        _wait_for(lambda: len(_get(self.url + "/state")["status"]["trials"]) == 1)
         request = urllib.request.Request(self.url + "/events")
         with urllib.request.urlopen(request, timeout=10) as response:
             first = response.readline().decode("utf-8")
             self.assertTrue(first.startswith("data: "))
             self.assertEqual(json.loads(first[6:])["type"], "status")
+            replayed = []
+            while True:
+                line = response.readline().decode("utf-8")
+                if line.startswith("data: "):
+                    replayed.append(json.loads(line[6:])["type"])
+                    if replayed[-1] == "trial_end":
+                        break
+            self.assertEqual(replayed[0], "trial_start")
+            self.assertEqual(replayed.count("tick"), 4 + 8)
             _post(self.url + "/api/start", {"goal": 0.2, "max_steps": 5})
             seen = []
             deadline = time.monotonic() + 20
