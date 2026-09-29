@@ -4,6 +4,13 @@ The recovered controller, weights, calibration and existing experiment results l
 in this checkout. Docker supplies Ubuntu 20.04, ROS Noetic, Python 3.8, NEST
 `HEAD@41892a5`, Gazebo and the upstream TIAGo packages.
 
+## Block architecture and visual editor (branch `blocks-refactor`)
+
+The next step after the co-simulation loop is to turn the model into parameterised
+blocks (Ring, Fourier readout, Homeostasis, Gain, Encoder, Decoder, Joint), run the
+topology saved in a graph file, and draw that graph in the browser. The plan, its
+decisions and open questions are in [`docs/blocks/plan.md`](docs/blocks/plan.md).
+
 ## Co-simulation refactor (branch `cosim-loop`)
 
 The NEST → Gazebo control loop is being replaced by a lock-stepped, NRP-style
