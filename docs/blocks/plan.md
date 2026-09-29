@@ -142,6 +142,36 @@ Signal edges have an implicit one-tick delay (the loop's semantics); spike edges
 NEST synapses with the block's pattern. Cycles among spike edges are normal
 (feedback); the signal graph must be acyclic within a tick.
 
+## 5b. Programmatic use (the primary interface)
+
+The Python API comes first; the graph file serialises it and the editor edits it.
+Nothing is editor-only.
+
+```python
+from tiago_ring_controller.blocks import Ring, FourierReadout, Homeostasis, Gain, Encoder, Decoder, Joint, Goal
+from tiago_ring_controller.graph import Graph, run_graph
+
+g = Graph(dt_ms=50, nest_lead_steps=4, rng_seed=13579)
+r1 = g.add(Ring("r1", population_size=200))
+enc = g.add(Encoder("enc", half_width=5, mode="continuous"))
+j6 = g.add(Joint("j6", index=5))
+g.connect(j6.angle, enc.angle)
+g.connect(enc.stim, r1.stim)
+# ... remaining blocks and edges as in section 6
+g.validate()
+g.save("my_experiment.graph.json")      # the file the editor reads and writes
+record = run_graph(g, engines="fake")   # "nest" or "full" for the simulators
+```
+
+Requirements that follow, checked by tests in phases 3 and 4:
+
+- `Graph` round-trips through the file without loss; a graph built in Python and
+  the same graph drawn in the editor serialise identically.
+- Every block can be built alone in a bare NEST session (`block.build(ctx)` returns
+  its port node collections) or against the fake NEST, without loop or robot.
+- Sweeps, batch sessions and the fitting tools are plain Python over `Graph`
+  objects; `run_graph` returns the same `TrialRecord`s the dashboard produces.
+
 ## 6. Graph file (schema v1)
 
 ```json
