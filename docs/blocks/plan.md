@@ -209,6 +209,84 @@ Consequences carried by the plan:
   lag and settle time against `once`; the example graph's default mode and gain are
   chosen from that report (`docs/blocks/feedback.md`).
 
+## 5d. Reference architecture: three rings, two transport motifs
+
+The reusable unit in the current circuit is **compare and transport (CT)**:
+comparator (warm/cold, left/right decision pair) + opponent gain populations gated by
+the moved ring's bump + shifted feedback. Given a *reference* (Fourier features of a
+ring or of an encoded signal) it moves a *target ring* toward the reference and
+reports the drift as signed left/right rates. The current model instantiates it once
+(reference r2, moved r1) and drives the robot with that rate.
+
+```text
+goal ──encoder──▶ T (target)
+                    │ features
+                    ▼
+      CT_goal: reference T, moves B ──▶ rate = velocity command ──▶ Joint
+                    ▲ feedback
+                B (belief) ◀── feedback ── CT_sense: reference A, moves B ──▶ rate = mismatch
+                                                ▲ features
+measured angle ──encoder──▶ A (actual)
+```
+
+- T: desired state, set by a bump encoder (today) or by a CT from a feature-encoded
+  goal (smoother; one more motif).
+- B: belief. CT_goal transports it toward T; that transport rate is the motor
+  command (efference copy: "make the actual match the belief").
+- A: the joint's neural mirror, driven by the proprioceptive encoder. CT_sense
+  corrects B toward A; its rate is the prediction error and does not command the
+  robot. Persistent CT_goal activity means the goal is not reached; persistent
+  CT_sense activity means belief and world disagree, a natural input for a stop or
+  slow-down reflex (one edge into the decoder).
+- Blocks: keep `Homeostasis` and `Gain` as primitives, add `Transport` as a composite
+  block that builds both; two encoders, `BumpEncoder` (angle → generator rates on a
+  ring) and `FeatureEncoder` (angle → 2K push-pull feature rates, so a CT reference
+  can be a signal with no ring behind it). The current model is the two-ring
+  subgraph of this diagram and remains the parity example.
+- Trust parameters: the relative feedback weights of CT_goal and CT_sense into B, and
+  the requirement that B moves no faster than the joint can follow. Both go into the
+  phase 5 sweep.
+
+### Follow-up experiment: what should drive the joint?
+
+Three candidate motor signals, all readable from the same graph, to be compared on
+tracking error, settle time and behaviour under a blocked joint:
+
+1. gain population counts `right − left` (today's signal: reliable direction, weak
+   magnitude coding because the decision pair is winner-take-all);
+2. bump centroid velocity of B (index displacement per tick: proportional by
+   construction, needs the centroid readout in the decoder);
+3. the homeostatic decision pair's counts (one neuron per side; expected too sparse,
+   included as the control condition).
+
+Implementation: `Decoder.source` parameter plus count ports on `Homeostasis`; the
+comparison and its report are `docs/blocks/motor-signal.md`, after phase 5.
+
+## 5e. Multiple joints
+
+Three levels, in order of cost; the first is engineering, the last is research.
+
+1. **Joint space, independent.** One T/B/A triple per joint, goals in joint angles;
+   errors propagate within a joint, not across. Free with the graph (copy the
+   subgraph, change the joint index); the engine already publishes all commanded
+   joints in one trajectory. Task-space goals at this level come from a Python
+   inverse-kinematics step feeding the per-joint `Goal` blocks. This is the phase 5
+   multi-joint milestone.
+2. **Task-space monitoring.** The existing two-joint stack (joint rings → signed-
+   product conjunction features → ridge-fitted lift/pitch/yaw output rings) is a
+   forward model; instantiate it on the belief rings (and, with a pose sensor, on
+   the actual rings) as `SignedProduct` and `OutputRing` blocks, and a task-level CT
+   gives a task-space error direction for monitoring and reflexes. Follow-up after
+   the single-joint graph is solid (was Q3).
+3. **Task-space error propagation.** Turning a task error into joint corrections needs
+   the configuration-dependent Jacobian. The network already has both ingredients:
+   the signed-product layer is a configuration code and the gain motif is a bilinear
+   gate (position AND direction). A `TaskGain` block gated by configuration features
+   and the task-error direction, with weights fitted from kinematics onto each
+   joint's belief ring, is the natural generalisation; direction reliable, magnitude
+   not, so a Jacobian-transpose-like descent under feedback. Research extension,
+   documented as such.
+
 ## 6. Graph file (schema v1)
 
 ```json
@@ -377,8 +455,8 @@ Q1. D1 deletes the freeze tests on this branch. Alternative: keep them pointing 
 Q2. Exact-spike goldens after phase 2: accept new pinned values (recommended) or
     require bit-exact reproduction of the legacy builders (rules out vectorised
     `Connect` if NEST's summation order changes results)?
-Q3. Multi-ring two-joint orientation stack: legacy only for now (recommended), or
-    blocks in this pass (adds SignedProduct and OutputRing blocks, +2 days)?
+Q3. Multi-ring two-joint orientation stack: legacy only for now (recommended; see
+    section 5e level 2 for where it comes back), or blocks in this pass (+2 days)?
 Q4. Editor stack: vanilla JS/SVG in the dashboard (recommended, no dependencies in
     the image) or a vendored graph library (single file, faster to build, one more
     licence to carry)?
