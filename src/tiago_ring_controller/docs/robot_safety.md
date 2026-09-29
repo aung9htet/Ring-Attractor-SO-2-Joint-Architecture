@@ -75,6 +75,14 @@ or manual-limit execution.
 
 ## Default entrypoint impact
 
+Branch `blocks-refactor`: the entrypoints below moved to `legacy/` and are run
+from there; the maintained drivers are `scripts/run_cosim_trial.py` and
+`scripts/run_graph.py`, which move the arm only with `--engines full` (Gazebo)
+and never on hardware. Graph runs command every `Joint` block of the graph in
+one trajectory per tick (`arm_velocity_cmd.commands`); a graph file therefore
+decides which joints move — check `Joint` blocks before `--engines full`. The
+automated suite stays non-moving: robot engines are tested against fakes only.
+
 | Entrypoint | Baseline default |
 |---|---|
 | `analysis_single_joint.py` | joint index 6; 25 trials in five batches |

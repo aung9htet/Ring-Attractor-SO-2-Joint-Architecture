@@ -1,14 +1,18 @@
 # Executable architecture
 
-## Compatibility rule
+## Compatibility rule (branch `blocks-refactor`)
 
-The current script paths, module names, classes, method signatures, private members
-used across modules, ROS interfaces, configuration precedence, artifact contracts,
-and output schemas are compatibility APIs. Refactored implementation may live in an
-internal `tiago_ring_controller` package, but the existing modules remain facades.
+On `main` (and the tag `legacy-loop-baseline`) the flat script paths, module
+names, signatures, artifact contracts and output schemas are frozen by golden
+tests. On this branch those scripts live unchanged in `legacy/` (frozen,
+unmaintained, not installed) and the freeze tests are gone; the scientific
+inputs under `src/config/` keep their hash and schema contracts. The executable
+research model is now the block graph described in the repository's
+`docs/blocks/architecture.md`; the sections below describe the legacy scripts
+and, where it differs, the block runtime.
 
-Known inconsistencies are modeled as named behavior profiles. They are not fixed by
-this refactor.
+Known inconsistencies of the legacy workflows are modeled as named behavior
+profiles (`control/profiles.py`) and are unchanged.
 
 ## Ring implementations
 
@@ -75,10 +79,15 @@ Three legacy profiles must remain distinct:
 Trajectory messages always contain all seven arm joints. A four-point default
 horizon advances the internal command state by only its first point.
 
-On branch `cosim-loop`, `tiago_ring_controller.cosim` provides a lock-stepped
-alternative harness around the same model and trajectory contracts (engines,
-datapacks, transceiver functions, `FTILoop`; see the repository's `docs/cosim/`).
-The three entrypoints are unchanged until the parity report in plan B phase 4.
+`tiago_ring_controller.cosim` provides the lock-stepped harness around the same
+trajectory contracts (engines, datapacks, transceiver functions, `FTILoop`; see
+the repository's `docs/cosim/`). On `blocks-refactor` the model behind it is a
+block graph (`tiago_ring_controller.blocks`, `graph`): the two-ring single-joint
+template reproduces the cosim runner tick for tick, several joints are commanded
+in one trajectory per tick (`arm_velocity_cmd.commands`), and the three legacy
+robot entrypoints are not ported — `scripts/run_graph.py` produces the collector
+layout from graph runs. The legacy scripts still run their own loops from
+`legacy/`.
 
 ## Training and fitting boundaries
 

@@ -37,6 +37,7 @@ catkin_install_python(
     scripts/run_cosim_trial.py
     scripts/run_graph.py
     scripts/sweep_feedback.py
+    scripts/write_block_reference.py
     legacy/record_experiments.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

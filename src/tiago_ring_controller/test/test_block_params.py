@@ -93,5 +93,18 @@ class ParamSchemaTests(unittest.TestCase):
         self.assertEqual(schema_for("Encoder")["mode"].choices, ("once", "continuous", "corrective"))
 
 
+class BlockReferenceTests(unittest.TestCase):
+    def test_docs_blocks_md_is_generated_from_the_registry(self):
+        import importlib.util
+
+        spec = importlib.util.spec_from_file_location("write_block_reference", ROOT / "scripts/write_block_reference.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        path = Path(module.DEFAULT_OUT)
+        if not path.exists():
+            self.skipTest("docs/blocks/blocks.md not present in this checkout")
+        self.assertEqual(path.read_text(encoding="utf-8"), module.render(), "run scripts/write_block_reference.py")
+
+
 if __name__ == "__main__":
     unittest.main()

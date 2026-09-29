@@ -442,3 +442,36 @@ Not exercised by tests: mouse drag-and-drop itself (the connect logic behind it
 is exercised by the self-test through the same function), the live overlay
 during a trial (the message fields it reads are the dashboard's, unchanged),
 and the editor against Gazebo.
+
+## 2026-09-30 — Phase 7: documentation, cleanup, PR
+
+### Changes
+
+- `docs/blocks/`: `architecture.md` (the map: layers, what changed under the
+  science, templates, open items), `graph-schema.md` (file reference and
+  rules), `blocks.md` (generated from the `ParamSpec`s by
+  `scripts/write_block_reference.py`; a test pins the file to the generator),
+  `adding-a-block.md`. `equivalence.md` and `feedback.md` from phases 2 and 5.
+- Package docs: `architecture.md` compatibility rule and robot control flow
+  rewritten for the branch; `robot_safety.md` names the maintained drivers,
+  the `commands`-per-tick rule for graph runs and the legacy location. Both
+  READMEs point at the graph drivers, the editor and the legacy recipe;
+  plan-B phase 7 marked as superseded with what remains open.
+- Local tag `legacy-loop-baseline` on `main` (`e717286`), not pushed.
+
+### Gates
+
+```
+host:      Ran 218 tests in 12.829s  FAILED (errors=1, skipped=7)   # colorcet import only
+container: Ran 235 tests in 148.756s OK (skipped=3)                 # two Chrome tests, one docs test (docs/ not mounted)
+```
+
+### Still open after this branch
+
+- Every Gazebo gate (phase 5 multi-joint smoke, feedback sweep repeat, phase 6
+  editor with the simulation, plan-B A1/A3): needs `./run_model_docker.bash`
+  with the simulation launched.
+- Comparator goal-distance behaviour and the motor-signal experiment
+  (`feedback.md` §2, plan 5d follow-up), the three-ring template's transports.
+- `TaskGain` (plan 5e level 3) is a port-contract stub; the signed-product
+  layer is not vectorised.

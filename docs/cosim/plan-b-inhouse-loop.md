@@ -249,6 +249,14 @@ this file's "Progress" section.
 bodies, update `docs/architecture.md` "Robot control flow", `docs/robot_safety.md`,
 `README.md`. Open PR to `main`.
 
+*Superseded on `blocks-refactor` (2026-09-30):* the three loop bodies were not
+deleted but moved unchanged to `legacy/` with the other flat scripts; the
+`--cosim` flag was never added. `scripts/run_graph.py` (block graphs through
+the same `FTILoop`) is the maintained driver and produces the collector layout;
+B.4 (build-time generators, continuous proprioception) is done and characterised
+in `docs/blocks/feedback.md`; A6 is met by `legacy_collector_record` from graph
+runs. Gazebo acceptance items (A1 with the plugin stepper, A3) remain open.
+
 ## B.9 Acceptance criteria
 
 - A1. With `PluginStepper`, two runs of the same trial (same seed, same goal) produce

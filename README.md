@@ -6,10 +6,35 @@ in this checkout. Docker supplies Ubuntu 20.04, ROS Noetic, Python 3.8, NEST
 
 ## Block architecture and visual editor (branch `blocks-refactor`)
 
-The next step after the co-simulation loop is to turn the model into parameterised
-blocks (Ring, Fourier readout, Homeostasis, Gain, Encoder, Decoder, Joint), run the
-topology saved in a graph file, and draw that graph in the browser. The plan, its
-decisions and open questions are in [`docs/blocks/plan.md`](docs/blocks/plan.md).
+The model is a graph of parameterised blocks (Ring, Fourier readout, Homeostasis,
+Gain, Encoder, Decoder, Joint, Goal, the forward-kinematics blocks and two
+composites) assembled in Python or loaded from a `*.graph.json` file, run through
+the co-simulation loop, and drawn in the browser. Plan: [`docs/blocks/plan.md`](docs/blocks/plan.md);
+progress and gate results per phase: [`docs/blocks/progress.md`](docs/blocks/progress.md);
+map: [`docs/blocks/architecture.md`](docs/blocks/architecture.md); block
+reference: [`docs/blocks/blocks.md`](docs/blocks/blocks.md); file format:
+[`docs/blocks/graph-schema.md`](docs/blocks/graph-schema.md); measurements:
+[`docs/blocks/equivalence.md`](docs/blocks/equivalence.md) and
+[`docs/blocks/feedback.md`](docs/blocks/feedback.md).
+
+```bash
+cd src/tiago_ring_controller
+PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s test -p "test_*.py"   # host: fakes only
+python3 -B scripts/run_graph.py --template two_ring_single_joint --engines fake --goal 0.6
+```
+
+Inside the container (from the package root):
+
+```bash
+python3 -B scripts/run_graph.py --template two_ring_single_joint --engines nest --goal 0.6
+python3 -B scripts/run_graph.py src/tiago_ring_controller/graph/examples/two_ring_single_joint.graph.json --engines full --dashboard
+```
+
+`--dashboard` serves <http://localhost:8765/> (trials) and <http://localhost:8765/editor>
+(the graph editor: palette, drag-and-drop blocks, edges, parameters, validation,
+load/save, run in session). The flat research scripts that produced the paper
+results are frozen under `src/tiago_ring_controller/legacy/` (see its README);
+`main` and the tag `legacy-loop-baseline` keep them at their original paths.
 
 ## Co-simulation refactor (branch `cosim-loop`)
 
@@ -92,10 +117,12 @@ cd /home/aung/SHU/Ring-Attractor-SO-2-Joint-Architecture
 ```
 
 This builds only your controller incrementally, then opens a shell with ROS and
-NEST configured. The shell starts in the controller's `src` directory, where its
-relative configuration paths work. Run, for example:
+NEST configured. The shell starts in the controller's `src` directory. The
+maintained drivers run from the package root; the frozen research scripts run
+from `legacy/` with the folder and the package on the path:
 
 ```bash
+cd ../legacy && export PYTHONPATH=$PWD:$PWD/../src:$PYTHONPATH
 python3 single_ring.py
 python3 multi_ring_component.py
 ```
@@ -130,10 +157,11 @@ docker exec --user "$(id -u):$(id -g)" -it \
   tiago-ring bash --rcfile /model_repo/docker/bashrc -i
 ```
 
-For example, inspect camera frames without opening a second viewer:
+For example, inspect camera frames without opening a second viewer (a legacy
+script, run from `legacy/` as above):
 
 ```bash
-python3 experiment_camera.py --headless --duration 10
+cd ../legacy && PYTHONPATH=$PWD:$PWD/../src:$PYTHONPATH python3 experiment_camera.py --headless --duration 10
 ```
 
 The launcher uses host networking. `ROS_MASTER_URI` defaults to
@@ -155,10 +183,10 @@ original `/tiago_public_ws/src/tiago_ring_controller` location. The override map
 in `docker/overrides.list` mounts your custom files over their original upstream
 locations. Edit overrides on the host and restart Docker to pick up all changes.
 
-Model outputs retain their original locations beneath the package, including
-`src/outputs/`, `src/collected_data/`, `src/plots/`, `src/results_plots/`, `results/`
-and `experiment_results/`. Existing results are preserved in the Git baseline;
-new result files appear in Git status so you can choose which to save.
+Model outputs are written beneath the package (`src/outputs/`, `legacy/outputs/`,
+`legacy/collected_data/`, `results/`, `experiment_results/`, or the `--out`
+directory of the drivers) and are not tracked on this branch; the Git baseline on
+`main` preserves the original results.
 
 Code and configuration edits need no image rebuild or `docker commit`. New Python
 processes read the mounted files. Training scripts can overwrite their default
