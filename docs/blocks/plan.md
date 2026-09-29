@@ -373,6 +373,12 @@ Deliverable: this file, reviewed. Decide the open questions in section 9.
   `test_output_schemas`, the fake-NEST topology tests, the real-NEST smoke test,
   all cosim tests. Update `setup.py` (packages only, no `py_modules`),
   `CMakeLists.txt` (install `scripts/`, not the legacy scripts), the READMEs.
+- Stop tracking generated results once their golden tests are gone:
+  `src/outputs/` (32 MB of analysis plots), `results/`, `outputs/`, the
+  `fourier_results.npz` copies; add them to `.gitignore`. Recorded videos and
+  torque logs were untracked already with the plan. `main` and the baseline tag keep
+  every file; `docker/check_recovery.py` will report them as differences, which is
+  its documented behaviour after intentional edits.
 - Gate: container suite green; `python3 legacy/single_ring.py` still runs from
   `legacy/`; `scripts/run_cosim_trial.py --engines nest` still runs (it imports
   `single_ring` from the legacy folder until phase 4 replaces it).
