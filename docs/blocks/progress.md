@@ -238,3 +238,91 @@ inverts the encoder's collector mapping by search. Host (`/usr/bin/python3`
 3.13): 196 tests, only the pre-existing `colorcet` import error.
 
 Not run: Gazebo and the dashboard (unchanged).
+
+## 2026-09-29 — Phase 4: graph schema, compiler, run from file, templates
+
+### Changes
+
+- `graph/schema.py`: JSON file (`ring-blocks/1`): blocks as declared (a composite
+  is one entry, its internals are not written), edges as `"block.port"`,
+  parameters written resolved (defaults filled) so Python and editor output are
+  byte-identical, `ui` opaque; every file problem reported at once (schema id,
+  unknown keys, unknown types/params, duplicate ids, bad port references, both
+  ends of an edge). `Graph.save/load/to_dict/from_dict`; `Graph.declared` and
+  `declared_edges` keep the file's view next to the expanded one.
+- `graph/compile.py`: `compile_graph(graph, engines="fake"|"nest"|"full")` →
+  `GraphNestEngine` + robot engine (fake, or Gazebo from `robot.engine`) +
+  transceivers generated from the signal blocks (`GoalBlockTF`,
+  `JointSensorTF`, `DecoderTF`, `JointCommandTF` → `arm_velocity_cmd` in the
+  MotorTF schema, `ProfileDecoderTF`, `ProbeTF`) + `LegacyViewTF` (`ring_counts`
+  for the dashboard, monitor and collector record when the single-joint motif
+  is present) + `FTILoop` with the legacy stop order. Datapack convention: one
+  datapack per block, named by the block id, fields = its output ports; an edge
+  `a.x -> b.y` reads datapack `a` field `x`. `graph_cosim_config` derives the
+  `CosimConfig` (joint, limits, profile, decoder, lead, seed) so `TrialWriter`,
+  `legacy_collector_record` and `run_dashboard_session` work unchanged.
+- Loop change: transceivers now see the datapacks produced earlier in the same
+  tick (`FTILoop._transceive` passes a merged view), so signal chains
+  sensor → decoder → command run within a tick (the signal graph is acyclic by
+  validation). Existing transceivers only read engine datapacks; unaffected.
+- `GraphNestEngine` inputs are the datapacks of the blocks feeding its
+  encoders (`encoder_sources`), not synthetic names.
+- `cosim/fake_backend.py`: the recording fake NEST moved into the package
+  (`engines="fake"` runs need no simulator); `test/support_fake_nest.py`
+  re-exports it and keeps the row-expansion helpers.
+- `graph/run.py`: `run_graph(graph_or_path, engines, goals, out_dir)` →
+  `TrialRecord`s with `meta["graph"]` (the resolved graph), the collector
+  layout when the motif is present, otherwise one JSON record per trial;
+  `run_graph_trial`. `cosim/runner.run_trial`/`trial_raster` duck-type the
+  NEST engine.
+- `graph/templates.py`: `two_ring_single_joint`, `three_ring_single_joint`
+  (`JointTriple`; the belief ring now gets a once-mode encoder from the first
+  measured angle, otherwise the goal transport has nothing to move),
+  `two_joint_forward_kinematics` (circular encoder mapping, one `OutputRing`
+  per output with its artifact key); `write_examples` → `graph/examples/*.graph.json`
+  (pinned to the templates by test).
+- `scripts/run_graph.py` (`--engines`, `--goal`, `--template`, `--validate`,
+  `--save`, `--out`, `--dashboard`: the existing page with the graph name in
+  its status; start/stop/reset as today). `Encoder.mapping="circular"`.
+- Tests: `test_graph_files.py` (10: round trips, example files, file problems,
+  compiler structure and config derivation, all templates run on the fakes,
+  collector layout, JSON records), phase 4 gates in `test_graph_real_nest.py`.
+
+### Gates (container)
+
+```
+Ran 222 tests in 112.989s   (full suite; the one failure was the test's row extraction, fixed)
+test_graph_real_nest.py after the fix: Ran 4 tests in 23.101s  OK
+PARITY ticks=203 stop=drive_settled q_final=0.5917
+```
+
+- `run_graph.py two_ring_single_joint.graph.json --engines nest` equals the
+  Python template run **and** the vectorised cosim runner (legacy transceivers,
+  `--model vectorised`) tick for tick: identical left/right/r1 deltas, velocity
+  horizons and joint positions on every one of the 203 ticks, same stop reason
+  and final angle (the same numbers as the phase-2 smoke).
+- Forward-kinematics template vs legacy `MultiRingDecode` (same seed, burn-in
+  300 ms, q1 then q2 injected 50 ms each, 300 ms; angles (0.9, −1.3)):
+
+  | | legacy | graph |
+  |---|---:|---:|
+  | q1 / q2 ring centroid | 13.41 / 78.40 | 14.79 / 78.50 |
+  | lift: total, decoded angle | 1086, 1.273 | 1084, 1.244 (L1 0.066, Δ 0.029 rad) |
+  | pitch | 1050, −0.705 | 1124, −0.551 (L1 0.162, Δ 0.154 rad) |
+  | yaw | 1251, −1.171 | 1283, −1.029 (L1 0.117, Δ 0.142 rad) |
+  | build time | | 5.2 s (signed-product layer still per-cell Connects) |
+
+  Exact counts are not expected (per-synapse legacy ring vs vectorised, RNG
+  streams); tolerances in the test: totals ±25 %, L1 ≤ 0.5, angle ≤ 0.35 rad.
+- Validation errors tested (`test_graph_files.py`); the three-ring template
+  builds and runs on the fakes and with NEST.
+
+Smokes with NEST (`scripts/run_graph.py`): two-ring 203 ticks, |err| 0.0083;
+forward kinematics 6 ticks, build 5.9 s, decoded angles per tick; three-ring
+`--max-steps 120`: settles after 10 ticks with |err| 0.5995, i.e. CT_goal
+produces no drive above the threshold in the first ten ticks. That is the
+phase 5 characterisation (trust weights, state mode and rate, lead), not a
+phase 4 gate.
+
+Not run: Gazebo (`--engines full --dashboard` needs the simulation), the
+browser (dashboard code unchanged; its fake end-to-end test is in the suite).

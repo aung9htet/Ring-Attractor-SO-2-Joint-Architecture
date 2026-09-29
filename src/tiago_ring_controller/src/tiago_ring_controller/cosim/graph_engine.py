@@ -10,13 +10,15 @@ changes followed by a kernel recalibration (see ``GeneratorStimulusPort``).
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 import numpy as np
 
 from ..blocks.base import BuildContext, PortKind
-from ..graph.graph import BuiltGraph, Graph
 from ..nest.kernel import recorder_events
+
+if TYPE_CHECKING:  # pragma: no cover - the graph package imports this module
+    from ..graph.graph import BuiltGraph, Graph
 from .datapack import DataPack
 from .engine import Engine, EngineStateError
 from .fakes import ring_readout
@@ -27,7 +29,7 @@ class GraphNestEngine(Engine):
     def __init__(
         self,
         backend: Any,
-        graph: Graph,
+        graph: "Graph",
         step_mode: Optional[str] = None,
         name: str = "nest",
         config_dir: Optional[str] = None,
@@ -41,12 +43,17 @@ class GraphNestEngine(Engine):
             raise ValueError("step_mode must be 'run' or 'simulate'")
         self.config_dir = config_dir
         self.encoder_ids = [block.id for block in graph.neural_blocks() if hasattr(block, "drive")]
-        self.inputs = frozenset("%s.angle" % block_id for block_id in self.encoder_ids)
+        #: encoder id -> (source block id, source port): the datapack and field carrying its angle
+        self.encoder_sources: Dict[str, Any] = {}
+        for encoder_id in self.encoder_ids:
+            for edge in graph.edges_into(graph.blocks[encoder_id], "angle"):
+                self.encoder_sources[encoder_id] = (edge.source.block.id, edge.source.port.name)
+        self.inputs = frozenset(source for source, _ in self.encoder_sources.values())
         self.outputs = frozenset(
             block.id for block in graph.neural_blocks()
             if any(port.kind is PortKind.SIGNAL and not port.is_input for port in block.ports)
         )
-        self.built: Optional[BuiltGraph] = None
+        self.built: Optional["BuiltGraph"] = None
         self.prepared = False
         self.pending: Dict[str, DataPack] = {}
         self.last: Dict[str, DataPack] = {}
@@ -148,10 +155,11 @@ class GraphNestEngine(Engine):
             raise EngineStateError("graph engine has not been reset")
         changed = False
         for encoder in self.built.encoders():
-            pack = self.pending.pop("%s.angle" % encoder.id, None)
+            source = self.encoder_sources.get(encoder.id)
+            pack = None if source is None else self.pending.get(source[0])
             if pack is None:
                 continue
-            angle = float(pack["angle"])
+            angle = float(pack[source[1]])
             if encoder.drive(angle, self.kernel_time_ms, dt_ms, self._ring_centroid(encoder.id)):
                 changed = True
                 self.applied.append({

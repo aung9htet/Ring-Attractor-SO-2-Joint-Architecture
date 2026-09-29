@@ -1,0 +1,201 @@
+{
+  "schema": "ring-blocks/1",
+  "name": "two joint forward kinematics",
+  "simulation": {
+    "dt_ms": 50.0,
+    "nest_lead_steps": 0,
+    "max_steps": 6,
+    "rng_seed": 13579,
+    "local_num_threads": 1,
+    "step_mode": "run",
+    "reset_mode": "rebuild"
+  },
+  "blocks": [
+    {
+      "id": "q1",
+      "type": "Ring",
+      "params": {
+        "population_size": 100,
+        "variant": "legacy",
+        "max_distance": 50.0,
+        "excitation_std_dev": 10.0,
+        "inhibition_std_dev": 5.0,
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "q2",
+      "type": "Ring",
+      "params": {
+        "population_size": 100,
+        "variant": "legacy",
+        "max_distance": 50.0,
+        "excitation_std_dev": 10.0,
+        "inhibition_std_dev": 5.0,
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "enc_q1",
+      "type": "Encoder",
+      "params": {
+        "half_width": 5,
+        "rate_hz": 200.0,
+        "weight": 4500.0,
+        "duration_ticks": 1,
+        "mode": "once",
+        "dead_band": 0,
+        "mapping": "circular",
+        "joint_min": -1.0,
+        "joint_max": 1.0
+      }
+    },
+    {
+      "id": "enc_q2",
+      "type": "Encoder",
+      "params": {
+        "half_width": 5,
+        "rate_hz": 200.0,
+        "weight": 4500.0,
+        "duration_ticks": 1,
+        "mode": "once",
+        "dead_band": 0,
+        "mapping": "circular",
+        "joint_min": -1.0,
+        "joint_max": 1.0
+      }
+    },
+    {
+      "id": "angle_q1",
+      "type": "Goal",
+      "params": {
+        "angle_rad": 0.0
+      }
+    },
+    {
+      "id": "angle_q2",
+      "type": "Goal",
+      "params": {
+        "angle_rad": 0.0
+      }
+    },
+    {
+      "id": "product",
+      "type": "SignedProduct",
+      "params": {
+        "grid_size": 32,
+        "dc_baseline": 120.0,
+        "input_weight": 700.0,
+        "epsilon": 1e-09
+      }
+    },
+    {
+      "id": "lift",
+      "type": "OutputRing",
+      "params": {
+        "size": 100,
+        "dc_baseline": 200.0,
+        "weight_scale": 1000.0,
+        "weights_artifact": "",
+        "weights_key": "W_signed_lift"
+      }
+    },
+    {
+      "id": "decode_lift",
+      "type": "ProfileDecoder",
+      "params": {
+        "method": "sawtooth"
+      }
+    },
+    {
+      "id": "pitch",
+      "type": "OutputRing",
+      "params": {
+        "size": 100,
+        "dc_baseline": 200.0,
+        "weight_scale": 1000.0,
+        "weights_artifact": "",
+        "weights_key": "W_signed_pitch"
+      }
+    },
+    {
+      "id": "decode_pitch",
+      "type": "ProfileDecoder",
+      "params": {
+        "method": "sawtooth"
+      }
+    },
+    {
+      "id": "yaw",
+      "type": "OutputRing",
+      "params": {
+        "size": 100,
+        "dc_baseline": 200.0,
+        "weight_scale": 1000.0,
+        "weights_artifact": "",
+        "weights_key": "W_signed_yaw"
+      }
+    },
+    {
+      "id": "decode_yaw",
+      "type": "ProfileDecoder",
+      "params": {
+        "method": "sawtooth"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "angle_q1.angle",
+      "to": "enc_q1.angle"
+    },
+    {
+      "from": "angle_q2.angle",
+      "to": "enc_q2.angle"
+    },
+    {
+      "from": "enc_q1.stim",
+      "to": "q1.stim"
+    },
+    {
+      "from": "enc_q2.stim",
+      "to": "q2.stim"
+    },
+    {
+      "from": "q1.spikes",
+      "to": "product.ring_a"
+    },
+    {
+      "from": "q2.spikes",
+      "to": "product.ring_b"
+    },
+    {
+      "from": "product.features",
+      "to": "lift.features"
+    },
+    {
+      "from": "lift.profile",
+      "to": "decode_lift.profile"
+    },
+    {
+      "from": "product.features",
+      "to": "pitch.features"
+    },
+    {
+      "from": "pitch.profile",
+      "to": "decode_pitch.profile"
+    },
+    {
+      "from": "product.features",
+      "to": "yaw.features"
+    },
+    {
+      "from": "yaw.profile",
+      "to": "decode_yaw.profile"
+    }
+  ],
+  "robot": {
+    "engine": "fake",
+    "stepper": "clock_wait"
+  }
+}

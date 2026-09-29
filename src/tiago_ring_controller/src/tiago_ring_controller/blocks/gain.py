@@ -45,6 +45,7 @@ class Gain(Block):
         )
 
     def build(self, ctx: BuildContext, inputs: Mapping[str, Sequence[Connection]]) -> None:
+        self.feedback_targets = {}
         ring = self._source_population(self._single_input(inputs, "ring"))
         left = self._source_population(self._single_input(inputs, "left_in"))
         right = self._source_population(self._single_input(inputs, "right_in"))

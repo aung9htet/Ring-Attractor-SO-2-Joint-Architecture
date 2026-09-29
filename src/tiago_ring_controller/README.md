@@ -186,6 +186,28 @@ Tests are `test/test_cosim_loop.py`, `test/test_cosim_engines.py` (fake NEST and
 fake ROS transport) and `test/test_cosim_real_nest.py` (parity with the legacy
 per-tick loop; runs only with the pinned NEST).
 
+## Graph files (branch `blocks-refactor`)
+
+An experiment is a graph of blocks (`tiago_ring_controller.blocks`), assembled in
+Python (`tiago_ring_controller.graph.Graph`) or loaded from a JSON file
+(`*.graph.json`, schema `ring-blocks/1`) and run through the same loop:
+
+```bash
+cd /tiago_public_ws/src/tiago_ring_controller
+python3 scripts/run_graph.py --template two_ring_single_joint --engines nest --goal 0.6
+python3 scripts/run_graph.py src/tiago_ring_controller/graph/examples/two_ring_single_joint.graph.json --engines full --dashboard
+python3 scripts/run_graph.py src/tiago_ring_controller/graph/examples/two_joint_forward_kinematics.graph.json --engines nest
+python3 scripts/run_graph.py my.graph.json --validate
+```
+
+The three reference architectures are template functions in
+`graph/templates.py` with example files under `graph/examples/`
+(`two_ring_single_joint`: today's model, tick-for-tick equal to the cosim runner
+on the vectorised model; `three_ring_single_joint`: target/belief/actual rings
+with two compare-and-transport motifs; `two_joint_forward_kinematics`: the
+legacy two-joint stack). `--engines fake` runs without any simulator. The plan and
+progress log are in the repository's `docs/blocks/`.
+
 ## Artifacts and results
 
 Checked-in files under `src/config/` are scientific inputs and compatibility

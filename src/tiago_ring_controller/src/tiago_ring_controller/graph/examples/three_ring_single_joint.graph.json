@@ -1,0 +1,92 @@
+{
+  "schema": "ring-blocks/1",
+  "name": "three ring single joint 5",
+  "simulation": {
+    "dt_ms": 50.0,
+    "nest_lead_steps": 1,
+    "max_steps": 400,
+    "rng_seed": 13579,
+    "local_num_threads": 1,
+    "step_mode": "run",
+    "reset_mode": "rebuild"
+  },
+  "blocks": [
+    {
+      "id": "jt",
+      "type": "JointTriple",
+      "params": {
+        "population_size": 200,
+        "num_fourier_k": 20,
+        "half_width": 5,
+        "mapping": "collector",
+        "joint_min": -1.4172695167359413,
+        "joint_max": 1.4171452891568528,
+        "state_mode": "continuous",
+        "state_rate_hz": 200.0,
+        "goal_feedback_weight": -0.6,
+        "sense_feedback_weight": -0.6
+      }
+    },
+    {
+      "id": "dec",
+      "type": "Decoder",
+      "params": {
+        "source": "gain_counts",
+        "spike_scale": 1.0,
+        "tau_s": 0.5125923387284963,
+        "delay_steps": 0,
+        "gain_positive": 0.0011,
+        "gain_negative": -0.0011,
+        "drive_threshold": 5.0,
+        "n_settle": 10,
+        "horizon": 4
+      }
+    },
+    {
+      "id": "j5",
+      "type": "Joint",
+      "params": {
+        "index": 5,
+        "joint_min": -1.4172695167359413,
+        "joint_max": 1.4171452891568528
+      }
+    },
+    {
+      "id": "goal",
+      "type": "Goal",
+      "params": {
+        "angle_rad": 0.6
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "goal.angle",
+      "to": "jt.goal_angle"
+    },
+    {
+      "from": "j5.angle",
+      "to": "jt.measured_angle"
+    },
+    {
+      "from": "j5.angle",
+      "to": "jt.initial_angle"
+    },
+    {
+      "from": "jt.left_counts",
+      "to": "dec.left_counts"
+    },
+    {
+      "from": "jt.right_counts",
+      "to": "dec.right_counts"
+    },
+    {
+      "from": "dec.velocity",
+      "to": "j5.velocity"
+    }
+  ],
+  "robot": {
+    "engine": "fake",
+    "stepper": "clock_wait"
+  }
+}

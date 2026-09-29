@@ -448,7 +448,8 @@ class MultiRingBlockTests(unittest.TestCase):
         goal, joint = g.add(Goal("goal")), g.add(Joint("j6"))
         g.connect(goal.angle, jt.goal_angle)
         g.connect(joint.angle, jt.measured_angle)
-        self.assertEqual(len(g.blocks), 3 + 3 + 2 + 2 * 2 + 2)
+        g.connect(joint.angle, jt.initial_angle)
+        self.assertEqual(len(g.blocks), 3 + 3 + 3 + 2 * 2 + 2)
         self.assertEqual(sorted(b.type_name for b in g.blocks.values()).count("Ring"), 3)
         # Comparator artifacts exist only for N=100/200; a 20-ring cannot load them.
         with self.assertRaisesRegex(BlockError, "^Homeostasis 'j__ct_goal__cmp': cannot load fitted weights"):
@@ -456,14 +457,17 @@ class MultiRingBlockTests(unittest.TestCase):
         g = Graph("triple200")
         jt = g.add(JointTriple("j"))
         g.connect(g.add(Goal("goal")).angle, jt.goal_angle)
-        g.connect(g.add(Joint("j6")).angle, jt.measured_angle)
+        joint = g.add(Joint("j6"))
+        g.connect(joint.angle, jt.measured_angle)
+        g.connect(joint.angle, jt.initial_angle)
         backend = RecordingNest()
         built = g.build(BuildContext(backend))
         self.assertEqual(built.order[:3], ["j__T", "j__B", "j__A"])
         self.assertEqual(g.blocks["j__ct_goal__gain"].feedback_targets, {"j__B": 190})
         self.assertEqual(g.blocks["j__ct_sense__gain"].feedback_targets, {"j__B": 190})
         self.assertEqual(g.blocks["j__enc_state"].params["mode"], "continuous")
-        self.assertEqual(len(built.encoders()), 2)
+        self.assertEqual(g.blocks["j__enc_belief"].params["mode"], "once")
+        self.assertEqual(len(built.encoders()), 3)
 
 
 class GraphEngineFakeTests(unittest.TestCase):
@@ -471,14 +475,15 @@ class GraphEngineFakeTests(unittest.TestCase):
         backend = RecordingNest()
         graph = single_joint_graph(rng_seed=3, local_num_threads=1)
         engine = GraphNestEngine(backend, graph)
-        self.assertEqual(engine.inputs, {"enc_state.angle", "enc_goal.angle"})
+        self.assertEqual(engine.inputs, {"j6", "goal"})     # the blocks feeding the encoders
+        self.assertEqual(engine.encoder_sources, {"enc_state": ("j6", "angle"), "enc_goal": ("goal", "angle")})
         self.assertEqual(engine.outputs, {"r1", "r2", "cmp", "gain"})
         engine.initialize()
         engine.reset()
         self.assertEqual(engine.rebuild_count, 1)
         engine.set_datapacks({
-            "enc_goal.angle": DataPack("enc_goal.angle", 0.0, {"angle": 0.6}),
-            "enc_state.angle": DataPack("enc_state.angle", 0.0, {"angle": 0.0}),
+            "goal": DataPack("goal", 0.0, {"angle": 0.6}),
+            "j6": DataPack("j6", 0.0, {"angle": 0.0, "velocity_measured": 0.0}),
         })
         engine.advance(50.0)
         packs = engine.get_datapacks()
@@ -494,7 +499,7 @@ class GraphEngineFakeTests(unittest.TestCase):
         self.assertEqual(engine.recalibrations, 1)
         engine.advance(50.0)
         self.assertEqual(engine.recalibrations, 1)
-        engine.set_datapacks({"enc_state.angle": DataPack("enc_state.angle", 100.0, {"angle": 0.3})})
+        engine.set_datapacks({"j6": DataPack("j6", 100.0, {"angle": 0.3})})
         engine.advance(50.0)                                   # once mode: ignored, no recalibration
         self.assertEqual(engine.recalibrations, 1)
         self.assertEqual(engine.hidden_ms, 0.0)

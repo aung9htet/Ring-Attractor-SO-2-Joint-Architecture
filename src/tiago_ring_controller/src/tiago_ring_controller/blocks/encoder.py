@@ -7,7 +7,11 @@ from typing import Any, ClassVar, Dict, Mapping, Optional, Sequence, Tuple
 import numpy as np
 
 from ..control.profiles import get_legacy_control_profile
-from ..math.circular import preferred_angles
+from ..math.circular import angle_to_neuron_index, preferred_angles
+
+
+def _profile_for(mapping: str):
+    return None if mapping == "circular" else get_legacy_control_profile(mapping)
 from ..nest.populations import (
     BuildError,
     Population,
@@ -40,7 +44,7 @@ class Encoder(Block):
 
     def __init__(self, id: str, **params: Any) -> None:
         super().__init__(id, **params)
-        self.profile = get_legacy_control_profile(self.params["mapping"])
+        self.profile = _profile_for(self.params["mapping"])
         self.stimulus: Optional[StimulusGenerators] = None
         self.ring_id: Optional[str] = None
         self.ring_size = 0
@@ -48,6 +52,10 @@ class Encoder(Block):
 
     # -- structure ----------------------------------------------------------
     def build(self, ctx: BuildContext, inputs: Mapping[str, Sequence[Connection]]) -> None:
+        # A rebuild (new trial in rebuild mode) starts from no generators.
+        self.stimulus = None
+        self.ring_id = None
+        self.ring_size = 0
         self.outputs = {"stim": self}
         self.built = True
 
@@ -72,12 +80,16 @@ class Encoder(Block):
         self.active = False
 
     def ring_index(self, angle_rad: float) -> int:
+        if self.profile is None:
+            return angle_to_neuron_index(float(angle_rad), self.ring_size)
         return self.profile.joint_to_ring_index(
             float(angle_rad), self.params["joint_min"], self.params["joint_max"], self.ring_size,
             requested_half_width=self.params["half_width"],
         )
 
     def effective_half_width(self) -> int:
+        if self.profile is None:
+            return int(self.params["half_width"])
         return self.profile.effective_half_width(self.params["half_width"])
 
     def rates_for(self, angle_rad: float) -> np.ndarray:
@@ -163,7 +175,7 @@ class FeatureEncoder(Block):
 
     def __init__(self, id: str, **params: Any) -> None:
         super().__init__(id, **params)
-        self.profile = get_legacy_control_profile(self.params["mapping"])
+        self.profile = _profile_for(self.params["mapping"])
         self.population: Optional[Population] = None
         self.reset()
 
@@ -186,9 +198,12 @@ class FeatureEncoder(Block):
 
     def rates_for(self, angle_rad: float) -> np.ndarray:
         size = self.source_ring_size
-        index = self.profile.joint_to_ring_index(
-            float(angle_rad), self.params["joint_min"], self.params["joint_max"], size, requested_half_width=0
-        )
+        if self.profile is None:
+            index = angle_to_neuron_index(float(angle_rad), size)
+        else:
+            index = self.profile.joint_to_ring_index(
+                float(angle_rad), self.params["joint_min"], self.params["joint_max"], size, requested_half_width=0
+            )
         theta = preferred_angles(size)[int(index) % size]
         harmonics = int(self.params["num_fourier_k"])
         rates = np.zeros(2 * harmonics)

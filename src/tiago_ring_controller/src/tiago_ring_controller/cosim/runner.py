@@ -182,6 +182,13 @@ def _find(loop: FTILoop, kind: type) -> Optional[Any]:
     return None
 
 
+def _find_named(loop: FTILoop, name: str) -> Optional[Any]:
+    for engine in loop.engines:
+        if engine.name == name:
+            return engine
+    return None
+
+
 def run_trial(
     loop: FTILoop,
     goal_rad: float,
@@ -207,8 +214,8 @@ def run_trial(
     record.meta["goal_ring_index"] = goal_tf.last_index
     proprio = _find(loop, ProprioceptionTF)
     record.meta["initial_ring_index"] = None if proprio is None else proprio.last_index
-    nest_engine = _find(loop, NestEngine)
-    if nest_engine is not None:
+    nest_engine = _find(loop, NestEngine) or _find_named(loop, "nest")
+    if nest_engine is not None and hasattr(nest_engine, "hidden_ms"):
         record.meta["nest_hidden_ms"] = nest_engine.hidden_ms
         record.meta["nest_step_mode"] = nest_engine.step_mode
         record.meta["nest_readout_mode"] = nest_engine.readout_mode
@@ -228,10 +235,20 @@ def run_trial(
 
 
 def trial_raster(loop: FTILoop) -> Dict[str, np.ndarray]:
-    nest_engine = _find(loop, NestEngine)
-    if nest_engine is None:
-        return {key: np.array([], dtype=float if key.endswith("times") else int) for key in RING_RASTER_FIELDS}
-    return nest_engine.raster()
+    """Raster of the trial in the collector's field set (empty when no NEST engine)."""
+
+    nest_engine = _find(loop, NestEngine) or _find_named(loop, "nest")
+    raster_fn = getattr(nest_engine, "raster", None)
+    empty = {key: np.array([], dtype=float if key.endswith("times") else int) for key in RING_RASTER_FIELDS}
+    if not callable(raster_fn):
+        return empty
+    raster = raster_fn()
+    if all(key in raster for key in RING_RASTER_FIELDS):
+        return {key: np.asarray(raster[key]) for key in RING_RASTER_FIELDS}
+    legacy_view = getattr(nest_engine, "legacy_raster_view", None)
+    if callable(legacy_view):
+        return dict(empty, **{k: np.asarray(v) for k, v in legacy_view(raster).items() if k in RING_RASTER_FIELDS})
+    return empty
 
 
 # -- legacy artifact mapping ----------------------------------------------

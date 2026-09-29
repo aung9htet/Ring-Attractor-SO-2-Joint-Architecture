@@ -207,8 +207,8 @@ ENCODER_SCHEMA = ParamSchema("Encoder", [
     ParamSpec("duration_ticks", "int", 1, minimum=1, doc="ticks a bump stays on"),
     ParamSpec("mode", "str", "once", choices=("once", "continuous", "corrective"), doc="when to stimulate"),
     ParamSpec("dead_band", "int", 0, minimum=0, doc="corrective mode: minimum |centroid - index| in ring indices"),
-    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration"),
-              doc="angle -> ring index mapping (legacy control profile)"),
+    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration", "circular"),
+              doc="angle -> ring index: a legacy control profile over [joint_min, joint_max], or the full circle"),
     ParamSpec("joint_min", "float", -1.0, unit="rad", doc="lower joint limit of the mapping"),
     ParamSpec("joint_max", "float", 1.0, unit="rad", doc="upper joint limit of the mapping"),
 ])
@@ -219,7 +219,7 @@ FEATURE_ENCODER_SCHEMA = ParamSchema("FeatureEncoder", [
     ParamSpec("weight", "float", 1.0, doc="generator -> target synapse weight scale (multiplied by fitted weights)"),
     ParamSpec("joint_min", "float", -1.0, unit="rad"),
     ParamSpec("joint_max", "float", 1.0, unit="rad"),
-    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration")),
+    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration", "circular")),
     ParamSpec("population_size", "int", 200, minimum=3, doc="ring size the angle is mapped onto"),
 ])
 

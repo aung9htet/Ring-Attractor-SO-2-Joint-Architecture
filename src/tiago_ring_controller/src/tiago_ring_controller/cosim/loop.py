@@ -320,7 +320,10 @@ class FTILoop:
     ) -> Dict[str, DataPack]:
         outputs: Dict[str, DataPack] = {}
         for tf in self.tfs:
-            produced = tf(cache, ctx)
+            # Engine datapacks plus what earlier transceivers produced this tick, so a
+            # signal chain (sensor -> decoder -> command) runs within one tick.
+            view = dict(cache, **outputs) if outputs else cache
+            produced = tf(view, ctx)
             for key, pack in produced.items():
                 if key not in tf.outputs:
                     raise EngineError(

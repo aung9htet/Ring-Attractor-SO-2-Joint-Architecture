@@ -49,14 +49,20 @@ class Transport(Composite):
 
 
 class JointTriple(Composite):
-    """Target / belief / actual rings with CT_goal (T moves B, motor signal) and CT_sense (A corrects B)."""
+    """Target / belief / actual rings with CT_goal (T moves B, motor signal) and CT_sense (A corrects B).
+
+    The belief ring starts from the first measured angle (``enc_belief``, mode
+    ``once``), like the state ring of the two-ring model; afterwards only the
+    two transports move it.
+    """
 
     type_name: ClassVar[str] = "JointTriple"
     schema = JOINT_TRIPLE_SCHEMA
     neural: ClassVar[bool] = True
     ports: ClassVar[Tuple[Port, ...]] = (
         signal_in("goal_angle", "desired angle → target ring"),
-        signal_in("measured_angle", "measured angle → actual ring"),
+        signal_in("measured_angle", "measured angle → actual ring (mode state_mode)"),
+        signal_in("initial_angle", "measured angle → belief ring once, at trial start"),
         signal_out("left_counts", "CT_goal left gain counts (motor signal)"),
         signal_out("right_counts", "CT_goal right gain counts (motor signal)"),
         signal_out("sense_left_counts", "CT_sense left counts (prediction error)"),
@@ -73,12 +79,14 @@ class JointTriple(Composite):
         rings = {name: Ring(self.sub_id(name), population_size=size) for name in ("T", "B", "A")}
         readouts = {name: FourierReadout(self.sub_id("f" + name), num_fourier_k=harmonics) for name in ("T", "B", "A")}
         enc_goal = Encoder(self.sub_id("enc_goal"), mode="once", **mapping)
+        enc_belief = Encoder(self.sub_id("enc_belief"), mode="once", **mapping)
         enc_state = Encoder(self.sub_id("enc_state"), mode=p["state_mode"], rate_hz=p["state_rate_hz"], **mapping)
         ct_goal = Transport(self.sub_id("ct_goal"), gain={"gain_to_ring_weight": p["goal_feedback_weight"]})
         ct_sense = Transport(self.sub_id("ct_sense"), gain={"gain_to_ring_weight": p["sense_feedback_weight"]})
-        blocks: List[Block] = list(rings.values()) + list(readouts.values()) + [enc_goal, enc_state, ct_goal, ct_sense]
+        blocks: List[Block] = list(rings.values()) + list(readouts.values()) + [enc_goal, enc_belief, enc_state, ct_goal, ct_sense]
         edges = [
             (enc_goal.ref("stim"), rings["T"].ref("stim"), {}),
+            (enc_belief.ref("stim"), rings["B"].ref("stim"), {}),
             (enc_state.ref("stim"), rings["A"].ref("stim"), {}),
         ]
         for name in ("T", "B", "A"):
@@ -93,6 +101,7 @@ class JointTriple(Composite):
         port_map = {
             "goal_angle": enc_goal.ref("angle"),
             "measured_angle": enc_state.ref("angle"),
+            "initial_angle": enc_belief.ref("angle"),
             "left_counts": ct_goal.ref("left_counts"),
             "right_counts": ct_goal.ref("right_counts"),
             "sense_left_counts": ct_sense.ref("left_counts"),

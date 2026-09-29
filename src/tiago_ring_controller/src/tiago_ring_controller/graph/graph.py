@@ -71,10 +71,19 @@ class Edge:
     source: PortRef
     target: PortRef
     params: Dict[str, Any] = field(default_factory=dict)
+    #: the ports as written (composite ports before resolution), for the file
+    declared_source: Optional[PortRef] = None
+    declared_target: Optional[PortRef] = None
 
     @property
     def key(self) -> str:
         return "%s -> %s" % (self.source.key, self.target.key)
+
+    @property
+    def declared_key(self) -> str:
+        source = self.declared_source or self.source
+        target = self.declared_target or self.target
+        return "%s -> %s" % (source.key, target.key)
 
     @property
     def kind(self) -> PortKind:
@@ -128,22 +137,27 @@ class Graph:
         self.simulation = simulation or Simulation(**simulation_kwargs)
         self.blocks: "OrderedDict[str, Block]" = OrderedDict()
         self.composites: "OrderedDict[str, Composite]" = OrderedDict()
+        #: blocks as added (composites and primitives, not composite internals): the file's block list
+        self.declared: "OrderedDict[str, Block]" = OrderedDict()
         self._port_maps: Dict[str, Dict[str, PortRef]] = {}
         self.edges: List[Edge] = []
+        self.declared_edges: List[Edge] = []
         self.robot: Dict[str, Any] = {"engine": "fake", "stepper": "clock_wait"}
 
     # -- construction -----------------------------------------------------
-    def add(self, block: Block) -> Block:
+    def add(self, block: Block, _declared: bool = True) -> Block:
         if block.id in self.blocks or block.id in self.composites:
             raise GraphError(["duplicate block id %r" % block.id])
+        if _declared:
+            self.declared[block.id] = block
         if isinstance(block, Composite):
             sub_blocks, edges, port_map = block.expand()
             self.composites[block.id] = block
             self._port_maps[block.id] = port_map
             for sub in sub_blocks:
-                self.add(sub)
+                self.add(sub, _declared=False)
             for source, target, params in edges:
-                self.connect(source, target, **params)
+                self.connect(source, target, _internal=True, **params)
             return block
         self.blocks[block.id] = block
         return block
@@ -164,12 +178,29 @@ class Graph:
                 raise GraphError(["composite port mapping loops at %r" % ref.key])
         return ref
 
-    def connect(self, source: PortRef, target: PortRef, **params: Any) -> Edge:
+    def connect(self, source: PortRef, target: PortRef, _internal: bool = False, **params: Any) -> Edge:
         if not isinstance(source, PortRef) or not isinstance(target, PortRef):
             raise GraphError(["connect() takes PortRefs, e.g. graph.connect(r1.spikes, f1.ring)"])
         edge = Edge(self.resolve(source), self.resolve(target), dict(params))
+        if not _internal:
+            edge.declared_source, edge.declared_target = source, target
+            self.declared_edges.append(edge)
         self.edges.append(edge)
         return edge
+
+    def declared_ref(self, key: str) -> PortRef:
+        """``"block.port"`` → PortRef over the declared blocks (composites included)."""
+
+        if "." not in key:
+            raise GraphError(["port reference %r must be 'block.port'" % key])
+        block_id, port_name = key.rsplit(".", 1)
+        block = self.declared.get(block_id)
+        if block is None:
+            raise GraphError(["unknown block %r in port reference %r" % (block_id, key)])
+        try:
+            return block.ref(port_name)
+        except BlockError as exc:
+            raise GraphError([str(exc)])
 
     def block_ids(self) -> List[str]:
         return list(self.blocks)
@@ -325,8 +356,10 @@ class Graph:
             block.reset()
         return BuiltGraph(self, ctx, order, time.perf_counter() - started)
 
-    # -- description --------------------------------------------------------
+    # -- description and files ------------------------------------------------
     def describe(self) -> Dict[str, Any]:
+        """The resolved (expanded) graph, recorded into every trial's meta."""
+
         return OrderedDict(
             schema=SCHEMA_ID, name=self.name, simulation=self.simulation.to_dict(),
             blocks=[block.describe() for block in self.blocks.values()],
@@ -334,6 +367,28 @@ class Graph:
             edges=[OrderedDict(**{"from": e.source.key, "to": e.target.key}, **({"params": e.params} if e.params else {})) for e in self.edges],
             robot=dict(self.robot),
         )
+
+    def to_dict(self) -> Dict[str, Any]:
+        from .schema import graph_to_dict
+
+        return graph_to_dict(self)
+
+    @classmethod
+    def from_dict(cls, document: Mapping[str, Any]) -> "Graph":
+        from .schema import graph_from_dict
+
+        return graph_from_dict(document)
+
+    def save(self, path: str) -> str:
+        from .schema import save_graph
+
+        return save_graph(self, path)
+
+    @classmethod
+    def load(cls, path: str) -> "Graph":
+        from .schema import load_graph
+
+        return load_graph(path)
 
 
 __all__ = ["BuiltGraph", "Edge", "Graph", "GraphError", "SCHEMA_ID", "Simulation"]
