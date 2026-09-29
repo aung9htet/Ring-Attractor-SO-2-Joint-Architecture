@@ -71,7 +71,7 @@ forwarded when set. Use a different master port for independent simulations.
 | --- | --- |
 | `src/tiago_ring_controller/` | Complete original package, including scientific inputs and saved results |
 | `overrides/` | Camera world, custom motion template/YAML, and modified TIAGo startup script |
-| `recovered/experiment_results/` | Recovered workspace-level recordings |
+| `recovered/experiment_results/` | Local workspace-level recordings, ignored by Git |
 | `.runtime/catkin_ws/` | Writable Catkin overlay and build logs, ignored by Git |
 | `.runtime/home/` | Container user home, ROS/Gazebo logs and caches, ignored by Git |
 
@@ -84,6 +84,9 @@ Model outputs retain their original locations beneath the package, including
 `src/outputs/`, `src/collected_data/`, `src/plots/`, `src/results_plots/`, `results/`
 and `experiment_results/`. Existing results are preserved in the Git baseline;
 new result files appear in Git status so you can choose which to save.
+The entire `recovered/` directory and video files (`mp4`, `avi`, `mkv`, `mov`,
+`webm`) are excluded from Git. Existing recordings remain on your PC. On a fresh
+clone, the launcher creates an empty recordings directory for the Docker mount.
 
 Code and configuration edits need no image rebuild or `docker commit`. New Python
 processes read the mounted files. Training scripts can overwrite their default
@@ -93,7 +96,9 @@ recovered package's README and `docs/` for the original research workflows.
 ## Build and test
 
 Every launch performs an incremental build in a Catkin overlay extending the
-image's prebuilt TIAGo workspace. To rebuild within a running container:
+image's prebuilt TIAGo workspace. Catkin reads the original source locations and
+builds only `tiago_ring_controller`; the other 182 packages are skipped. All build
+products and workspace metadata stay in `.runtime/`. To rebuild within a running container:
 
 ```bash
 catkin build --workspace /model_repo/.runtime/catkin_ws tiago_ring_controller --no-deps -j2 -p1
@@ -130,6 +135,8 @@ python3 docker/check_recovery.py
 
 This verifies all 480 original files and modes. After intentional research edits,
 it reports those differences; it never restores files or changes manifests.
+This full recovery check requires the local recordings as well; a fresh clone
+without those ignored files will report them as missing.
 
 ## Environment maintenance
 

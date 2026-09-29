@@ -1,4 +1,11 @@
 /.runtime/
+# Local experiment recordings; keep video data off GitHub.
+/recovered/
+*.mp4
+*.avi
+*.mkv
+*.mov
+*.webm
 # Historical bytecode recovered from the image is explicitly included below.
 __pycache__/
 *.py[cod]

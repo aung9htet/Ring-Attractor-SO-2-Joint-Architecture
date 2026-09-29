@@ -81,7 +81,8 @@ fi
 if ! docker image inspect "$MODEL_IMAGE" >/dev/null 2>&1; then
     docker pull "$MODEL_IMAGE" || die 'Cannot pull the pinned image. Check network access and Docker Hub login.'
 fi
-mkdir -p "$repo_dir/.runtime/home" "$repo_dir/.runtime/catkin_ws/src"
+mkdir -p "$repo_dir/.runtime/home" "$repo_dir/.runtime/catkin_ws" \
+    "$repo_dir/recovered/experiment_results"
 (($#)) || set -- bash --rcfile /model_repo/docker/bashrc -i
 echo "Starting $container_name ($graphics); mounted repository: $repo_dir"
 docker "${args[@]}" "$MODEL_IMAGE" /model_repo/docker/start.bash "$@"
