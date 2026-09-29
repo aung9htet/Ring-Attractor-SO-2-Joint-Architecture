@@ -30,6 +30,7 @@ import queue
 import threading
 import time
 from collections import deque
+import os
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Callable, Dict, List, Optional
 
@@ -59,6 +60,21 @@ class DashboardState:
         }
         self.commands: "queue.Queue[Dict[str, Any]]" = queue.Queue()
         self._stop_requested = False
+        #: the graph document of the running session (editor: GET /api/graph), if any
+        self.graph: Optional[Dict[str, Any]] = None
+        self.graph_path: Optional[str] = None
+        #: replies to "graph" commands, keyed by request id (editor waits for the swap)
+        self.graph_replies: Dict[str, Dict[str, Any]] = {}
+
+    # -- graph documents (editor) ------------------------------------------------
+    def set_graph(self, document: Optional[Dict[str, Any]], path: Optional[str] = None) -> None:
+        with self._lock:
+            self.graph = document
+            self.graph_path = path
+
+    def graph_dict(self) -> Dict[str, Any]:
+        with self._lock:
+            return {"graph": self.graph, "path": self.graph_path}
 
     # -- pub/sub ----------------------------------------------------------
     def subscribe(self) -> "queue.Queue[str]":
@@ -211,21 +227,79 @@ class _Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _send_bytes(self, body: bytes, content_type: str, code: int = 200) -> None:
+        self.send_response(code)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-cache")
+        self.end_headers()
+        self.wfile.write(body)
+
     def do_GET(self) -> None:  # noqa: N802 - stdlib naming
+        from urllib.parse import parse_qs, urlparse
+
         state = self.server.state
-        if self.path in ("/", "/index.html"):
-            body = PAGE_HTML.encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(body)))
-            self.end_headers()
-            self.wfile.write(body)
-        elif self.path == "/state":
+        parsed = urlparse(self.path)
+        path = parsed.path
+        if path in ("/", "/index.html"):
+            self._send_bytes(PAGE_HTML.encode("utf-8"), "text/html; charset=utf-8")
+        elif path == "/state":
             self._send_json(state.state_dict())
-        elif self.path == "/events":
+        elif path == "/events":
             self._stream_events()
+        elif path in ("/editor", "/editor.html"):
+            self._send_static("editor.html")
+        elif path.startswith("/ui/"):
+            self._send_static(path[len("/ui/"):])
+        elif path == "/api/blocks":
+            from ..blocks import describe_types
+
+            self._send_json({"types": describe_types()})
+        elif path == "/api/graph":
+            self._send_json(state.graph_dict())
+        elif path == "/api/graph/examples":
+            from ..graph.templates import EXAMPLES_DIR, TEMPLATES
+
+            names = sorted(name[:-len(".graph.json")] for name in os.listdir(EXAMPLES_DIR) if name.endswith(".graph.json"))
+            self._send_json({"examples": names, "templates": sorted(TEMPLATES), "directory": EXAMPLES_DIR})
+        elif path.startswith("/api/graph/examples/"):
+            from ..graph.templates import EXAMPLES_DIR
+
+            name = path[len("/api/graph/examples/"):]
+            file_path = os.path.join(EXAMPLES_DIR, name + ".graph.json")
+            if not name or "/" in name or not os.path.isfile(file_path):
+                self._send_json({"error": "unknown example %r" % name}, 404)
+                return
+            self._graph_file_response(file_path)
+        elif path == "/api/graph/file":
+            query = parse_qs(parsed.query)
+            file_path = (query.get("path") or [""])[0]
+            if not file_path or not os.path.isfile(file_path):
+                self._send_json({"error": "no such file: %r" % file_path}, 404)
+                return
+            self._graph_file_response(file_path)
         else:
             self._send_json({"error": "not found"}, 404)
+
+    def _send_static(self, name: str) -> None:
+        from ..ui import STATIC_FILES, read_static
+
+        body = read_static(name)
+        if body is None:
+            self._send_json({"error": "not found"}, 404)
+            return
+        self._send_bytes(body, STATIC_FILES[name])
+
+    def _graph_file_response(self, file_path: str) -> None:
+        from ..graph import GraphError, load_graph
+
+        try:
+            graph = load_graph(file_path)
+        except (GraphError, OSError) as exc:
+            problems = getattr(exc, "problems", [str(exc)])
+            self._send_json({"error": "invalid graph file", "problems": problems, "path": file_path}, 400)
+            return
+        self._send_json({"graph": graph.to_dict(), "path": file_path, "problems": []})
 
     def _stream_events(self) -> None:
         state = self.server.state
@@ -300,8 +374,51 @@ class _Handler(BaseHTTPRequestHandler):
             state.request_stop()
             state.commands.put({"type": "quit"})
             self._send_json({"quit": True})
+        elif self.path in ("/api/graph/validate", "/api/graph/save", "/api/graph"):
+            self._graph_post(payload)
         else:
             self._send_json({"error": "not found"}, 404)
+
+    def _graph_post(self, payload: Dict[str, Any]) -> None:
+        """Validate (and canonicalise) a document; save it; or apply it to the session."""
+
+        from ..graph import GraphError
+        from ..graph.schema import dumps, graph_from_dict
+
+        state = self.server.state
+        document = payload.get("graph")
+        if not isinstance(document, dict):
+            self._send_json({"error": "payload needs a 'graph' object"}, 400)
+            return
+        try:
+            graph = graph_from_dict(document)
+            problems = graph.problems()
+        except GraphError as exc:
+            self._send_json({"problems": exc.problems, "valid": False}, 200)
+            return
+        canonical = graph.to_dict()
+        if problems:
+            self._send_json({"problems": problems, "valid": False, "graph": canonical}, 200)
+            return
+        response: Dict[str, Any] = {"problems": [], "valid": True, "graph": canonical, "text": dumps(graph)}
+        if self.path == "/api/graph/save":
+            path = payload.get("path")
+            if not path or not isinstance(path, str):
+                self._send_json({"error": "save needs a 'path'"}, 400)
+                return
+            try:
+                graph.save(path)
+            except OSError as exc:
+                self._send_json({"error": "cannot write %s: %s" % (path, exc)}, 400)
+                return
+            response["saved"] = path
+            state.set_graph(canonical, path)
+        elif self.path == "/api/graph":
+            request_id = str(payload.get("request_id") or "")
+            state.set_graph(canonical, payload.get("path") or state.graph_path)
+            state.commands.put({"type": "graph", "graph": canonical, "request_id": request_id})
+            response["queued"] = True
+        self._send_json(response)
 
 
 class DashboardHTTPServer(ThreadingHTTPServer):
@@ -343,8 +460,14 @@ def run_dashboard_session(
     state: DashboardState,
     on_trial: Optional[Callable[[int, TrialRecord, Dict[str, Any]], None]] = None,
     poll_s: float = 0.2,
+    on_graph: Optional[Callable[[Dict[str, Any]], Any]] = None,
 ) -> List[Dict[str, Any]]:
-    """Serve trials on demand until ``quit``.  Runs in the calling thread."""
+    """Serve trials on demand until ``quit``.  Runs in the calling thread.
+
+    ``on_graph(document)`` (the editor's *Run*) returns ``(loop, config)`` for a
+    new graph, compiled and initialised by the caller; the session swaps to it
+    between trials and shuts the previous loop down.
+    """
 
     from .loop import AnyOf, MaxSteps, SettledFlag
     from .runner import legacy_collector_record, run_trial, trial_raster
@@ -363,6 +486,30 @@ def run_dashboard_session(
             break
         if kind == "goal":
             state.set_status(next_goal=command["goal"], message="next goal %.4f rad" % command["goal"])
+            continue
+        if kind == "graph":
+            request_id = command.get("request_id", "")
+            if on_graph is None:
+                state.set_status(status="idle", message="this session cannot swap graphs")
+                state.graph_replies[request_id] = {"ok": False, "error": "no graph swap in this session"}
+                continue
+            state.set_status(status="resetting", message="compiling the new graph")
+            started = time.monotonic()
+            try:
+                new_loop, new_config = on_graph(command["graph"])
+            except Exception as exc:  # the operator decides what to do
+                state.set_status(status="error", message="graph failed: %s" % exc)
+                state.graph_replies[request_id] = {"ok": False, "error": str(exc)}
+                continue
+            try:
+                loop.shutdown()
+            except Exception:  # pragma: no cover - best effort
+                pass
+            loop, config = new_loop, new_config
+            state.set_status(status="idle", config=config.to_dict(), reset_mode=config.reset_mode,
+                             graph=command["graph"].get("name"),
+                             message="graph %r compiled in %.1f s" % (command["graph"].get("name"), time.monotonic() - started))
+            state.graph_replies[request_id] = {"ok": True}
             continue
         if kind == "reset":
             state.set_status(status="resetting", message="rebuilding the NEST network and homing the robot")

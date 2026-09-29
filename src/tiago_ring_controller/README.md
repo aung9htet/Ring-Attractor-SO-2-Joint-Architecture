@@ -200,6 +200,17 @@ python3 scripts/run_graph.py src/tiago_ring_controller/graph/examples/two_joint_
 python3 scripts/run_graph.py my.graph.json --validate
 ```
 
+`--dashboard` also serves the **graph editor** at `http://localhost:8765/editor`
+(plain JavaScript and SVG from `tiago_ring_controller/ui/`, no build step): a
+palette of block types with their declared parameters, blocks with typed ports
+on an SVG canvas, edges drawn by dragging from an output port to an input port
+(kinds checked in the browser and again on the server), a parameter panel with
+bounds and units, *Validate* (every problem at once), *Load* / *Save* of graph
+files (the server writes the canonical form, byte-identical to `Graph.save`),
+and *Run in session*, which compiles the drawn graph and swaps the running loop
+between trials. While a trial runs, the state ring, gain, decoder and joint
+blocks show live values.
+
 The three reference architectures are template functions in
 `graph/templates.py` with example files under `graph/examples/`
 (`two_ring_single_joint`: today's model, tick-for-tick equal to the cosim runner

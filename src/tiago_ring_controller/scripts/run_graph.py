@@ -93,36 +93,62 @@ def main(argv=None):
         from tiago_ring_controller.cosim.runner import TrialWriter, trial_row
 
         state = DashboardState()
-        compiled = compile_graph(graph, engines=args.engines)
-        observer = DashboardObserver(state, compiled.config.joint_index, compiled.nest_engine.population_size or 0)
-        compiled.loop.add_observer(observer)
-        server = None
-        writer = None
-        try:
+        session = {"compiled": None, "writer": None}
+
+        def primary_ids(compiled):
+            primary = compiled.primary
+            return {key: (getattr(primary, key).id if getattr(primary, key) is not None else None)
+                    for key in ("state_ring", "goal_ring", "gain", "decoder", "joint")}
+
+        def attach(compiled):
+            observer = DashboardObserver(state, compiled.config.joint_index,
+                                         (compiled.nest_engine.population_size if compiled.nest_engine else 0) or 0)
+            compiled.loop.add_observer(observer)
             compiled.loop.initialize()
+            session["compiled"] = compiled
+            state.set_graph(compiled.graph.to_dict(), args.graph)
+            state.set_status(graph=compiled.graph.name, primary=primary_ids(compiled),
+                             message="graph %r loaded" % compiled.graph.name)
+            return compiled
+
+        def on_graph(document):
+            """The editor's Run: compile the new graph with the same engines and hand the loop over."""
+
+            new_graph = Graph.from_dict(document)
+            compiled = attach(compile_graph(new_graph, engines=args.engines))
+            if session["writer"] is not None:
+                session["writer"].close()
+                session["writer"] = TrialWriter(args.out, compiled.config) if (args.out and compiled.primary.complete) else None
+            return compiled.loop, compiled.config
+
+        compiled = attach(compile_graph(graph, engines=args.engines))
+        server = None
+        try:
             server = DashboardServer(state, args.dashboard_host, args.dashboard_port).start()
-            state.set_status(graph=graph.name, message="graph %r loaded" % graph.name)
-            print("dashboard: %s  graph %r (start trials from the page; Ctrl-C ends the session)" % (server.url, graph.name))
+            print("dashboard: %s  editor: %seditor  graph %r (start trials from the page; Ctrl-C ends the session)"
+                  % (server.url, server.url, graph.name))
             if args.goal:
                 state.set_status(next_goal=args.goal[0])
             if args.out and compiled.primary.complete:
-                writer = TrialWriter(args.out, compiled.config)
+                session["writer"] = TrialWriter(args.out, compiled.config)
 
             def on_trial(index, record, legacy):
                 report_timing(index, record, legacy)
-                if writer is not None:
-                    writer.write(index, record, legacy, trial_row(compiled.config, index, legacy))
+                if session["writer"] is not None:
+                    writer, current = session["writer"], session["compiled"]
+                    writer.write(index, record, legacy, trial_row(current.config, index, legacy))
 
             try:
-                run_dashboard_session(compiled.loop, compiled.config, state, on_trial=on_trial)
+                run_dashboard_session(compiled.loop, compiled.config, state, on_trial=on_trial, on_graph=on_graph)
             except KeyboardInterrupt:
                 print("interrupted; stopping")
         finally:
-            if writer is not None:
-                writer.close()
+            if session["writer"] is not None:
+                session["writer"].close()
             if server is not None:
                 server.stop()
-            compiled.loop.shutdown()
+            if session["compiled"] is not None:
+                session["compiled"].loop.shutdown()
         return 0
 
     goal_values = [g if g is not None else (graph.blocks[b].value() if (b := next((i for i, blk in graph.blocks.items() if blk.type_name == "Goal"), None)) else 0.0) for g in goals]

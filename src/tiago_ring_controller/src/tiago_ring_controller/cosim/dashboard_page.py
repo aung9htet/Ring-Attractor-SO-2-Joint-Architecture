@@ -32,7 +32,7 @@ PAGE_HTML = r"""<!doctype html>
 </head>
 <body>
 <header>
-  <h1>Ring co-simulation</h1>
+  <h1>Ring co-simulation <a href="/editor" style="font-size:0.6em;margin-left:1em">graph editor</a></h1>
   <span id="status" class="badge">connecting</span>
   <span class="stat">trial <b id="trial">-</b></span>
   <span class="stat">t <b id="time">0.00</b> s</span>

@@ -388,3 +388,57 @@ default; `corrective`(5) is the candidate for the Gazebo repeat.
 simulation launched through `./run_model_docker.bash`; the plan's "in Gazebo"
 half of the phase 5 gate is therefore open and documented as such in
 `feedback.md`. Browser: unchanged.
+
+## 2026-09-30 — Phase 6: visual editor
+
+### Changes
+
+- `tiago_ring_controller/ui/`: `editor.html`, `editor.css`, `editor.js` — plain
+  JavaScript and SVG, no build step, no dependency. Palette of block types from
+  `blocks.describe_types()` (parameters with type, default, bounds, unit, doc;
+  ports with kind and direction), blocks on an SVG canvas (drag to move,
+  positions in `ui`), ports as handles (inputs left, outputs right, colour by
+  kind), edges by dragging from an output to an input port (kind checked in the
+  browser, one producer per non-multi input, the server validates again),
+  parameter panel per block (typed fields, bounds, choices, JSON for dict/list,
+  id rename with edge rewrite), Delete for the selection, simulation and robot
+  forms, Load example / Load file / Save / Validate / Run in session / Clear,
+  live overlay of the primary state ring (bump bars, centroid), gain (L/R
+  counts), decoder (drive) and joint (angle) from the existing event stream.
+  `?static=1` disables the event stream, `?selftest=<example>` draws the example
+  from an empty canvas through the editor's own code paths and reports whether
+  the canonical text equals the example's (`data-selftest="ok"`).
+- Dashboard server: `/editor`, `/ui/<file>`, `GET /api/blocks`, `GET /api/graph`
+  (the session's document), `GET /api/graph/examples[/<name>]`,
+  `GET /api/graph/file?path=`, `POST /api/graph/validate` (problems + canonical
+  document and text), `POST /api/graph/save` (writes the canonical file),
+  `POST /api/graph` (queues a `graph` command). `run_dashboard_session(...,
+  on_graph=)` swaps the loop between trials; `run_graph.py --dashboard` provides
+  the swap (same engines), publishes the primary block ids for the overlay and
+  keeps writing the collector layout with the current config. The dashboard page
+  links to the editor.
+- Tests `test/test_editor.py`: static files and palette, validation problems and
+  canonical text, a document assembled the editor's way saved byte-identically
+  to `dumps(two_ring_single_joint())` with the same positions, the graph
+  command swapping a session's loop, and two headless-Chrome tests on the host
+  (`google-chrome --headless=new --dump-dom --screenshot`): the editor renders
+  the single-joint architecture (all 11 blocks, ≥ 9 spike and ≥ 5 signal edges,
+  no console error, screenshot written) and the in-browser self-test draws the
+  example from an empty canvas with the same result (11 blocks, 15 edges).
+
+### Gates
+
+```
+host:      Ran 217 tests in 12.377s  FAILED (errors=1, skipped=7)   # colorcet import only; both Chrome tests ran and passed
+container: Ran 234 tests in 125.399s OK (skipped=2)                 # the two Chrome tests: no browser in the image
+```
+
+Screenshot checked by eye (host, 1400×900): palette, blocks with typed ports,
+orange spike edges and green signal edges, inspector. Headless Chrome tiles the
+page below the viewport in the PNG; in a browser window the page does not
+scroll (`html, body {height: 100%; overflow: hidden}`, the canvas pane scrolls).
+
+Not exercised by tests: mouse drag-and-drop itself (the connect logic behind it
+is exercised by the self-test through the same function), the live overlay
+during a trial (the message fields it reads are the dashboard's, unchanged),
+and the editor against Gazebo.

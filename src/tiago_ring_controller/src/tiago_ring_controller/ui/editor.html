@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ring blocks editor</title>
+<link rel="stylesheet" href="/ui/editor.css">
+</head>
+<body>
+<header>
+  <h1>Ring blocks editor <a href="/">dashboard</a></h1>
+  <div id="toolbar">
+    <label>name <input id="graph-name" size="28"></label>
+    <label>example <select id="example-select"><option value="">(choose)</option></select></label>
+    <button id="btn-load-example">Load example</button>
+    <label>file <input id="file-path" size="36" placeholder="/path/to/experiment.graph.json"></label>
+    <button id="btn-load-file">Load file</button>
+    <button id="btn-save">Save</button>
+    <button id="btn-validate">Validate</button>
+    <button id="btn-run">Run in session</button>
+    <button id="btn-clear">Clear</button>
+    <span id="status" class="status">loading block types…</span>
+  </div>
+</header>
+<main>
+  <aside id="palette"><h2>Blocks</h2><div id="palette-list"></div>
+    <h2>Simulation</h2><div id="simulation-form"></div>
+    <h2>Robot</h2><div id="robot-form"></div>
+  </aside>
+  <section id="canvas-wrap">
+    <svg id="canvas" xmlns="http://www.w3.org/2000/svg" width="2000" height="1400">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"></path>
+        </marker>
+      </defs>
+      <g id="edges"></g>
+      <g id="blocks"></g>
+      <path id="drag-edge" class="drag-edge" d=""></path>
+    </svg>
+  </section>
+  <aside id="inspector"><h2>Block</h2><div id="inspector-body"><p class="hint">Select a block to edit its parameters; drag from an output port (right) to an input port (left) to connect; Delete removes the selection.</p></div>
+    <h2>Problems</h2><ul id="problems"></ul>
+    <h2>Live</h2><div id="live" class="hint">no trial running</div>
+  </aside>
+</main>
+<script src="/ui/editor.js"></script>
+</body>
+</html>

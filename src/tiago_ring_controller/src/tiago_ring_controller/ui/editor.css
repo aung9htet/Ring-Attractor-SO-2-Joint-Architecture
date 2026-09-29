@@ -1,0 +1,47 @@
+:root { --bg: #f5f6f8; --panel: #ffffff; --line: #d0d4da; --text: #1f2933; --accent: #2b6cb0; --spikes: #d9822b; --signal: #2f855a; --error: #c53030; }
+* { box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body { margin: 0; font: 14px/1.4 system-ui, sans-serif; color: var(--text); background: var(--bg); display: flex; flex-direction: column; }
+header { padding: 8px 12px; background: var(--panel); border-bottom: 1px solid var(--line); }
+header h1 { margin: 0 0 6px; font-size: 18px; }
+header h1 a { font-size: 12px; margin-left: 12px; }
+#toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+#toolbar label { display: inline-flex; gap: 4px; align-items: center; }
+#toolbar input, #toolbar select { font: inherit; padding: 2px 4px; }
+button { font: inherit; padding: 3px 8px; cursor: pointer; }
+.status { margin-left: auto; color: #555; }
+.status.error { color: var(--error); }
+main { display: grid; grid-template-columns: 200px 1fr 320px; flex: 1; min-height: 0; }
+aside { background: var(--panel); border-right: 1px solid var(--line); padding: 8px; overflow: auto; }
+#inspector { border-left: 1px solid var(--line); border-right: none; }
+aside h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: #555; margin: 10px 0 6px; }
+#palette-list button { display: block; width: 100%; text-align: left; margin-bottom: 4px; background: #eef2f7; border: 1px solid var(--line); border-radius: 3px; }
+#palette-list button.neural { border-left: 4px solid var(--spikes); }
+#palette-list button.signal { border-left: 4px solid var(--signal); }
+#canvas-wrap { overflow: auto; background: repeating-linear-gradient(0deg, transparent, transparent 24px, #e9ecf0 24px, #e9ecf0 25px), repeating-linear-gradient(90deg, transparent, transparent 24px, #e9ecf0 24px, #e9ecf0 25px); }
+svg text { font: 12px system-ui, sans-serif; pointer-events: none; }
+.block rect.body { fill: #fff; stroke: #7b8794; stroke-width: 1.2; rx: 6; }
+.block.neural rect.body { stroke: var(--spikes); }
+.block.signal rect.body { stroke: var(--signal); }
+.block.selected rect.body { stroke-width: 2.5; stroke: var(--accent); }
+.block text.title { font-weight: 600; }
+.block text.type { fill: #666; font-size: 11px; }
+.block text.overlay { fill: var(--accent); font-size: 11px; }
+.port { stroke: #fff; stroke-width: 1; cursor: crosshair; }
+.port.spikes { fill: var(--spikes); }
+.port.signal { fill: var(--signal); }
+.port.hover { r: 7; }
+text.port-label { font-size: 10px; fill: #444; }
+path.edge { fill: none; stroke-width: 2; cursor: pointer; }
+path.edge.spikes { stroke: var(--spikes); }
+path.edge.signal { stroke: var(--signal); }
+path.edge.selected { stroke: var(--accent); stroke-width: 3; }
+path.drag-edge { fill: none; stroke: var(--accent); stroke-dasharray: 4 3; stroke-width: 2; pointer-events: none; }
+rect.bump { fill: var(--accent); opacity: 0.5; }
+.field { margin-bottom: 6px; }
+.field label { display: block; font-size: 12px; color: #444; }
+.field input, .field select, .field textarea { width: 100%; font: inherit; padding: 2px 4px; }
+.field .doc { font-size: 11px; color: #777; }
+.field.invalid input { border-color: var(--error); }
+#problems li { color: var(--error); font-size: 12px; }
+.hint { color: #777; font-size: 12px; }
