@@ -82,7 +82,8 @@ class ParamSchemaTests(unittest.TestCase):
     def test_registry_and_duplicates(self):
         self.assertEqual(
             list(PRIMITIVE_SCHEMAS),
-            ["Ring", "FourierReadout", "Homeostasis", "Gain", "Encoder", "Decoder", "Joint", "Goal"],
+            ["Ring", "FourierReadout", "Homeostasis", "Gain", "Encoder", "FeatureEncoder", "Decoder", "Joint", "Goal",
+             "Probe", "SignedProduct", "OutputRing", "ProfileDecoder", "TaskGain", "Transport", "JointTriple"],
         )
         with self.assertRaises(KeyError):
             schema_for("Nope")

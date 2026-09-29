@@ -301,17 +301,60 @@ def connect_gain_populations(
     decision: DecisionPopulation,
     spec: GainSpec,
 ) -> None:
+    connect_gain_inputs(backend, gain, ring, decision.node("left"), decision.node("right"), spec)
+
+
+def connect_gain_inputs(
+    backend: Any,
+    gain: GainPopulations,
+    ring: Population,
+    left_decision: Any,
+    right_decision: Any,
+    spec: GainSpec,
+) -> None:
+    """Decision nodes gate the populations, the ring drives them one_to_one."""
+
     if ring.size != gain.left.size or ring.size != gain.right.size:
         raise BuildError(
             "%s: ring size %d does not match gain populations (%d / %d)"
             % (gain.left.name, ring.size, gain.left.size, gain.right.size)
         )
-    backend.Connect(decision.node("left"), gain.left.neurons, syn_spec={"weight": float(spec.left_homeostasis_gain_weight)})
-    backend.Connect(decision.node("right"), gain.right.neurons, syn_spec={"weight": float(spec.right_homeostasis_gain_weight)})
-    backend.Connect(decision.node("left"), gain.right.neurons, syn_spec={"weight": float(spec.cross_inhibition_weight)})
-    backend.Connect(decision.node("right"), gain.left.neurons, syn_spec={"weight": float(spec.cross_inhibition_weight)})
+    backend.Connect(left_decision, gain.left.neurons, syn_spec={"weight": float(spec.left_homeostasis_gain_weight)})
+    backend.Connect(right_decision, gain.right.neurons, syn_spec={"weight": float(spec.right_homeostasis_gain_weight)})
+    backend.Connect(left_decision, gain.right.neurons, syn_spec={"weight": float(spec.cross_inhibition_weight)})
+    backend.Connect(right_decision, gain.left.neurons, syn_spec={"weight": float(spec.cross_inhibition_weight)})
     backend.Connect(ring.neurons, gain.left.neurons, "one_to_one", {"weight": float(spec.ring_to_gain_weight)})
     backend.Connect(ring.neurons, gain.right.neurons, "one_to_one", {"weight": float(spec.ring_to_gain_weight)})
+
+
+def build_output_ring_population(
+    backend: Any,
+    name: str,
+    source_nodes: Any,
+    weights_source_by_target: np.ndarray,
+    size: int,
+    dc_baseline: float,
+    weight_scale: float,
+) -> ReadoutPopulation:
+    """One output ring: DC baseline plus an all_to_all fitted matrix from ``source_nodes``.
+
+    Same synapse set as ``nest.multi_ring.build_output_rings`` for one name.
+    """
+
+    matrix = np.asarray(weights_source_by_target, dtype=float)
+    n_source = len(source_nodes)
+    if matrix.shape != (n_source, int(size)):
+        raise BuildError(
+            "%s: output weights shape %r, expected (%d, %d)" % (name, matrix.shape, n_source, int(size))
+        )
+    base = create_population(backend, name, int(size))
+    dc = backend.Create("dc_generator", params={"amplitude": float(dc_baseline)})
+    backend.Connect(dc, base.neurons)
+    connect_matrix(backend, source_nodes, base.neurons, float(weight_scale) * matrix)
+    return ReadoutPopulation(
+        name=base.name, neurons=base.neurons, recorders=base.recorders, size=base.size,
+        model=base.model, dc_generator=dc, feature_names=[], weights=matrix,
+    )
 
 
 def connect_gain_feedback_populations(
@@ -401,12 +444,14 @@ __all__ = [
     "StimulusGenerators",
     "build_decision_population",
     "build_gain_populations",
+    "build_output_ring_population",
     "build_readout_population",
     "build_ring_population",
     "build_stimulus_generators",
     "clear_stimulus",
     "connect_features_to_decision",
     "connect_gain_feedback_populations",
+    "connect_gain_inputs",
     "connect_gain_populations",
     "connect_matrix",
     "create_population",

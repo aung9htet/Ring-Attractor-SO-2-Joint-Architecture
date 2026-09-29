@@ -172,26 +172,30 @@ FOURIER_READOUT_SCHEMA = ParamSchema("FourierReadout", [
     ParamSpec("weight_scale", "float", 200.0, doc="multiplies the (N, 2K) mask"),
     ParamSpec("dc_baseline", "float", 200.0, unit="pA", doc="dc_generator amplitude into the features"),
     ParamSpec("mask_source", "str", "analytic", choices=("analytic", "artifact"),
-              doc="analytic sine masks or the N_<N>_fourier_weights.npy artifact"),
+              doc="analytic push-pull sine masks (identical to the checked-in artifacts) or a .npy file"),
+    ParamSpec("weights_artifact", "str", "", doc="artifact path; empty = ring_decoding_weights/N_<N>_fourier_weights.npy"),
 ])
 
+# Defaults below equal config/model_params/homeostasis_params.json and gain_modulation_params.json
+# (checked by test_blocks_fake), so a graph file needs no parameter artifact for them.
 HOMEOSTASIS_SCHEMA = ParamSchema("Homeostasis", [
-    ParamSpec("warm_exc_weight", "float", 0.0, doc="cold -> right"),
-    ParamSpec("warm_inh_weight", "float", 0.0, doc="cold -> left"),
-    ParamSpec("cold_exc_weight", "float", 0.0, doc="warm -> left"),
-    ParamSpec("cold_inh_weight", "float", 0.0, doc="warm -> right"),
-    ParamSpec("decision_lateral_weight", "float", 0.0, doc="left <-> right"),
+    ParamSpec("warm_exc_weight", "float", 20000.0, doc="cold -> right"),
+    ParamSpec("warm_inh_weight", "float", -20000.0, doc="cold -> left"),
+    ParamSpec("cold_exc_weight", "float", 20000.0, doc="warm -> left"),
+    ParamSpec("cold_inh_weight", "float", -20000.0, doc="warm -> right"),
+    ParamSpec("decision_lateral_weight", "float", -20000.0, doc="left <-> right"),
     ParamSpec("weight_scale", "float", 5.0e6, doc="multiplies the fitted feature weights"),
-    ParamSpec("weights_artifact", "str", "", doc="N_<N>_homeostasis_weights.npy; empty = per-N default"),
+    ParamSpec("weights_artifact", "str", "", doc="N_<N>_homeostasis_weights.npy; empty = homeostasis/ per feature count"),
+    ParamSpec("metadata_artifact", "str", "", doc="matching metadata JSON (feature order); empty = per feature count"),
     _neuron_param_spec("homeostasis"),
 ])
 
 GAIN_SCHEMA = ParamSchema("Gain", [
-    ParamSpec("left_homeostasis_gain_weight", "float", 0.0, doc="decision left -> left population"),
-    ParamSpec("right_homeostasis_gain_weight", "float", 0.0, doc="decision right -> right population"),
-    ParamSpec("ring_to_gain_weight", "float", 0.0, doc="ring i -> left/right i"),
-    ParamSpec("gain_to_ring_weight", "float", 0.0, doc="feedback weight (shifted +-1)"),
-    ParamSpec("cross_inhibition_weight", "float", 0.0, doc="decision left -> right population and vice versa"),
+    ParamSpec("left_homeostasis_gain_weight", "float", 10000.0, doc="decision left -> left population"),
+    ParamSpec("right_homeostasis_gain_weight", "float", 10000.0, doc="decision right -> right population"),
+    ParamSpec("ring_to_gain_weight", "float", 450000.0, doc="ring i -> left/right i"),
+    ParamSpec("gain_to_ring_weight", "float", -0.6, doc="feedback weight (shifted +-1); an edge may override it"),
+    ParamSpec("cross_inhibition_weight", "float", -30000.0, doc="decision left -> right population and vice versa"),
     ParamSpec("margin", "int", 5, minimum=0, doc="ring neurons excluded from feedback at each end"),
     _neuron_param_spec("gain"),
 ])
@@ -202,9 +206,21 @@ ENCODER_SCHEMA = ParamSchema("Encoder", [
     ParamSpec("weight", "float", 4.5e3, doc="generator -> ring synapse weight"),
     ParamSpec("duration_ticks", "int", 1, minimum=1, doc="ticks a bump stays on"),
     ParamSpec("mode", "str", "once", choices=("once", "continuous", "corrective"), doc="when to stimulate"),
-    ParamSpec("dead_band", "int", 0, minimum=0, doc="corrective mode: minimum centroid error in indices"),
+    ParamSpec("dead_band", "int", 0, minimum=0, doc="corrective mode: minimum |centroid - index| in ring indices"),
     ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration"),
               doc="angle -> ring index mapping (legacy control profile)"),
+    ParamSpec("joint_min", "float", -1.0, unit="rad", doc="lower joint limit of the mapping"),
+    ParamSpec("joint_max", "float", 1.0, unit="rad", doc="upper joint limit of the mapping"),
+])
+
+FEATURE_ENCODER_SCHEMA = ParamSchema("FeatureEncoder", [
+    ParamSpec("num_fourier_k", "int", 20, minimum=1, doc="harmonics K; 2K push-pull generators"),
+    ParamSpec("rate_scale", "float", 100.0, minimum=0.0, unit="Hz", doc="rate for a feature value of 1"),
+    ParamSpec("weight", "float", 1.0, doc="generator -> target synapse weight scale (multiplied by fitted weights)"),
+    ParamSpec("joint_min", "float", -1.0, unit="rad"),
+    ParamSpec("joint_max", "float", 1.0, unit="rad"),
+    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration")),
+    ParamSpec("population_size", "int", 200, minimum=3, doc="ring size the angle is mapped onto"),
 ])
 
 DECODER_SCHEMA = ParamSchema("Decoder", [
@@ -229,11 +245,59 @@ GOAL_SCHEMA = ParamSchema("Goal", [
     ParamSpec("angle_rad", "float", 0.0, unit="rad"),
 ])
 
+PROBE_SCHEMA = ParamSchema("Probe", [
+    ParamSpec("keep", "int", 0, minimum=0, doc="samples kept (0 = all)"),
+])
+
+SIGNED_PRODUCT_SCHEMA = ParamSchema("SignedProduct", [
+    ParamSpec("grid_size", "int", 32, minimum=1, doc="g; 16 g^2 conjunction cells"),
+    ParamSpec("dc_baseline", "float", 120.0, unit="pA", doc="calibrated signed_product_dc_baseline"),
+    ParamSpec("input_weight", "float", 700.0, doc="calibrated signed_product_input_weight"),
+    ParamSpec("epsilon", "float", 1.0e-9, minimum=0.0),
+])
+
+OUTPUT_RING_SCHEMA = ParamSchema("OutputRing", [
+    ParamSpec("size", "int", 100, minimum=1),
+    ParamSpec("dc_baseline", "float", 200.0, unit="pA"),
+    ParamSpec("weight_scale", "float", 1000.0, doc="signed_product_output_weight_scale"),
+    ParamSpec("weights_artifact", "str", "", doc=".npz; empty = ring_decoding_weights/N_<N>_J_2_multi_ring_sawtooth_weights.npz"),
+    ParamSpec("weights_key", "str", "W_signed_lift", doc="array in the .npz, shape (n_features, size)"),
+])
+
+PROFILE_DECODER_SCHEMA = ParamSchema("ProfileDecoder", [
+    ParamSpec("method", "str", "sawtooth", choices=("sawtooth", "scalar_ramp", "centroid")),
+])
+
+TASK_GAIN_SCHEMA = ParamSchema("TaskGain", [
+    ParamSpec("weights_artifact", "str", "", doc="fitted bilinear weights (research; not implemented)"),
+])
+
+TRANSPORT_SCHEMA = ParamSchema("Transport", [
+    ParamSpec("homeostasis", "dict", {}, doc="Homeostasis parameter overrides"),
+    ParamSpec("gain", "dict", {}, doc="Gain parameter overrides"),
+])
+
+JOINT_TRIPLE_SCHEMA = ParamSchema("JointTriple", [
+    ParamSpec("population_size", "int", 200, minimum=3),
+    ParamSpec("num_fourier_k", "int", 20, minimum=1),
+    ParamSpec("half_width", "int", 5, minimum=0),
+    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration")),
+    ParamSpec("joint_min", "float", -1.0, unit="rad"),
+    ParamSpec("joint_max", "float", 1.0, unit="rad"),
+    ParamSpec("state_mode", "str", "continuous", choices=("once", "continuous", "corrective"),
+              doc="how the actual ring follows the measured angle"),
+    ParamSpec("state_rate_hz", "float", 200.0, minimum=0.0, unit="Hz"),
+    ParamSpec("goal_feedback_weight", "float", -0.6, doc="CT_goal feedback into the belief ring"),
+    ParamSpec("sense_feedback_weight", "float", -0.6, doc="CT_sense feedback into the belief ring (trust)"),
+])
+
 PRIMITIVE_SCHEMAS: Dict[str, ParamSchema] = OrderedDict(
     (schema.block_type, schema)
     for schema in (
         RING_SCHEMA, FOURIER_READOUT_SCHEMA, HOMEOSTASIS_SCHEMA, GAIN_SCHEMA,
-        ENCODER_SCHEMA, DECODER_SCHEMA, JOINT_SCHEMA, GOAL_SCHEMA,
+        ENCODER_SCHEMA, FEATURE_ENCODER_SCHEMA, DECODER_SCHEMA, JOINT_SCHEMA, GOAL_SCHEMA, PROBE_SCHEMA,
+        SIGNED_PRODUCT_SCHEMA, OUTPUT_RING_SCHEMA, PROFILE_DECODER_SCHEMA, TASK_GAIN_SCHEMA,
+        TRANSPORT_SCHEMA, JOINT_TRIPLE_SCHEMA,
     )
 )
 
@@ -246,7 +310,9 @@ def schema_for(block_type: str) -> ParamSchema:
 
 
 __all__ = [
-    "DECODER_SCHEMA", "ENCODER_SCHEMA", "FOURIER_READOUT_SCHEMA", "GAIN_SCHEMA", "GOAL_SCHEMA",
-    "HOMEOSTASIS_SCHEMA", "JOINT_SCHEMA", "PARAM_TYPES", "PRIMITIVE_SCHEMAS", "RING_SCHEMA",
+    "DECODER_SCHEMA", "ENCODER_SCHEMA", "FEATURE_ENCODER_SCHEMA", "FOURIER_READOUT_SCHEMA", "GAIN_SCHEMA",
+    "GOAL_SCHEMA", "HOMEOSTASIS_SCHEMA", "JOINT_SCHEMA", "JOINT_TRIPLE_SCHEMA", "OUTPUT_RING_SCHEMA",
+    "PARAM_TYPES", "PRIMITIVE_SCHEMAS", "PROBE_SCHEMA", "PROFILE_DECODER_SCHEMA", "RING_SCHEMA",
+    "SIGNED_PRODUCT_SCHEMA", "TASK_GAIN_SCHEMA", "TRANSPORT_SCHEMA",
     "ParamError", "ParamSchema", "ParamSpec", "schema_for",
 ]

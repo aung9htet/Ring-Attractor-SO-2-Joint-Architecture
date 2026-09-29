@@ -171,3 +171,70 @@ Item 3 (recorders): measured both options, kept per-neuron recorders (flat cost,
 per-neuron deltas); numbers in `equivalence.md`.
 
 Not run: Gazebo (no robot code changed) and the browser dashboard (unchanged).
+
+## 2026-09-29 — Phase 3: block API
+
+### Changes
+
+- `blocks/base.py`: `Block` (type name, `ParamSchema`, typed `Port`s, `build(ctx,
+  inputs)`, `connect_late`, `counts_sources`, `describe_type`), `PortKind`
+  SPIKES/SIGNAL, `PortRef` (`ring.stim`), `Connection`, `BuildContext` (backend,
+  config dir, seed, threads, neuron-parameter loader, build log), `Composite`
+  (`expand()` → sub-blocks, internal edges, port map). Spike inputs are
+  *build-bound* (source built first: readout ← ring) or *late-bound* (wired
+  after both exist, pattern owned by the target: `Ring.stim` ← encoder
+  generators / gain feedback), which is how feedback cycles build.
+- Primitives, each wrapping the phase-2 builders: `Ring`, `FourierReadout`
+  (analytic masks by default, identical to the artifacts), `Homeostasis` (fitted
+  artifact keyed by the readout's ring size), `Gain` (`connect_stim` implements
+  the shifted ±1 feedback; the edge may override weight and margin), `Encoder`
+  (generators created when connected to a ring; modes once / continuous /
+  corrective with dead band; `drive`, `expire`, `drive_index`), `FeatureEncoder`
+  (2K push-pull generators for a reference with no ring), `Decoder` (wraps
+  `DriveControlCore`; `step` equals `MotorTF` sample for sample; sources
+  gain_counts / centroid_velocity / decision_counts), `ProfileDecoder`
+  (sawtooth / centroid / scalar ramp), `Joint`, `Goal` (constant or schedule),
+  `Probe`, `SignedProduct` and `OutputRing` (wrap `nest/multi_ring.py`; one
+  output ring per block, artifact key per block), `TaskGain` (port contract
+  only; `build` raises). Composites `Transport` (Homeostasis + Gain) and
+  `JointTriple` (T/B/A rings, two encoders, two transports). `blocks.REGISTRY`,
+  `block_from_type`, `describe_types()` (the editor palette). Schema defaults now
+  equal the config files (Homeostasis, Gain, readout, ring; tested).
+- `graph/graph.py`: `Graph` (`add`, `connect`, composites expanded on `add`,
+  `problems()`/`validate()` reporting everything at once: kinds, directions,
+  required inputs, producer counts, unknown edge parameters, signal cycles,
+  build-bound cycles; `build_order()`; `build(ctx)` → `BuiltGraph`).
+- `cosim/graph_engine.py`: `GraphNestEngine` holds any graph: inputs
+  `"<encoder>.angle"`, one output datapack per neural block (ring: per-neuron
+  deltas, total, bump index, centroid; gain: left/right; comparator:
+  warm/cold/left/right; conjunction/output rings: per-cell deltas), generator
+  rate changes followed by Cleanup/Prepare, raster per ring, continue mode.
+- Tests: `test_blocks_fake.py` (15: hand-built graph creates the vectorised
+  network with the *same node creation sequence and the same Connect calls in
+  the same order*; Transport composite equals the primitives; validation
+  messages; block errors name the block; schema defaults vs config; registry
+  descriptions; encoder modes and expiry; Decoder vs MotorTF; Goal/Joint/Probe/
+  ProfileDecoder; SignedProduct + OutputRing on the fake with a temporary
+  artifact; JointTriple expands to 12 blocks and builds; engine datapacks and
+  recalibration), `test_graph_real_nest.py` (2, container).
+
+### Gates
+
+Phase 3 gate, container: the single-joint architecture built by hand from
+blocks (no graph file) reproduces the phase-2 golden **exactly** (per-neuron
+r1/r2/left/right counts and decision counts, seed 13579), because the block
+build order yields the same NEST node ids as `build_single_ring_network`.
+`GraphNestEngine` runs the graph with once-mode encoders and accepts a
+continuous proprioceptive encoder mid-trial (window driven, recalibrations per
+tick).
+
+```
+Ran 210 tests in 103.139s   (container, full suite; one failure fixed below)
+Ran 2 tests in 0.286s  OK   (test_graph_real_nest.py after the fix)
+```
+
+The one failure was the test's own naive angle→index formula (62 ≠ 60); it now
+inverts the encoder's collector mapping by search. Host (`/usr/bin/python3`
+3.13): 196 tests, only the pre-existing `colorcet` import error.
+
+Not run: Gazebo and the dashboard (unchanged).
