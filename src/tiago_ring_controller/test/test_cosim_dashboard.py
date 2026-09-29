@@ -146,6 +146,31 @@ class DashboardSessionTests(unittest.TestCase):
         self.assertTrue(ticks)
         self.assertEqual(len(ticks[0]["r1"]), 100)
 
+    def test_reset_now_and_continue_between_trials(self):
+        _wait_for(lambda: _get(self.url + "/state")["status"]["status"] == "idle")
+        nest, robot = self.loop.engines
+        code, body = _post(self.url + "/api/reset")
+        self.assertEqual(code, 200)
+        _wait_for(lambda: _get(self.url + "/state")["status"].get("resets") == 1)
+        self.assertEqual((nest.rebuild_count, robot.rebuild_count), (1, 1))
+        self.assertIn("reset done", _get(self.url + "/state")["status"]["message"])
+
+        code, body = _post(self.url + "/api/start", {"goal": 0.4, "max_steps": 6, "reset_mode": "continue"})
+        self.assertEqual(code, 200)
+        status = _wait_for(lambda: (lambda s: s if len(s["trials"]) == 1 else None)(_get(self.url + "/state")["status"]))
+        self.assertEqual(status["trials"][0]["reset_mode"], "continue")
+        self.assertEqual((nest.rebuild_count, robot.rebuild_count), (1, 1))
+        end = self.trials[0][1].final_state["joint_state"]["positions"][5]
+
+        _post(self.url + "/api/start", {"goal": -0.2, "max_steps": 6, "reset_mode": "continue"})
+        _wait_for(lambda: len(_get(self.url + "/state")["status"]["trials"]) == 2)
+        self.assertEqual(self.trials[1][1].main_ticks[0].inputs["joint_state"]["positions"][5], end)
+        _post(self.url + "/api/start", {"goal": 0.1, "max_steps": 6, "reset_mode": "rebuild"})
+        _wait_for(lambda: len(_get(self.url + "/state")["status"]["trials"]) == 3)
+        self.assertEqual((nest.rebuild_count, robot.rebuild_count), (2, 2))
+        code, body = _post(self.url + "/api/start", {"goal": 0.1, "reset_mode": "sometimes"})
+        self.assertEqual(code, 400)
+
     def test_event_stream_serves_status_and_ticks(self):
         _wait_for(lambda: _get(self.url + "/state")["status"]["status"] == "idle")
         # Run one trial first: a late subscriber gets the whole trial replayed.

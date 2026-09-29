@@ -54,6 +54,12 @@ The page shows the state ring, a rolling raster, the gain counts and the joint a
 against the goal, updated every tick, and has *Start trial* / *Stop* buttons with a
 goal and an optional step budget; finished trials are listed with their timings.
 Trials run only when started from the page; Ctrl-C in the terminal ends the session.
+*Before trial* chooses between the legacy behaviour (rebuild the NEST network and
+home the robot, about 20 s) and continuing from the network and arm state the previous
+trial left, with only the new goal (and state) bumps injected; *Reset now* rebuilds
+and homes without running a trial. The same choice is `--reset-mode` on the command
+line. Continuing is not characterised yet: the old goal bump is still in the target
+ring when the new one arrives.
 `--dashboard-port` changes the port and `--dashboard-host 0.0.0.0` exposes it beyond
 the machine.
 

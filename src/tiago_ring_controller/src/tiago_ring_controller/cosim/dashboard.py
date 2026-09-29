@@ -7,8 +7,9 @@ thread) serves one static page and a few JSON endpoints:
 * ``GET /state``       latest status and tick snapshot
 * ``GET /events``      server-sent events: one ``tick`` message per loop tick
                        and a ``status`` message on every state change
-* ``POST /api/start``  ``{"goal": <rad>}`` queue a trial (goal optional if a
-                       next goal is set)
+* ``POST /api/start``  ``{"goal": <rad>, "reset_mode": "rebuild"|"continue"}``
+                       queue a trial (goal optional if a next goal is set)
+* ``POST /api/reset``  rebuild the network and home the robot now, no trial
 * ``POST /api/stop``   end the running trial after the current tick
 * ``POST /api/goal``   ``{"goal": <rad>}`` set the goal for the next trial
 * ``POST /api/quit``   leave the session loop
@@ -276,8 +277,16 @@ class _Handler(BaseHTTPRequestHandler):
             command = {"type": "start", "goal": float(goal)}
             if payload.get("max_steps") is not None:
                 command["max_steps"] = int(payload["max_steps"])
+            if payload.get("reset_mode") is not None:
+                if payload["reset_mode"] not in ("rebuild", "continue"):
+                    self._send_json({"error": "reset_mode must be rebuild or continue"}, 400)
+                    return
+                command["reset_mode"] = str(payload["reset_mode"])
             state.commands.put(command)
             self._send_json({"queued": command})
+        elif self.path == "/api/reset":
+            state.commands.put({"type": "reset"})
+            self._send_json({"queued": {"type": "reset"}})
         elif self.path == "/api/stop":
             state.request_stop()
             self._send_json({"stop_requested": True})
@@ -342,7 +351,7 @@ def run_dashboard_session(
 
     results: List[Dict[str, Any]] = []
     index = 0
-    state.set_status(status="idle", config=config.to_dict(), message="ready")
+    state.set_status(status="idle", config=config.to_dict(), reset_mode=config.reset_mode, resets=0, message="ready")
     while True:
         try:
             command = state.commands.get(timeout=poll_s)
@@ -355,21 +364,38 @@ def run_dashboard_session(
         if kind == "goal":
             state.set_status(next_goal=command["goal"], message="next goal %.4f rad" % command["goal"])
             continue
+        if kind == "reset":
+            state.set_status(status="resetting", message="rebuilding the NEST network and homing the robot")
+            started = time.monotonic()
+            try:
+                loop.reset("rebuild", notify_observers=False)
+            except Exception as exc:
+                state.set_status(status="error", message="reset failed: %s" % exc)
+                continue
+            resets = int(state.status.get("resets", 0)) + 1
+            state.set_status(status="idle", resets=resets,
+                             message="reset done in %.1f s (%s)" % (
+                                 time.monotonic() - started,
+                                 ", ".join("%s %.1f s" % kv for kv in loop.reset_wall_s.items())))
+            continue
         if kind != "start":
             continue
 
         index += 1
         goal = float(command["goal"])
+        reset_mode = command.get("reset_mode") or config.reset_mode
         state.clear_stop()
-        state.set_status(status="resetting", trial=index, next_goal=goal,
-                         message="trial %d: building NEST network and homing the robot" % index)
+        state.set_status(status="resetting", trial=index, next_goal=goal, reset_mode=reset_mode,
+                         message="trial %d: %s" % (
+                             index, "building NEST network and homing the robot" if reset_mode == "rebuild"
+                             else "continuing from the current network and arm state"))
         # Rebuilt per trial: user stop first, then the legacy settle/budget order.
         loop.stop_condition = AnyOf(
             state.stop_condition, SettledFlag(), MaxSteps(command.get("max_steps") or config.max_steps)
         )
         started = time.monotonic()
         try:
-            record = run_trial(loop, goal, config, meta={"iteration_idx": index})
+            record = run_trial(loop, goal, config, meta={"iteration_idx": index}, reset_mode=reset_mode)
         except Exception as exc:  # keep the page alive; the operator decides what to do
             state.set_status(status="error", message="trial %d failed: %s" % (index, exc))
             continue
@@ -383,6 +409,7 @@ def run_dashboard_session(
             "abs_error": scalars["abs_position_error_rad"],
             "n_steps": scalars["n_steps"],
             "stop_reason": record.stop_reason,
+            "reset_mode": reset_mode,
             "wall_s": time.monotonic() - started,
             "timing": record.meta.get("timing", {}),
         }

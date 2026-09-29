@@ -208,6 +208,38 @@ class NestEngineTests(unittest.TestCase):
         self.assertEqual(NestEngine(backend, scripted_model_factory(backend), population_size=200).population_size, 200)
 
 
+    def test_continue_keeps_the_network_and_windows_the_raster(self):
+        engine, backend = self.make_engine("run")
+        engine.advance(50.0)
+        engine.advance(50.0)
+        engine.finish_trial()
+        created = len(backend.create_calls)
+        self.assertEqual(engine.kernel_time_ms, 100.0 + 100.0)  # two hidden injections + two ticks
+        first_raster = len(engine.raster()["r1_times"])
+
+        engine.reset("continue")
+        self.assertEqual(len(backend.create_calls), created)
+        self.assertEqual((engine.rebuild_count, engine.step_index), (1, 0))
+        self.assertEqual(engine.trial_start_ms, 200.0)
+        engine.set_datapacks({"goal_bump": bump_datapack("goal_bump", 0.0, 4, 1, "goal")})
+        # The injection's hidden Simulate consumes plan step 4; the tick itself
+        # is step 5, beyond the plan, so the delta excludes the hidden spikes.
+        engine.advance(50.0)
+        counts = engine.get_datapacks()["ring_counts"]
+        self.assertEqual((counts["left"], counts["right"], counts["nest_step"]), (0, 0, 1))
+        self.assertEqual(backend.injected[-1], (4, 1))
+        self.assertEqual(engine.kernel_time_ms, 200.0 + 50.0 + 50.0)
+        raster = engine.raster()
+        self.assertTrue(all(t > 200.0 for t in raster["r1_times"]))
+        self.assertLess(len(raster["r1_times"]), first_raster + 10)
+        self.assertEqual(len(engine.raster(since_ms=0.0)["r1_times"]), first_raster + len(raster["r1_times"]))
+        self.assertEqual(backend.lifecycle_calls[-3:], ["Cleanup", "Prepare", ("Run", 50.0)])
+
+        engine.reset("rebuild")
+        self.assertGreater(len(backend.create_calls), created)
+        self.assertEqual((engine.rebuild_count, engine.kernel_time_ms, engine.trial_start_ms), (2, 0.0, 0.0))
+
+
 # ---------------------------------------------------------------------------
 # Fake ROS transport for the Gazebo engine
 # ---------------------------------------------------------------------------
@@ -289,6 +321,27 @@ class GazeboEngineTests(unittest.TestCase):
         engine, transport = self.make_engine(play_motion_state="ABORTED")
         with self.assertRaises(EngineError):
             engine.reset()
+
+    def test_continue_reset_skips_homing_and_keeps_physics_paused(self):
+        engine, transport = self.make_engine()
+        engine.reset()
+        engine.set_datapacks({
+            "arm_velocity_cmd": DataPack("arm_velocity_cmd", 0.0, {"joint_index": 5, "velocities": [0.5], "dt_s": 0.05})
+        })
+        engine.advance(50.0)
+        engine.finish_trial()
+        moved = transport.positions[5]
+        self.assertNotEqual(moved, 0.6)
+        del transport.calls[:]
+        engine.reset("continue")
+        self.assertNotIn(("play_motion", "tiago_experiment_start_1"), transport.calls)
+        self.assertNotIn("unpause", transport.calls)
+        self.assertTrue(engine.paused)
+        self.assertEqual(engine.command_state.commanded_positions[5], moved)
+        self.assertEqual(engine.rebuild_count, 1)
+        engine.reset("rebuild")
+        self.assertIn(("play_motion", "tiago_experiment_start_1"), transport.calls)
+        self.assertEqual(engine.rebuild_count, 2)
 
     def test_advance_publishes_stamped_horizon_then_steps_exactly_dt(self):
         engine, transport = self.make_engine(overshoot_s=0.002)

@@ -206,19 +206,31 @@ class NestEngine(Engine):
         self.last: Optional[DataPack] = None
         self._readers: Dict[str, SpikeCountReader] = {}
         self._prev: Dict[str, np.ndarray] = {}
+        #: simulated time the kernel has run since the last rebuild, including
+        #: the hidden time inside stimulus injection
+        self.kernel_time_ms = 0.0
+        #: kernel time at which the current trial started (raster window)
+        self.trial_start_ms = 0.0
+        self.rebuild_count = 0
 
     # -- lifecycle --------------------------------------------------------
     def _do_reset(self) -> None:
         self._cleanup()
-        self.ports = self.model_factory()
+        if self.reset_mode == "rebuild" or self.ports is None:
+            self.ports = self.model_factory()
+            self._readers = {
+                "left": SpikeCountReader(self.backend, self.ports.left_recorders),
+                "right": SpikeCountReader(self.backend, self.ports.right_recorders),
+                "r1": SpikeCountReader(self.backend, self.ports.r1_recorders),
+            }
+            self.kernel_time_ms = 0.0
+            self.rebuild_count += 1
+        # continue: the network keeps its state; the new goal / state bumps
+        # are injected on top of it at the first advance of the trial.
+        self.trial_start_ms = self.kernel_time_ms
         self.stimulus_port.reset()
         self.pending = {}
         self.last = None
-        self._readers = {
-            "left": SpikeCountReader(self.backend, self.ports.left_recorders),
-            "right": SpikeCountReader(self.backend, self.ports.right_recorders),
-            "r1": SpikeCountReader(self.backend, self.ports.r1_recorders),
-        }
         self._snapshot()
 
     def _snapshot(self) -> None:
@@ -262,12 +274,14 @@ class NestEngine(Engine):
         if self.ports is None:
             raise EngineStateError("NEST engine has not been reset")
         # Legacy order: goal (r2) first, then state (r1).
+        hidden_before = self.hidden_ms
         for key in ("goal_bump", "state_bump"):
             bump = self.pending.pop(key, None)
             if bump is not None:
                 self.stimulus_port.apply(self, key, bump)
         # Stimulus injection may have advanced hidden simulated time; do not
         # count those spikes in the next tick's delta (legacy before/after).
+        self.kernel_time_ms += self.hidden_ms - hidden_before
         self._snapshot()
 
     def _do_advance(self, dt_ms: float) -> None:
@@ -281,6 +295,7 @@ class NestEngine(Engine):
             self.backend.Run(dt_ms)
         else:
             self.backend.Simulate(dt_ms)
+        self.kernel_time_ms += dt_ms
 
         current = {key: reader.read() for key, reader in self._readers.items()}
         left = int(np.sum(current["left"] - self._prev["left"]))
@@ -308,11 +323,17 @@ class NestEngine(Engine):
         )
 
     # -- trial-end readout ------------------------------------------------
-    def raster(self) -> Dict[str, np.ndarray]:
-        """Full event rasters, in the collector's ``_collect_raster_data`` schema."""
+    def raster(self, since_ms: Optional[float] = None) -> Dict[str, np.ndarray]:
+        """Event rasters in the collector's ``_collect_raster_data`` schema.
+
+        Recorders accumulate across ``continue`` trials, so by default only
+        events from the current trial (``trial_start_ms`` onwards) are
+        returned; after a rebuild that is everything.
+        """
 
         if self.ports is None:
             raise EngineStateError("NEST engine has not been reset")
+        start = self.trial_start_ms if since_ms is None else float(since_ms)
 
         def gather(recorders: Sequence[Any]):
             times: List[float] = []
@@ -322,8 +343,10 @@ class NestEngine(Engine):
                     events = recorder_events(self.backend, recorder)
                 except Exception:
                     continue
-                times.extend(float(v) for v in events.get("times", []))
-                senders.extend(int(v) for v in events.get("senders", []))
+                for t, sender in zip(events.get("times", []), events.get("senders", [])):
+                    if float(t) > start or start <= 0.0:
+                        times.append(float(t))
+                        senders.append(int(sender))
             return np.array(times, dtype=float), np.array(senders, dtype=int)
 
         r1_times, r1_senders = gather(self.ports.r1_recorders)

@@ -264,6 +264,7 @@ class FTILoop:
         self.tick_index = 0
         self.records: List[TickRecord] = []
         self.reset_wall_s: Dict[str, float] = {}
+        self.reset_mode = "rebuild"
         self._initialized = False
 
     # -- lifecycle --------------------------------------------------------
@@ -286,21 +287,23 @@ class FTILoop:
         if errors:
             raise EngineError("shutdown errors: %r" % errors)
 
-    def reset(self) -> None:
+    def reset(self, mode: str = "rebuild", notify_observers: bool = True) -> None:
         if not self._initialized:
             self.initialize()
+        self.reset_mode = mode
         self.reset_wall_s = {}
         for engine in self.engines:
             started = time.monotonic()
-            engine.reset()
+            engine.reset(mode)
             self.reset_wall_s[engine.name] = time.monotonic() - started
         for tf in self.tfs:
             tf.reset()
         self.t_ms = 0.0
         self.tick_index = 0
         self.records = []
-        for observer in self.observers:
-            observer.on_reset(self)
+        if notify_observers:
+            for observer in self.observers:
+                observer.on_reset(self)
 
     # -- one tick ---------------------------------------------------------
     def _collect(self) -> Dict[str, DataPack]:
@@ -404,11 +407,12 @@ class FTILoop:
         reset: bool = True,
         max_ticks: Optional[int] = None,
         meta: Optional[Mapping[str, Any]] = None,
+        reset_mode: str = "rebuild",
     ) -> TrialRecord:
         if self.stop_condition is None and max_ticks is None:
             raise ValueError("run_trial needs a stop_condition or max_ticks")
         if reset:
-            self.reset()
+            self.reset(reset_mode)
         elif not self._initialized:
             self.initialize()
 
@@ -448,6 +452,7 @@ class FTILoop:
         trial.meta["timing"].update(
             {"reset_wall_s": dict(self.reset_wall_s), "lead_wall_s": lead_wall_s}
         )
+        trial.meta["reset_mode"] = self.reset_mode
         for observer in self.observers:
             observer.on_trial_end(trial)
         return trial

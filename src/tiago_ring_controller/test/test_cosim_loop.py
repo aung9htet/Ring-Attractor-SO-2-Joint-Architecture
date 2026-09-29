@@ -420,6 +420,26 @@ class DeterminismAndSerializationTests(unittest.TestCase):
         self.assertEqual(a, b)
         self.assertEqual((nest.reset_count, robot.reset_count), (2, 2))
 
+    def test_continue_mode_keeps_engine_state_between_trials(self):
+        nest = FakeNestEngine("nest", population_size=100)
+        robot = FakeRobotEngine("robot")
+        loop = make_loop(nest, robot, make_tfs(lead=4, goal=0.8), lead=4, max_steps=30)
+        first = loop.run_trial(reset_mode="rebuild")
+        end_pos = first.final_state["joint_state"]["positions"][5]
+        self.assertNotEqual(end_pos, 0.0)
+        second = loop.run_trial(reset_mode="continue")
+        self.assertEqual(second.meta["reset_mode"], "continue")
+        self.assertEqual(second.main_ticks[0].inputs["joint_state"]["positions"][5], end_pos)
+        self.assertEqual((nest.rebuild_count, robot.rebuild_count), (1, 1))
+        self.assertEqual((nest.reset_count, robot.reset_count), (2, 2))
+        # Bumps are still re-injected at the start of a continued trial.
+        self.assertEqual([b["name"] for b in nest.applied_bumps], ["goal_bump", "state_bump"])
+        third = loop.run_trial(reset_mode="rebuild")
+        self.assertEqual(third.main_ticks[0].inputs["joint_state"]["positions"][5], 0.0)
+        self.assertEqual(nest.rebuild_count, 2)
+        with self.assertRaises(ValueError):
+            robot.reset("sometimes")
+
     def test_fake_robot_moves_towards_the_goal(self):
         nest = FakeNestEngine("nest", population_size=100)
         robot = FakeRobotEngine("robot")

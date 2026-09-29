@@ -381,6 +381,12 @@ Done:
   trials on demand in the main thread; the loop is unchanged (an observer publishes
   ticks, a stop condition honours the page's stop). Tested end to end with the fakes
   in `test/test_cosim_dashboard.py`.
+- **Reset modes** — `Engine.reset(mode)` with `rebuild` (legacy: rebuild network,
+  `play_motion` home) or `continue` (keep network and arm state; bumps re-injected
+  at trial start; the NEST engine windows the raster to the trial and tracks kernel
+  time). `CosimConfig.reset_mode`, `--reset-mode`, per-start choice and a *Reset
+  now* button on the dashboard. Default stays `rebuild` for parity; `continue` is a
+  research option whose ring behaviour (old goal bump still present) is uncharacterised.
 
 Deviations from the design above (all deliberate):
 

@@ -39,6 +39,7 @@ class CosimConfig:
     rng_seed: Optional[int] = None
     local_num_threads: int = 1
     nest_step_mode: str = "run"
+    reset_mode: str = "rebuild"
     stepper: str = "clock_wait"
     max_step_size_s: float = 0.001
     step_timeout_s: float = 5.0
@@ -57,6 +58,8 @@ class CosimConfig:
             raise ValueError("nest_step_mode must be one of %r" % (NEST_STEP_MODES,))
         if self.stepper not in STEPPERS:
             raise ValueError("stepper must be one of %r" % (STEPPERS,))
+        if self.reset_mode not in ("rebuild", "continue"):
+            raise ValueError("reset_mode must be 'rebuild' or 'continue'")
         if self.goal_mode not in ("once", "continuous"):
             raise ValueError("goal_mode must be 'once' or 'continuous'")
         if self.proprioception_mode not in ("once", "continuous", "off"):

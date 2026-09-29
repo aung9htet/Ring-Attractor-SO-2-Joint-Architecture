@@ -52,6 +52,8 @@ def parse_args(argv=None):
     parser.add_argument("--step-mode", choices=("run", "simulate"), default="run")
     parser.add_argument("--stepper", choices=("clock_wait", "plugin"), default="clock_wait")
     parser.add_argument("--proprioception", choices=("once", "continuous", "off"), default="once")
+    parser.add_argument("--reset-mode", choices=("rebuild", "continue"), default="rebuild",
+                        help="between trials: rebuild the network and home the robot (legacy) or continue")
     parser.add_argument("--out", default=None, help="output directory (collector layout)")
     parser.add_argument("--config", default=None, help="load a CosimConfig JSON instead of the profile")
     parser.add_argument("--monitor", action="store_true", help="open a live matplotlib view of the ring")
@@ -81,7 +83,7 @@ def build_config(args):
             # Fakes do not care about the mapping range; real runs must have limits.
             config = CosimConfig.from_dict(dict(config.to_dict(), joint_min=-1.0, joint_max=1.0))
     overrides = {"nest_step_mode": args.step_mode, "stepper": args.stepper,
-                 "proprioception_mode": args.proprioception}
+                 "proprioception_mode": args.proprioception, "reset_mode": args.reset_mode}
     if args.seed is not None:
         overrides["rng_seed"] = args.seed
     if args.lead is not None:

@@ -248,6 +248,7 @@ class GazeboRosEngine(Engine):
         self.step_log: List[StepResult] = []
         self.published: List[Dict[str, Any]] = []
         self.paused = False
+        self.rebuild_count = 0
 
     # -- lifecycle --------------------------------------------------------
     def _do_initialize(self) -> None:
@@ -273,23 +274,28 @@ class GazeboRosEngine(Engine):
         return False
 
     def _do_reset(self) -> None:
-        self.transport.unpause()
-        self.paused = False
-        state = self.transport.play_motion(self.reset_motion, self.reset_timeout_s)
-        if state != "SUCCEEDED":
-            raise EngineError("play_motion %r ended in state %s" % (self.reset_motion, state))
-        # The home motion leaves residual velocity; wait for all joints.
-        deadline = time.monotonic() + self.settle_timeout_s
-        while time.monotonic() < deadline:
-            _, velocities, _ = self._snapshot()
-            if all(abs(v) < self.settle_vel_threshold for v in velocities):
-                break
-            time.sleep(0.02)
+        if self.reset_mode == "rebuild":
+            self.transport.unpause()
+            self.paused = False
+            state = self.transport.play_motion(self.reset_motion, self.reset_timeout_s)
+            if state != "SUCCEEDED":
+                raise EngineError("play_motion %r ended in state %s" % (self.reset_motion, state))
+            # The home motion leaves residual velocity; wait for all joints.
+            deadline = time.monotonic() + self.settle_timeout_s
+            while time.monotonic() < deadline:
+                _, velocities, _ = self._snapshot()
+                if all(abs(v) < self.settle_vel_threshold for v in velocities):
+                    break
+                time.sleep(0.02)
+            self.rebuild_count += 1
+        # continue: the arm stays where the previous trial's stop left it
+        # (physics already paused by stop_and_settle); just re-prime.
         positions, velocities, _ = self._snapshot()
         self.command_state.reset()
         self.command_state.prime(positions, velocities, force=True)
-        self.transport.pause()
-        self.paused = True
+        if not self.paused:
+            self.transport.pause()
+            self.paused = True
         self.pending = None
         self.last_step = None
         self.step_log = []

@@ -17,7 +17,8 @@ PAGE_HTML = r"""<!doctype html>
   .controls { display:flex; gap:8px; align-items:center; margin-left:auto; }
   input[type=number] { width:90px; padding:4px 6px; background:#0e1116; color:var(--fg); border:1px solid #2a3140; border-radius:4px; }
   button { padding:5px 12px; border:0; border-radius:4px; background:var(--accent); color:#fff; font-weight:600; cursor:pointer; }
-  button.stop { background:var(--goal); } button:disabled { opacity:.4; cursor:default; }
+  button.stop { background:var(--goal); } button.reset { background:#5b6572; } button:disabled { opacity:.4; cursor:default; }
+  select { padding:4px 6px; background:#0e1116; color:var(--fg); border:1px solid #2a3140; border-radius:4px; }
   main { display:grid; grid-template-columns: 1fr 1fr; gap:12px; padding:12px 16px; }
   .panel { background:var(--panel); border-radius:8px; padding:8px 10px; }
   .panel h2 { font-size:13px; margin:0 0 6px; color:var(--muted); font-weight:600; }
@@ -41,8 +42,10 @@ PAGE_HTML = r"""<!doctype html>
   <div class="controls">
     <label class="stat">goal (rad) <input id="goal" type="number" step="0.05" value="0.5"></label>
     <label class="stat">max steps <input id="maxsteps" type="number" step="10" placeholder="profile"></label>
+    <label class="stat">before trial <select id="resetmode"><option value="rebuild">rebuild network + home robot</option><option value="continue">continue from current state</option></select></label>
     <button id="start">Start trial</button>
     <button id="stop" class="stop" disabled>Stop</button>
+    <button id="reset" class="reset" title="rebuild the NEST network and home the robot now">Reset now</button>
   </div>
 </header>
 <div id="message"></div>
@@ -52,7 +55,7 @@ PAGE_HTML = r"""<!doctype html>
   <section class="panel"><h2>gain populations and filtered drive</h2><canvas id="gain" width="640" height="300"></canvas></section>
   <section class="panel"><h2>joint angle vs goal, decoded velocity</h2><canvas id="joint" width="640" height="300"></canvas></section>
   <section class="panel" style="grid-column: 1 / -1"><h2>trials</h2>
-    <table><thead><tr><th>#</th><th>goal</th><th>start</th><th>final</th><th>|error|</th><th>steps</th><th>stop</th><th>NEST build</th><th>robot reset</th><th>wall</th></tr></thead>
+    <table><thead><tr><th>#</th><th>goal</th><th>start</th><th>final</th><th>|error|</th><th>steps</th><th>stop</th><th>reset</th><th>NEST reset</th><th>robot reset</th><th>wall</th></tr></thead>
     <tbody id="trials"></tbody></table>
   </section>
 </main>
@@ -101,12 +104,14 @@ PAGE_HTML = r"""<!doctype html>
     const badge = $('status'); badge.textContent = s.status; badge.className = 'badge ' + s.status;
     $('message').textContent = s.message || '';
     $('start').disabled = !(s.status === 'idle' || s.status === 'error');
+    $('reset').disabled = !(s.status === 'idle' || s.status === 'error');
     $('stop').disabled = !(s.status === 'running' || s.status === 'resetting');
+    if (s.reset_mode && !state.modeTouched) $('resetmode').value = s.reset_mode;
     if (s.next_goal !== null && s.next_goal !== undefined && document.activeElement !== $('goal')) $('goal').value = s.next_goal;
     const rows = (s.trials || []).map(t => {
       const tm = t.timing || {}; const r = tm.reset_wall_s || {};
       return '<tr><td>' + t.trial + '</td><td>' + t.goal.toFixed(4) + '</td><td>' + t.q_start.toFixed(4) + '</td><td>' + t.q_final.toFixed(4) +
-        '</td><td>' + t.abs_error.toFixed(4) + '</td><td>' + t.n_steps + '</td><td>' + t.stop_reason + '</td><td>' +
+        '</td><td>' + t.abs_error.toFixed(4) + '</td><td>' + t.n_steps + '</td><td>' + t.stop_reason + '</td><td>' + (t.reset_mode || '-') + '</td><td>' +
         (r.nest === undefined ? '-' : r.nest.toFixed(1) + ' s') + '</td><td>' + (r.robot === undefined ? '-' : r.robot.toFixed(1) + ' s') +
         '</td><td>' + t.wall_s.toFixed(1) + ' s</td></tr>';
     });
@@ -229,8 +234,10 @@ PAGE_HTML = r"""<!doctype html>
     source.onerror = () => { $('status').textContent = 'disconnected'; $('status').className = 'badge error'; };
   }
   const post = (path, body) => fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) }).then(r => r.json());
-  $('start').onclick = () => { const body = { goal: parseFloat($('goal').value) }; const ms = parseInt($('maxsteps').value, 10); if (!isNaN(ms)) body.max_steps = ms; post('/api/start', body).then(r => { if (r.error) $('message').textContent = r.error; }); };
+  $('start').onclick = () => { const body = { goal: parseFloat($('goal').value), reset_mode: $('resetmode').value }; const ms = parseInt($('maxsteps').value, 10); if (!isNaN(ms)) body.max_steps = ms; post('/api/start', body).then(r => { if (r.error) $('message').textContent = r.error; }); };
   $('stop').onclick = () => post('/api/stop');
+  $('reset').onclick = () => post('/api/reset');
+  $('resetmode').onchange = () => { state.modeTouched = true; };
   $('goal').onchange = () => post('/api/goal', { goal: parseFloat($('goal').value) });
   $('histlen').textContent = HISTORY;
   connect(); requestAnimationFrame(draw);

@@ -171,6 +171,7 @@ def run_trial(
     goal_rad: float,
     config: Optional[CosimConfig] = None,
     meta: Optional[Mapping[str, Any]] = None,
+    reset_mode: Optional[str] = None,
 ) -> TrialRecord:
     goal_tf = _find(loop, GoalTF)
     if goal_tf is None:
@@ -183,7 +184,9 @@ def run_trial(
     if meta:
         trial_meta.update(dict(meta))
 
-    record = loop.run_trial(reset=True, meta=trial_meta)
+    if reset_mode is None:
+        reset_mode = config.reset_mode if config is not None else "rebuild"
+    record = loop.run_trial(reset=True, meta=trial_meta, reset_mode=reset_mode)
 
     record.meta["goal_ring_index"] = goal_tf.last_index
     proprio = _find(loop, ProprioceptionTF)

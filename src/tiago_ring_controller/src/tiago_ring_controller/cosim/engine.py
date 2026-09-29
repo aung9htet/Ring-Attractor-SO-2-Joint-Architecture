@@ -27,6 +27,11 @@ class StepTimeoutError(EngineError):
     """A simulator did not reach its target time within the wall-clock budget."""
 
 
+#: ``rebuild``: legacy behaviour, rebuild the network / home the robot.
+#: ``continue``: keep the simulator state left by the previous trial.
+RESET_MODES = ("rebuild", "continue")
+
+
 @dataclass
 class EngineClock:
     """Simulated time owned by one engine, in milliseconds."""
@@ -61,6 +66,7 @@ class Engine(ABC):
             raise ValueError("engine name must be non-empty")
         self.name = str(name)
         self.clock = EngineClock()
+        self.reset_mode = "rebuild"
         self._initialized = False
         self._in_trial = False
 
@@ -83,10 +89,18 @@ class Engine(ABC):
         self._do_initialize()
         self._initialized = True
 
-    def reset(self) -> None:
-        """Start a new trial: rebuild or re-home, and zero the clock."""
+    def reset(self, mode: str = "rebuild") -> None:
+        """Start a new trial and zero the clock.
+
+        ``mode="rebuild"`` rebuilds / re-homes (legacy); ``mode="continue"``
+        keeps the state the previous trial left.  Engines that have nothing
+        built yet rebuild regardless.
+        """
 
         self._require_initialized("reset")
+        if mode not in RESET_MODES:
+            raise ValueError("reset mode must be one of %r" % (RESET_MODES,))
+        self.reset_mode = mode
         self.clock.reset()
         self._do_reset()
         self._in_trial = True
@@ -177,5 +191,6 @@ __all__ = [
     "EngineClock",
     "EngineError",
     "EngineStateError",
+    "RESET_MODES",
     "StepTimeoutError",
 ]

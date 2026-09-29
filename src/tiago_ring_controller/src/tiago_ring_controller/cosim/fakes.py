@@ -63,11 +63,14 @@ class FakeRobotEngine(Engine):
         self.pending: Optional[DataPack] = None
         self.published: List[Dict[str, Any]] = []
         self.reset_count = 0
+        self.rebuild_count = 0
 
     def _do_reset(self) -> None:
-        self.positions = list(self.home)
-        self.velocities = [0.0] * len(self.home)
-        self.sim_time_s = 0.0
+        if self.reset_mode == "rebuild" or not self.command_state.initialized:
+            self.positions = list(self.home)
+            self.velocities = [0.0] * len(self.home)
+            self.sim_time_s = 0.0
+            self.rebuild_count += 1
         self.pending = None
         self.published = []
         self.command_state.reset()
@@ -175,10 +178,13 @@ class FakeNestEngine(Engine):
         self.applied_bumps: List[Dict[str, Any]] = []
         self.last: Optional[DataPack] = None
         self.reset_count = 0
+        self.rebuild_count = 0
 
     def _do_reset(self) -> None:
-        self.state_index = None
-        self.goal_index = None
+        if self.reset_mode == "rebuild":
+            self.state_index = None
+            self.goal_index = None
+            self.rebuild_count += 1
         self.pending = {}
         self.applied_bumps = []
         self.last = None
