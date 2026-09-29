@@ -172,6 +172,43 @@ Requirements that follow, checked by tests in phases 3 and 4:
 - Sweeps, batch sessions and the fitting tools are plain Python over `Graph`
   objects; `run_graph` returns the same `TrialRecord`s the dashboard produces.
 
+## 5c. Robot feedback path
+
+Today the output side is defined (`Decoder.velocity -> Joint.velocity`, published as
+the receding-horizon trajectory) but the feedback side is not: the measured joint
+enters the ring once, at trial start, so the trial runs open loop.
+
+Mechanism (already provided by the loop): the robot engine publishes measured
+angles and velocities for all joints every tick; a `Joint` block exposes its angle
+as a signal port; `Encoder` maps the angle to a ring index with the profile mapping
+(limits, margin) and drives the build-time Poisson generators of the target ring.
+Wiring is `Joint.angle -> Encoder.angle -> Ring.stim`, once per tick with the one-tick
+delay; `Goal.angle -> Encoder.angle -> Ring.stim` encodes the target the same way, so
+moving goals need no extra block. With several joints, the engine merges every
+commanded joint into the single trajectory message it already sends.
+
+Semantics (to be characterised, not assumed). The bump in r1 is not a sensor reading;
+it is the state estimate the gain feedback transports, and its motion is the motor
+command. A continuous stimulus competes with that transport. `Encoder.mode`:
+
+| mode | behaviour | role |
+|---|---|---|
+| `once` | inject at trial start only | legacy parity |
+| `continuous` | every tick, rate `r` on a window of half-width `h` around the measured index | observer correction; `r` is the sensor-vs-prediction weight, small `r` trusts the ring, large `r` slaves the bump to the joint |
+| `corrective` | stimulate only when decoded centroid and measured index differ by more than a dead-band | easier to stabilise; the comparison is computed in the TF, not by neurons |
+
+Consequences carried by the plan:
+
+- Closed-loop graphs run with `nest_lead_steps` 0 or 1 and a one-point horizon; the
+  four-step lead feeds the ring a 200 ms old state and stays a legacy option.
+- Optional `Joint` output ports for later blocks: measured velocity, effort (the
+  wrist FT stream is already subscribed), so other feedback designs can be tried
+  without touching the engine.
+- Phase 5 gate: with the fake robot and then in Gazebo, sweep `r` and `h` for
+  `continuous` and the dead-band for `corrective`; report tracking error, bump-to-joint
+  lag and settle time against `once`; the example graph's default mode and gain are
+  chosen from that report (`docs/blocks/feedback.md`).
+
 ## 6. Graph file (schema v1)
 
 ```json
