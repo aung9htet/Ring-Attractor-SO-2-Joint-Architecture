@@ -17,6 +17,7 @@ if str(SRC) not in sys.path:
 
 from tiago_ring_controller.blocks import Decoder, Encoder, Goal, Joint, Ring  # noqa: E402
 from tiago_ring_controller.cosim.fake_backend import FakeNestBackend  # noqa: E402
+from tiago_ring_controller.control.trajectory import build_multi_joint_trajectory, build_receding_trajectory  # noqa: E402
 from tiago_ring_controller.graph import (  # noqa: E402
     EXAMPLES_DIR,
     TEMPLATES,
@@ -27,12 +28,15 @@ from tiago_ring_controller.graph import (  # noqa: E402
     find_primary,
     graph_cosim_config,
     loads,
+    multi_joint_two_ring,
+    resolve_joint_limits,
     run_graph,
     three_ring_single_joint,
     two_joint_forward_kinematics,
     two_ring_single_joint,
 )
 from tiago_ring_controller.graph.compile import (  # noqa: E402
+    ArmCommandTF,
     DecoderTF,
     GoalBlockTF,
     JointCommandTF,
@@ -119,7 +123,7 @@ class CompilerTests(unittest.TestCase):
         graph = two_ring_single_joint()
         compiled = compile_graph(graph, engines="fake")
         names = [type(tf).__name__ for tf in compiled.tfs]
-        self.assertEqual(names, ["LegacyViewTF", "JointSensorTF", "GoalBlockTF", "DecoderTF", "JointCommandTF"])
+        self.assertEqual(names, ["LegacyViewTF", "JointSensorTF", "GoalBlockTF", "DecoderTF", "JointCommandTF", "ArmCommandTF"])
         self.assertEqual([e.name for e in compiled.loop.engines], ["nest", "robot"])
         self.assertEqual(compiled.nest_engine.inputs, {"j5", "goal"})
         self.assertEqual(compiled.loop.lead_engine, "nest")
@@ -136,7 +140,9 @@ class CompilerTests(unittest.TestCase):
         self.assertEqual(decoder_tf.sources, {"left_counts": ("gain", "left_counts"), "right_counts": ("gain", "right_counts")})
         self.assertEqual(decoder_tf.inputs, {"gain"})
         command = next(tf for tf in compiled.tfs if isinstance(tf, JointCommandTF))
-        self.assertEqual((command.inputs, command.outputs), ({"dec"}, {"arm_velocity_cmd"}))
+        self.assertEqual((command.inputs, command.outputs), ({"dec"}, {"j5.command"}))
+        merge = next(tf for tf in compiled.tfs if isinstance(tf, ArmCommandTF))
+        self.assertEqual((merge.inputs, merge.outputs, merge.primary_id), ({"j5.command"}, {"arm_velocity_cmd"}, "j5.command"))
         with self.assertRaisesRegex(GraphError, "engines must be"):
             compile_graph(graph, engines="nope")
 
@@ -204,6 +210,117 @@ class RunnerTests(unittest.TestCase):
             last = record.main_ticks[-1].outputs
             self.assertEqual(sorted(k for k in last if k.startswith("decode_")), ["decode_lift", "decode_pitch", "decode_yaw"])
             self.assertTrue(np.isnan(last["decode_lift"]["angle"]))   # fake NEST: no spikes
+
+
+URDF = """<robot name="tiago">
+  <joint name="arm_6_joint" type="revolute"><limit lower="-2.0" upper="2.0"/></joint>
+  <joint name="arm_7_joint" type="revolute"><limit lower="-1.39" upper="1.39"/></joint>
+</robot>"""   # arm joint index 6 is arm_7_joint
+
+
+class MultiJointTests(unittest.TestCase):
+    def test_multi_joint_trajectory_equals_single_joint_and_integrates_each_joint(self):
+        base = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]
+        self.assertEqual(build_receding_trajectory(base, 5, [0.1, 0.2, 0.3], 0.05),
+                         build_multi_joint_trajectory(base, {5: [0.1, 0.2, 0.3]}, 0.05))
+        result = build_multi_joint_trajectory(base, {5: [0.1, 0.2], 6: [-0.1]}, 0.05)
+        self.assertEqual(len(result.points), 2)
+        self.assertAlmostEqual(result.points[0].positions[5], 0.605)
+        self.assertAlmostEqual(result.points[0].positions[6], 0.695)
+        self.assertAlmostEqual(result.points[1].positions[5], 0.615)
+        self.assertAlmostEqual(result.points[1].positions[6], 0.695)   # padded with zero velocity
+        self.assertEqual(result.points[1].velocities[6], 0.0)
+        self.assertAlmostEqual(result.next_commanded_positions[6], 0.695)
+        self.assertIsNone(build_multi_joint_trajectory(base, {5: []}, 0.05))
+
+    def test_multi_joint_template_compiles_and_commands_both_joints_on_the_fakes(self):
+        graph = multi_joint_two_ring(joints=(5, 6), goals=(0.6, -0.4))
+        self.assertEqual(len(graph.blocks), 22)
+        compiled = compile_graph(graph, engines="fake")
+        names = [type(tf).__name__ for tf in compiled.tfs]
+        self.assertEqual(names.count("JointCommandTF"), 2)
+        self.assertEqual(names[-1], "ArmCommandTF")
+        self.assertEqual((compiled.primary.joint.id, compiled.primary.decoder.id), ("j5", "dec_j5"))
+        self.assertEqual(compiled.config.joint_index, 5)
+        results = run_graph(graph, engines="fake", goals=[0.6])
+        record = results[0]["record"]
+        cmd = record.main_ticks[0].outputs["arm_velocity_cmd"]
+        self.assertEqual([c["joint_index"] for c in cmd["commands"]], [5, 6])
+        self.assertEqual(cmd["joint_index"], 5)
+        self.assertEqual(len(cmd["velocities"]), 4)
+        self.assertIn("legacy", results[0])
+        self.assertEqual(results[0]["legacy"]["scalars"]["q_goal"], 0.6)
+
+    def test_fake_robot_integrates_two_joints_and_settles_both(self):
+        from tiago_ring_controller.cosim.datapack import DataPack
+        from tiago_ring_controller.cosim.fakes import FakeRobotEngine
+
+        robot = FakeRobotEngine("robot", home=[0.0] * 7)
+        robot.initialize()
+        robot.reset()
+        for _ in range(20):
+            robot.set_datapacks({"arm_velocity_cmd": DataPack("arm_velocity_cmd", robot.t_ms, {
+                "joint_index": 5, "velocities": [0.2] * 4, "dt_s": 0.05,
+                "commands": [{"joint_index": 5, "velocities": [0.2] * 4}, {"joint_index": 6, "velocities": [-0.1] * 4}],
+            })})
+            robot.advance(50.0)
+        positions = robot.get_datapacks()["joint_state"]["positions"]
+        self.assertGreater(positions[5], 0.15)
+        self.assertLess(positions[6], -0.07)
+        self.assertEqual(robot.published[-1]["joint_indices"], [5, 6])
+        self.assertEqual(sum(abs(p) > 1e-9 for p in positions), 2)
+        robot.finish_trial()
+        self.assertLess(abs(robot.velocities[5]), 0.01)
+        self.assertLess(abs(robot.velocities[6]), 0.01)
+
+    def test_gazebo_engine_publishes_both_joints_in_one_trajectory(self):
+        import importlib.util
+
+        spec = importlib.util.spec_from_file_location("engine_tests", ROOT / "test/test_cosim_engines.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        from tiago_ring_controller.cosim.datapack import DataPack
+        from tiago_ring_controller.cosim.gazebo_ros_engine import GazeboRosEngine
+
+        transport = module.FakeTransport()
+        engine = GazeboRosEngine(transport, stepper_name="clock_wait")
+        engine.initialize()
+        engine.reset()
+        engine.set_datapacks({"arm_velocity_cmd": DataPack("arm_velocity_cmd", 0.0, {
+            "joint_index": 5, "velocities": [0.2, 0.2], "dt_s": 0.05,
+            "commands": [{"joint_index": 5, "velocities": [0.2, 0.2]}, {"joint_index": 6, "velocities": [-0.4]}],
+        })})
+        engine.advance(50.0)
+        _, points, _ = transport.published[-1]
+        self.assertEqual(len(points), 2)
+        self.assertAlmostEqual(points[0].positions[5] - transport.positions[5], 0.0, places=2)  # transport moved to point 0
+        self.assertAlmostEqual(points[0].velocities[5], 0.2)
+        self.assertAlmostEqual(points[0].velocities[6], -0.4)
+        self.assertAlmostEqual(points[1].velocities[6], 0.0)
+        self.assertEqual(engine.published[-1]["joint_indices"], [5, 6])
+        engine.finish_trial()
+        engine.shutdown()
+
+    def test_urdf_limits_follow_into_the_encoders(self):
+        graph = two_ring_single_joint(joint=6)
+        graph.blocks["j6"].params["limits_source"] = "urdf"
+        old = graph.blocks["j6"].limits()
+        self.assertEqual(graph.blocks["enc_state"].params["joint_min"], old[0])
+
+        class Transport:
+            def get_param(self, name):
+                return URDF if name == "/robot_description" else None
+
+        changed = resolve_joint_limits(graph, Transport())
+        self.assertEqual(changed["j6"]["to"], (-1.39, 1.39))
+        self.assertEqual(sorted(changed["j6"]["followers"]), ["enc_goal", "enc_state"])
+        self.assertEqual(graph.blocks["enc_goal"].params["joint_max"], 1.39)
+        self.assertEqual(graph.blocks["j6"].limits(), (-1.39, 1.39))
+        graph.blocks["j6"].params["index"] = 3
+        with self.assertRaisesRegex(GraphError, "no URDF limits for arm joint 3"):
+            resolve_joint_limits(graph, Transport())
+        untouched = two_ring_single_joint(joint=6)
+        self.assertEqual(resolve_joint_limits(untouched, Transport()), {})
 
 
 if __name__ == "__main__":

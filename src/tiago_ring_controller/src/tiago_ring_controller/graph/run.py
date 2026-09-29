@@ -65,6 +65,13 @@ def run_graph(
     writer = TrialWriter(out_dir, compiled.config, len(goals)) if (out_dir and compiled.primary.complete) else None
     try:
         loop.initialize()
+        transport = getattr(compiled.robot_engine, "transport", None)
+        if transport is not None:
+            from .compile import resolve_joint_limits
+
+            changed = resolve_joint_limits(graph, transport)
+            if changed:
+                compiled.meta["urdf_limits"] = changed
         for index, goal in enumerate(goals, start=1):
             record = run_graph_trial(compiled, float(goal), meta={"iteration_idx": index})
             result: Dict[str, Any] = {"record": record}

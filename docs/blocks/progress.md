@@ -326,3 +326,65 @@ phase 4 gate.
 
 Not run: Gazebo (`--engines full --dashboard` needs the simulation), the
 browser (dashboard code unchanged; its fake end-to-end test is in the suite).
+
+## 2026-09-29 — Phase 5: robot binding and multi-joint
+
+Report: `feedback.md` (encoder-mode sweep, goal-distance behaviour, multi-joint);
+raw sweep data `feedback_sweep.json`, table `feedback_sweep_table.md`.
+
+### Changes
+
+- `control/trajectory.py`: `build_multi_joint_trajectory` and
+  `CommandState.build_multi` (several joints per receding horizon; equals the
+  single-joint builder point for point when one joint is commanded).
+- `arm_velocity_cmd` gains an optional `commands` list; `FakeRobotEngine` and
+  `GazeboRosEngine` build one trajectory from it (`command_horizons`), record
+  `joint_indices`, and stop-and-settle every commanded joint at trial end.
+- `graph/compile.py`: `JointCommandTF` now emits `"<joint>.command"`; a single
+  `ArmCommandTF` merges all of them into `arm_velocity_cmd` (legacy fields from
+  the primary joint, `settled` = all joints, `commands` for the engines).
+  `resolve_joint_limits(graph, transport)` applies URDF limits to `Joint` blocks
+  with `limits_source="urdf"` and to the encoders mapped with the old limits;
+  `run_graph` calls it after the loop initialised when the robot engine has a
+  transport. `Joint.limits_source` parameter (`params` default).
+- `Homeostasis` exposes `left_counts` / `right_counts` signal ports (the
+  decision pair as a motor-signal source; engine emits them).
+- `graph/templates.py`: `multi_joint_two_ring(joints, goals)` (plan 5e level 1:
+  one two-ring circuit per joint, one robot engine); example file added.
+- `scripts/sweep_feedback.py` (plan 5c sweep: once / continuous r×h / corrective
+  dead band; tracking error and bump-to-joint lag; JSON + markdown);
+  `scripts/cosim_gazebo_smoke.py --joints 5 6` commands two joints in one
+  trajectory; CMake installs the new scripts.
+- Tests: `test_graph_files.MultiJointTests` (trajectory equality and padding,
+  multi-joint template compile/run on the fakes, fake robot integrates and
+  settles two joints, Gazebo engine with the fake transport publishes both
+  joints in one trajectory, URDF limits follow into the encoders),
+  `test_graph_real_nest.MultiJointRealNestTests` (container).
+
+### Gates
+
+Container: full suite `Ran 228 tests … FAILED (failures=1)` where the failure
+was the multi-joint test's first goal set, then `test_graph_real_nest.py`
+`Ran 5 tests in 30.727s OK` after retargeting it (below). Host: 211 tests,
+only the pre-existing `colorcet` import error.
+
+Multi-joint on the fakes with real NEST (`multi_joint_two_ring`, goals
+(0.6, −1.2)): `steps=400 stop=max_steps j5=0.5245 j6=-0.8191`; both joints move
+in the right direction (87 % and 68 % of the way), uncommanded joints hold. The
+first goal set (0.6, −0.4) moved joint 6 the wrong way, which led to the
+goal-distance finding in `feedback.md` §2: below about 18 ring indices the
+comparator produces no drive, and joint 6's outcome is seed dependent. Recorded
+as model behaviour, not a plumbing defect (the single-joint parity test is
+unchanged and green).
+
+Feedback sweep (fake robot, real NEST, joint 5, goals ±0.5/0.6): `once` error
+0.035 rad in 225 steps; every `continuous` configuration (r 25–400 Hz, h 2–10)
+pins the belief to the joint and never settles (error 0.17–1.69 rad);
+`corrective` with dead band 5 reaches 0.113 rad. Decision: `once` stays the
+default; `corrective`(5) is the candidate for the Gazebo repeat.
+
+**Not run:** Gazebo (`scripts/cosim_gazebo_smoke.py --joints 5 6`,
+`run_graph.py --engines full`, `sweep_feedback.py --engines full`) — needs the
+simulation launched through `./run_model_docker.bash`; the plan's "in Gazebo"
+half of the phase 5 gate is therefore open and documented as such in
+`feedback.md`. Browser: unchanged.

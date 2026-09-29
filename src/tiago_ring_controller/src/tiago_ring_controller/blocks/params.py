@@ -237,8 +237,11 @@ DECODER_SCHEMA = ParamSchema("Decoder", [
 
 JOINT_SCHEMA = ParamSchema("Joint", [
     ParamSpec("index", "int", 5, minimum=0, maximum=6, doc="arm joint index"),
-    ParamSpec("joint_min", "float", -1.0, unit="rad", doc="lower limit (URDF or calibration)"),
+    ParamSpec("joint_min", "float", -1.0, unit="rad", doc="lower limit"),
     ParamSpec("joint_max", "float", 1.0, unit="rad", doc="upper limit"),
+    ParamSpec("limits_source", "str", "params", choices=("params", "urdf"),
+              doc="'urdf': read the limits from /robot_description when a robot transport is available "
+                  "(encoders mapped with the old limits follow)"),
 ])
 
 GOAL_SCHEMA = ParamSchema("Goal", [

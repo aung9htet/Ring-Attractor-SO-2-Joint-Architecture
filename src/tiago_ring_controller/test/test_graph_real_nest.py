@@ -30,7 +30,14 @@ from tiago_ring_controller.cosim.fakes import FakeRobotEngine  # noqa: E402
 from tiago_ring_controller.cosim.fakes import ring_readout  # noqa: E402
 from tiago_ring_controller.cosim.graph_engine import GraphNestEngine  # noqa: E402
 from tiago_ring_controller.cosim.runner import build_loop, make_nest_engine, run_trial  # noqa: E402
-from tiago_ring_controller.graph import EXAMPLES_DIR, Graph, run_graph, two_joint_forward_kinematics, two_ring_single_joint  # noqa: E402
+from tiago_ring_controller.graph import (  # noqa: E402
+    EXAMPLES_DIR,
+    Graph,
+    multi_joint_two_ring,
+    run_graph,
+    two_joint_forward_kinematics,
+    two_ring_single_joint,
+)
 from tiago_ring_controller.math.circular import decode_sawtooth_profile  # noqa: E402
 
 LEGACY = ROOT / "legacy"
@@ -289,6 +296,35 @@ class ForwardKinematicsParityTests(unittest.TestCase):
             self.assertLessEqual(l1, 0.5)
             self.assertLessEqual(error, 0.35)
         print("FK_PARITY", report)
+
+
+@unittest.skipIf(nest is None, "NEST is not installed")
+class MultiJointRealNestTests(unittest.TestCase):
+    """Phase 5 gate on the fakes with real NEST: two joints from two decoders in one trajectory."""
+
+    @classmethod
+    def setUpClass(cls):
+        if nest.__version__ != PINNED_NEST_VERSION:
+            raise unittest.SkipTest("requires NEST %s, found %s" % (PINNED_NEST_VERSION, nest.__version__))
+
+    def test_two_joints_move_toward_their_goals(self):
+        # Goals far enough for the comparator to produce drive (docs/blocks/feedback.md: below
+        # about 18 ring indices of goal distance the decision pair stays silent).
+        goals = (0.6, -1.2)
+        graph = multi_joint_two_ring(joints=(5, 6), goals=goals)
+        result = run_graph(graph, engines="nest", goals=[goals[0]])[0]
+        record = result["record"]
+        final = record.final_state["joint_state"]["positions"]
+        print("MULTIJOINT steps=%d stop=%s j5=%.4f j6=%.4f" % (record.n_steps, record.stop_reason, final[5], final[6]))
+        for joint, goal in zip((5, 6), goals):
+            with self.subTest(joint=joint):
+                self.assertEqual(np.sign(final[joint]), np.sign(goal))
+                self.assertLess(abs(final[joint] - goal), 0.5 * abs(goal))   # at least half way
+        start = record.main_ticks[0].inputs["joint_state"]["positions"]
+        self.assertTrue(all(abs(final[k] - start[k]) < 1e-6 for k in range(5)))   # uncommanded joints hold
+        cmd = record.main_ticks[-1].outputs["arm_velocity_cmd"]
+        self.assertEqual([c["joint_index"] for c in cmd["commands"]], [5, 6])
+        self.assertIn(record.stop_reason, ("max_steps", "drive_settled"))
 
 
 if __name__ == "__main__":

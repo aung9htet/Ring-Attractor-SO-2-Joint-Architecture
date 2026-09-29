@@ -1,0 +1,413 @@
+{
+  "schema": "ring-blocks/1",
+  "name": "multi joint 5-6",
+  "simulation": {
+    "dt_ms": 50.0,
+    "nest_lead_steps": 4,
+    "max_steps": 400,
+    "rng_seed": 13579,
+    "local_num_threads": 1,
+    "step_mode": "run",
+    "reset_mode": "rebuild"
+  },
+  "blocks": [
+    {
+      "id": "r1_j5",
+      "type": "Ring",
+      "params": {
+        "population_size": 200,
+        "variant": "legacy",
+        "max_distance": 50.0,
+        "excitation_std_dev": 10.0,
+        "inhibition_std_dev": 5.0,
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "r2_j5",
+      "type": "Ring",
+      "params": {
+        "population_size": 200,
+        "variant": "legacy",
+        "max_distance": 50.0,
+        "excitation_std_dev": 10.0,
+        "inhibition_std_dev": 5.0,
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "f1_j5",
+      "type": "FourierReadout",
+      "params": {
+        "num_fourier_k": 20,
+        "weight_scale": 200.0,
+        "dc_baseline": 200.0,
+        "mask_source": "analytic",
+        "weights_artifact": ""
+      }
+    },
+    {
+      "id": "f2_j5",
+      "type": "FourierReadout",
+      "params": {
+        "num_fourier_k": 20,
+        "weight_scale": 200.0,
+        "dc_baseline": 200.0,
+        "mask_source": "analytic",
+        "weights_artifact": ""
+      }
+    },
+    {
+      "id": "cmp_j5",
+      "type": "Homeostasis",
+      "params": {
+        "warm_exc_weight": 20000.0,
+        "warm_inh_weight": -20000.0,
+        "cold_exc_weight": 20000.0,
+        "cold_inh_weight": -20000.0,
+        "decision_lateral_weight": -20000.0,
+        "weight_scale": 5000000.0,
+        "weights_artifact": "",
+        "metadata_artifact": "",
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "gain_j5",
+      "type": "Gain",
+      "params": {
+        "left_homeostasis_gain_weight": 10000.0,
+        "right_homeostasis_gain_weight": 10000.0,
+        "ring_to_gain_weight": 450000.0,
+        "gain_to_ring_weight": -0.6,
+        "cross_inhibition_weight": -30000.0,
+        "margin": 5,
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "enc_state_j5",
+      "type": "Encoder",
+      "params": {
+        "half_width": 5,
+        "rate_hz": 200.0,
+        "weight": 4500.0,
+        "duration_ticks": 1,
+        "mode": "once",
+        "dead_band": 0,
+        "mapping": "collector",
+        "joint_min": -1.4172695167359413,
+        "joint_max": 1.4171452891568528
+      }
+    },
+    {
+      "id": "enc_goal_j5",
+      "type": "Encoder",
+      "params": {
+        "half_width": 5,
+        "rate_hz": 200.0,
+        "weight": 4500.0,
+        "duration_ticks": 1,
+        "mode": "once",
+        "dead_band": 0,
+        "mapping": "collector",
+        "joint_min": -1.4172695167359413,
+        "joint_max": 1.4171452891568528
+      }
+    },
+    {
+      "id": "dec_j5",
+      "type": "Decoder",
+      "params": {
+        "source": "gain_counts",
+        "spike_scale": 1.0,
+        "tau_s": 0.5125923387284963,
+        "delay_steps": 0,
+        "gain_positive": 0.0011,
+        "gain_negative": -0.0011,
+        "drive_threshold": 5.0,
+        "n_settle": 10,
+        "horizon": 4
+      }
+    },
+    {
+      "id": "j5",
+      "type": "Joint",
+      "params": {
+        "index": 5,
+        "joint_min": -1.4172695167359413,
+        "joint_max": 1.4171452891568528,
+        "limits_source": "params"
+      }
+    },
+    {
+      "id": "goal_j5",
+      "type": "Goal",
+      "params": {
+        "angle_rad": 0.6
+      }
+    },
+    {
+      "id": "r1_j6",
+      "type": "Ring",
+      "params": {
+        "population_size": 200,
+        "variant": "legacy",
+        "max_distance": 50.0,
+        "excitation_std_dev": 10.0,
+        "inhibition_std_dev": 5.0,
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "r2_j6",
+      "type": "Ring",
+      "params": {
+        "population_size": 200,
+        "variant": "legacy",
+        "max_distance": 50.0,
+        "excitation_std_dev": 10.0,
+        "inhibition_std_dev": 5.0,
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "f1_j6",
+      "type": "FourierReadout",
+      "params": {
+        "num_fourier_k": 20,
+        "weight_scale": 200.0,
+        "dc_baseline": 200.0,
+        "mask_source": "analytic",
+        "weights_artifact": ""
+      }
+    },
+    {
+      "id": "f2_j6",
+      "type": "FourierReadout",
+      "params": {
+        "num_fourier_k": 20,
+        "weight_scale": 200.0,
+        "dc_baseline": 200.0,
+        "mask_source": "analytic",
+        "weights_artifact": ""
+      }
+    },
+    {
+      "id": "cmp_j6",
+      "type": "Homeostasis",
+      "params": {
+        "warm_exc_weight": 20000.0,
+        "warm_inh_weight": -20000.0,
+        "cold_exc_weight": 20000.0,
+        "cold_inh_weight": -20000.0,
+        "decision_lateral_weight": -20000.0,
+        "weight_scale": 5000000.0,
+        "weights_artifact": "",
+        "metadata_artifact": "",
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "gain_j6",
+      "type": "Gain",
+      "params": {
+        "left_homeostasis_gain_weight": 10000.0,
+        "right_homeostasis_gain_weight": 10000.0,
+        "ring_to_gain_weight": 450000.0,
+        "gain_to_ring_weight": -0.6,
+        "cross_inhibition_weight": -30000.0,
+        "margin": 5,
+        "neuron_params": {}
+      }
+    },
+    {
+      "id": "enc_state_j6",
+      "type": "Encoder",
+      "params": {
+        "half_width": 5,
+        "rate_hz": 200.0,
+        "weight": 4500.0,
+        "duration_ticks": 1,
+        "mode": "once",
+        "dead_band": 0,
+        "mapping": "collector",
+        "joint_min": -2.095829059115535,
+        "joint_max": 2.095868598302337
+      }
+    },
+    {
+      "id": "enc_goal_j6",
+      "type": "Encoder",
+      "params": {
+        "half_width": 5,
+        "rate_hz": 200.0,
+        "weight": 4500.0,
+        "duration_ticks": 1,
+        "mode": "once",
+        "dead_band": 0,
+        "mapping": "collector",
+        "joint_min": -2.095829059115535,
+        "joint_max": 2.095868598302337
+      }
+    },
+    {
+      "id": "dec_j6",
+      "type": "Decoder",
+      "params": {
+        "source": "gain_counts",
+        "spike_scale": 1.0,
+        "tau_s": 0.828525972366333,
+        "delay_steps": 4,
+        "gain_positive": 0.0011,
+        "gain_negative": -0.0011,
+        "drive_threshold": 5.0,
+        "n_settle": 10,
+        "horizon": 4
+      }
+    },
+    {
+      "id": "j6",
+      "type": "Joint",
+      "params": {
+        "index": 6,
+        "joint_min": -2.095829059115535,
+        "joint_max": 2.095868598302337,
+        "limits_source": "params"
+      }
+    },
+    {
+      "id": "goal_j6",
+      "type": "Goal",
+      "params": {
+        "angle_rad": -0.4
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "r1_j5.spikes",
+      "to": "f1_j5.ring"
+    },
+    {
+      "from": "r2_j5.spikes",
+      "to": "f2_j5.ring"
+    },
+    {
+      "from": "f1_j5.features",
+      "to": "cmp_j5.state_features"
+    },
+    {
+      "from": "f2_j5.features",
+      "to": "cmp_j5.target_features"
+    },
+    {
+      "from": "cmp_j5.left",
+      "to": "gain_j5.left_in"
+    },
+    {
+      "from": "cmp_j5.right",
+      "to": "gain_j5.right_in"
+    },
+    {
+      "from": "r1_j5.spikes",
+      "to": "gain_j5.ring"
+    },
+    {
+      "from": "gain_j5.feedback",
+      "to": "r1_j5.stim"
+    },
+    {
+      "from": "enc_state_j5.stim",
+      "to": "r1_j5.stim"
+    },
+    {
+      "from": "enc_goal_j5.stim",
+      "to": "r2_j5.stim"
+    },
+    {
+      "from": "j5.angle",
+      "to": "enc_state_j5.angle"
+    },
+    {
+      "from": "goal_j5.angle",
+      "to": "enc_goal_j5.angle"
+    },
+    {
+      "from": "gain_j5.left_counts",
+      "to": "dec_j5.left_counts"
+    },
+    {
+      "from": "gain_j5.right_counts",
+      "to": "dec_j5.right_counts"
+    },
+    {
+      "from": "dec_j5.velocity",
+      "to": "j5.velocity"
+    },
+    {
+      "from": "r1_j6.spikes",
+      "to": "f1_j6.ring"
+    },
+    {
+      "from": "r2_j6.spikes",
+      "to": "f2_j6.ring"
+    },
+    {
+      "from": "f1_j6.features",
+      "to": "cmp_j6.state_features"
+    },
+    {
+      "from": "f2_j6.features",
+      "to": "cmp_j6.target_features"
+    },
+    {
+      "from": "cmp_j6.left",
+      "to": "gain_j6.left_in"
+    },
+    {
+      "from": "cmp_j6.right",
+      "to": "gain_j6.right_in"
+    },
+    {
+      "from": "r1_j6.spikes",
+      "to": "gain_j6.ring"
+    },
+    {
+      "from": "gain_j6.feedback",
+      "to": "r1_j6.stim"
+    },
+    {
+      "from": "enc_state_j6.stim",
+      "to": "r1_j6.stim"
+    },
+    {
+      "from": "enc_goal_j6.stim",
+      "to": "r2_j6.stim"
+    },
+    {
+      "from": "j6.angle",
+      "to": "enc_state_j6.angle"
+    },
+    {
+      "from": "goal_j6.angle",
+      "to": "enc_goal_j6.angle"
+    },
+    {
+      "from": "gain_j6.left_counts",
+      "to": "dec_j6.left_counts"
+    },
+    {
+      "from": "gain_j6.right_counts",
+      "to": "dec_j6.right_counts"
+    },
+    {
+      "from": "dec_j6.velocity",
+      "to": "j6.velocity"
+    }
+  ],
+  "robot": {
+    "engine": "fake",
+    "stepper": "clock_wait"
+  }
+}

@@ -142,8 +142,48 @@ def two_joint_forward_kinematics(angles: Sequence[float] = (0.0, 0.0), seed: Opt
     return g
 
 
+def multi_joint_two_ring(joints: Sequence[int] = (5, 6), goals: Sequence[float] = (0.6, -0.4), mapping: str = "collector",
+                         calibration_path: Optional[str] = None, seed: Optional[int] = 13579) -> Graph:
+    """Plan 5e level 1: one two-ring circuit per joint, independent goals, one robot engine."""
+
+    from ..control.profiles import get_legacy_control_profile
+
+    profile = get_legacy_control_profile(mapping)
+    g = Graph("multi joint %s" % "-".join(str(j) for j in joints), dt_ms=profile.time_step_ms,
+              nest_lead_steps=profile.lookahead, max_steps=profile.max_steps, rng_seed=seed)
+    for joint, goal_rad in zip(joints, goals):
+        lo, hi = joint_limits(joint, calibration_path)
+        suffix = "_j%d" % joint
+        limits = dict(mapping=mapping, joint_min=lo, joint_max=hi, half_width=5)
+        r1, r2 = g.add(Ring("r1" + suffix)), g.add(Ring("r2" + suffix))
+        f1, f2 = g.add(FourierReadout("f1" + suffix)), g.add(FourierReadout("f2" + suffix))
+        cmp, gain = g.add(Homeostasis("cmp" + suffix)), g.add(Gain("gain" + suffix))
+        enc_state = g.add(Encoder("enc_state" + suffix, mode="once", **limits))
+        enc_goal = g.add(Encoder("enc_goal" + suffix, mode="once", **limits))
+        dec = g.add(Decoder("dec" + suffix, **decoder_params(joint, calibration_path, mapping)))
+        j = g.add(Joint("j%d" % joint, index=joint, joint_min=lo, joint_max=hi))
+        goal = g.add(Goal("goal" + suffix, angle_rad=float(goal_rad)))
+        g.connect(r1.spikes, f1.ring)
+        g.connect(r2.spikes, f2.ring)
+        g.connect(f1.features, cmp.state_features)
+        g.connect(f2.features, cmp.target_features)
+        g.connect(cmp.left, gain.left_in)
+        g.connect(cmp.right, gain.right_in)
+        g.connect(r1.spikes, gain.ring)
+        g.connect(gain.feedback, r1.stim)
+        g.connect(enc_state.stim, r1.stim)
+        g.connect(enc_goal.stim, r2.stim)
+        g.connect(j.angle, enc_state.angle)
+        g.connect(goal.angle, enc_goal.angle)
+        g.connect(gain.left_counts, dec.left_counts)
+        g.connect(gain.right_counts, dec.right_counts)
+        g.connect(dec.velocity, j.velocity)
+    return g
+
+
 TEMPLATES = {
     "two_ring_single_joint": two_ring_single_joint,
+    "multi_joint_two_ring": multi_joint_two_ring,
     "three_ring_single_joint": three_ring_single_joint,
     "two_joint_forward_kinematics": two_joint_forward_kinematics,
 }
@@ -159,5 +199,5 @@ def write_examples(directory: str = EXAMPLES_DIR) -> Dict[str, str]:
     return written
 
 
-__all__ = ["EXAMPLES_DIR", "TEMPLATES", "decoder_params", "joint_limits", "three_ring_single_joint",
-           "two_joint_forward_kinematics", "two_ring_single_joint", "write_examples"]
+__all__ = ["EXAMPLES_DIR", "TEMPLATES", "decoder_params", "joint_limits", "multi_joint_two_ring",
+           "three_ring_single_joint", "two_joint_forward_kinematics", "two_ring_single_joint", "write_examples"]

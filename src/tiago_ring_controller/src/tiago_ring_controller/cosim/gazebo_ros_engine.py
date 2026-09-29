@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from ..control.trajectory import CommandState, TrajectoryPointData, build_stop_trajectory
 from ..ros.transport import JOINT_NAMES, RESET_MOTION_NAME, joint_state_vectors
 from .datapack import DataPack
+from .fakes import command_horizons
 from .engine import Engine, EngineError, StepTimeoutError
 from .stepping import GazeboStepper, StepResult, make_stepper
 
@@ -335,15 +336,17 @@ class GazeboRosEngine(Engine):
     def _do_set_datapacks(self, packs: Dict[str, DataPack]) -> None:
         self.pending = packs.get("arm_velocity_cmd")
 
-    def _publish_horizon(self, joint_index: int, velocities: Sequence[float], dt_s: float) -> None:
-        trajectory = self.command_state.build(joint_index, list(velocities), dt_s)
+    def _publish_horizon(self, joint_index: int, velocities: Sequence[float], dt_s: float,
+                         horizons: Optional[Dict[int, List[float]]] = None) -> None:
+        horizons = horizons or {int(joint_index): list(velocities)}
+        trajectory = self.command_state.build_multi(horizons, dt_s)
         if trajectory is None:
             raise EngineError("empty velocity horizon")
         stamp_s = self.transport.sim_time_s()
         self.transport.publish_trajectory(self.joint_names, trajectory.points, stamp_s)
         self.published.append(
-            {"t_ms": self.t_ms, "joint_index": int(joint_index), "stamp_s": stamp_s,
-             "velocities": [float(v) for v in velocities],
+            {"t_ms": self.t_ms, "joint_index": int(joint_index), "joint_indices": sorted(horizons),
+             "stamp_s": stamp_s, "velocities": [float(v) for v in velocities],
              "points": [list(point.positions) for point in trajectory.points]}
         )
 
@@ -354,7 +357,7 @@ class GazeboRosEngine(Engine):
         if self.pending is not None:
             cmd = self.pending
             self.pending = None
-            self._publish_horizon(int(cmd["joint_index"]), cmd["velocities"], dt_s)
+            self._publish_horizon(int(cmd["joint_index"]), cmd["velocities"], dt_s, command_horizons(cmd))
         iterations = dt_s / self.max_step_size_s
         if abs(iterations - round(iterations)) > 1e-9:
             raise EngineError("dt %.6f s is not a whole number of physics iterations" % dt_s)
@@ -384,7 +387,8 @@ class GazeboRosEngine(Engine):
 
     def _do_finish_trial(self) -> None:
         if self.published:
-            self.stop_and_settle(self.published[-1]["joint_index"])
+            for joint in self.published[-1].get("joint_indices") or [self.published[-1]["joint_index"]]:
+                self.stop_and_settle(int(joint))
 
     def _do_shutdown(self) -> None:
         try:

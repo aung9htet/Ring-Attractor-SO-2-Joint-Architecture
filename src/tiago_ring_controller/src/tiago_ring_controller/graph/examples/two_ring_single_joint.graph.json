@@ -136,7 +136,8 @@
       "params": {
         "index": 5,
         "joint_min": -1.4172695167359413,
-        "joint_max": 1.4171452891568528
+        "joint_max": 1.4171452891568528,
+        "limits_source": "params"
       }
     },
     {

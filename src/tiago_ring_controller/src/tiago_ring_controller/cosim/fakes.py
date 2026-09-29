@@ -13,7 +13,7 @@
 from __future__ import annotations
 
 import math
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import List, Any, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -21,6 +21,15 @@ from ..control.trajectory import CommandState, build_stop_trajectory
 from ..ros.transport import JOINT_NAMES
 from .datapack import DataPack
 from .engine import Engine, EngineError
+
+
+def command_horizons(cmd: Any) -> Dict[int, List[float]]:
+    """``{joint_index: velocities}`` from an ``arm_velocity_cmd`` (single or multi-joint)."""
+
+    commands = cmd.get("commands") if hasattr(cmd, "get") else None
+    if commands:
+        return {int(c["joint_index"]): [float(v) for v in c["velocities"]] for c in commands}
+    return {int(cmd["joint_index"]): [float(v) for v in cmd["velocities"]]}
 
 
 def ring_readout(delta: np.ndarray) -> Tuple[float, Optional[int], float]:
@@ -114,15 +123,16 @@ class FakeRobotEngine(Engine):
         if self.pending is not None:
             cmd = self.pending
             self.pending = None
-            velocities = [float(v) for v in cmd["velocities"]]
-            trajectory = self.command_state.build(int(cmd["joint_index"]), velocities, dt_s)
+            horizons = command_horizons(cmd)
+            trajectory = self.command_state.build_multi(horizons, dt_s)
             if trajectory is None:
                 raise EngineError("empty velocity horizon")
             self.published.append(
                 {
                     "t_ms": self.t_ms,
                     "joint_index": int(cmd["joint_index"]),
-                    "velocities": velocities,
+                    "joint_indices": sorted(horizons),
+                    "velocities": [float(v) for v in cmd["velocities"]],
                     "points": [list(point.positions) for point in trajectory.points],
                 }
             )
@@ -147,10 +157,11 @@ class FakeRobotEngine(Engine):
                 break
 
     def _do_finish_trial(self) -> None:
-        joint = 0
+        joints = [0]
         if self.published:
-            joint = self.published[-1]["joint_index"]
-        self.stop_and_settle(joint)
+            joints = self.published[-1].get("joint_indices") or [self.published[-1]["joint_index"]]
+        for joint in joints:
+            self.stop_and_settle(int(joint))
 
 
 class FakeNestEngine(Engine):

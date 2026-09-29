@@ -26,6 +26,8 @@ class Homeostasis(Block):
         spikes_out("left", "decision neuron: move left"),
         spikes_out("right", "decision neuron: move right"),
         signal_out("counts", "warm, cold, left, right spike-count deltas per tick"),
+        signal_out("left_counts", "left decision spikes per tick (motor-signal experiment)"),
+        signal_out("right_counts", "right decision spikes per tick"),
     )
 
     def __init__(self, id: str, **params: Any) -> None:

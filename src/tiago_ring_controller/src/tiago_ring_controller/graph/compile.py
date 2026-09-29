@@ -205,7 +205,7 @@ class DecoderTF(BlockTF):
 
 
 class JointCommandTF(BlockTF):
-    """``Decoder.velocity -> Joint.velocity`` → ``arm_velocity_cmd`` (the MotorTF schema)."""
+    """``Decoder.velocity -> Joint.velocity`` → ``"<joint>.command"`` (one joint's horizon)."""
 
     def __init__(self, graph: Graph, block: Joint, decoder: Decoder, source_id: str) -> None:
         BlockTF.__init__(self, graph, block)
@@ -213,9 +213,7 @@ class JointCommandTF(BlockTF):
         self.decoder = decoder
         self.source_id = source_id
         self.inputs = frozenset({source_id})
-        self.outputs = frozenset({"arm_velocity_cmd"})
-        self.dt_s = graph.simulation.dt_ms / 1000.0
-        self.nest_lead_steps = graph.simulation.nest_lead_steps
+        self.outputs = frozenset({self.name})
         self._ring_fields: Optional[LegacyViewTF] = None
 
     def __call__(self, inputs: Mapping[str, DataPack], ctx: TickContext) -> Dict[str, DataPack]:
@@ -229,14 +227,59 @@ class JointCommandTF(BlockTF):
         consumed.setdefault("r1_bump_index", None if view is None else view.get("r1_bump_index"))
         consumed.setdefault("r1_centroid", float("nan") if view is None else view.get("r1_centroid", float("nan")))
         return {
+            self.name: DataPack(
+                self.name, ctx.t_ms,
+                {
+                    "joint_index": self.block.index, "velocities": list(pack["velocity"]),
+                    "consumed": consumed, "consecutive_settled": int(pack.get("consecutive_settled", 0)),
+                    "settled": bool(pack["settled"]),
+                },
+            )
+        }
+
+
+class ArmCommandTF(TransceiverFunction):
+    """Merge every ``"<joint>.command"`` into one ``arm_velocity_cmd`` (the MotorTF schema plus ``commands``).
+
+    The legacy fields describe the primary joint (records, dashboard, monitor);
+    ``settled`` is True only when every commanded joint has settled; the robot
+    engines build one trajectory from ``commands`` (all joints per tick).
+    """
+
+    name = "arm_command"
+    outputs = frozenset({"arm_velocity_cmd"})
+
+    def __init__(self, command_tfs: Sequence[JointCommandTF], primary_joint: Optional[Joint], graph: Graph) -> None:
+        self.command_tfs = list(command_tfs)
+        self.primary_id = None
+        for tf in self.command_tfs:
+            if primary_joint is not None and tf.block is primary_joint:
+                self.primary_id = tf.name
+        if self.primary_id is None and self.command_tfs:
+            self.primary_id = self.command_tfs[0].name
+        self.inputs = frozenset(tf.name for tf in self.command_tfs)
+        self.dt_s = graph.simulation.dt_ms / 1000.0
+        self.nest_lead_steps = graph.simulation.nest_lead_steps
+
+    def __call__(self, inputs: Mapping[str, DataPack], ctx: TickContext) -> Dict[str, DataPack]:
+        packs = [inputs[tf.name] for tf in self.command_tfs if tf.name in inputs]
+        if not packs:
+            return {}
+        primary = inputs.get(self.primary_id) or packs[0]
+        commands = [
+            {"joint_index": int(p["joint_index"]), "velocities": list(p["velocities"]), "settled": bool(p["settled"])}
+            for p in packs
+        ]
+        return {
             "arm_velocity_cmd": DataPack(
                 "arm_velocity_cmd", ctx.t_ms,
                 {
-                    "joint_index": self.block.index, "dt_s": self.dt_s,
-                    "velocities": list(pack["velocity"]), "horizon_len": len(pack["velocity"]),
-                    "nest_lead_steps": self.nest_lead_steps, "consumed": consumed,
-                    "consecutive_settled": int(pack.get("consecutive_settled", 0)),
-                    "settled": bool(pack["settled"]), "phase": ctx.phase,
+                    "joint_index": int(primary["joint_index"]), "dt_s": self.dt_s,
+                    "velocities": list(primary["velocities"]), "horizon_len": len(primary["velocities"]),
+                    "nest_lead_steps": self.nest_lead_steps, "consumed": dict(primary["consumed"]),
+                    "consecutive_settled": int(primary.get("consecutive_settled", 0)),
+                    "settled": all(c["settled"] for c in commands), "phase": ctx.phase,
+                    "commands": commands,
                 },
             )
         }
@@ -369,6 +412,34 @@ def make_robot_engine(graph: Graph, config: CosimConfig, engines: str, transport
     raise GraphError(["robot.engine must be one of %r, got %r" % (ROBOT_ENGINES, kind)])
 
 
+def resolve_joint_limits(graph: Graph, transport: Any) -> Dict[str, Any]:
+    """Apply URDF limits to ``Joint`` blocks with ``limits_source="urdf"`` (and their encoders).
+
+    Encoders whose ``joint_min``/``joint_max`` equal the joint's previous limits
+    (the templates set them from the same source) follow.  Returns what changed.
+    """
+
+    from ..cosim.limits import joint_limits_from_transport
+
+    changed: Dict[str, Any] = {}
+    for joint in [b for b in graph.blocks.values() if isinstance(b, Joint)]:
+        if joint.params["limits_source"] != "urdf":
+            continue
+        limits = joint_limits_from_transport(transport, joint.index)
+        if limits is None:
+            raise GraphError(["Joint %r: no URDF limits for arm joint %d on the parameter server" % (joint.id, joint.index)])
+        old = joint.limits()
+        joint.params["joint_min"], joint.params["joint_max"] = float(limits[0]), float(limits[1])
+        followers = []
+        for block in graph.blocks.values():
+            params = block.params
+            if block is not joint and "joint_min" in params and (params["joint_min"], params["joint_max"]) == old:
+                params["joint_min"], params["joint_max"] = float(limits[0]), float(limits[1])
+                followers.append(block.id)
+        changed[joint.id] = {"from": old, "to": limits, "followers": followers}
+    return changed
+
+
 def compile_graph(
     graph: Graph,
     engines: str = "fake",
@@ -423,8 +494,12 @@ def compile_graph(
             if isinstance(tf, JointCommandTF):
                 tf._ring_fields = legacy_view
         tfs.insert(0, legacy_view)
-    # Sensors and goals must run before the blocks reading them; JointCommandTF after its decoder.
-    tfs.sort(key=lambda tf: 0 if isinstance(tf, LegacyViewTF) else 1 if isinstance(tf, (JointSensorTF, GoalBlockTF)) else 3 if isinstance(tf, JointCommandTF) else 2)
+    command_tfs = [tf for tf in tfs if isinstance(tf, JointCommandTF)]
+    if command_tfs:
+        tfs.append(ArmCommandTF(command_tfs, primary.joint, graph))
+    # Sensors and goals must run before the blocks reading them; commands after their decoders; the merge last.
+    tfs.sort(key=lambda tf: 0 if isinstance(tf, LegacyViewTF) else 1 if isinstance(tf, (JointSensorTF, GoalBlockTF))
+             else 3 if isinstance(tf, JointCommandTF) else 4 if isinstance(tf, ArmCommandTF) else 2)
 
     lead_steps = graph.simulation.nest_lead_steps if nest_engine is not None else 0
     loop = FTILoop(
@@ -440,7 +515,7 @@ def compile_graph(
 
 
 __all__ = [
-    "BlockTF", "CompiledGraph", "DecoderTF", "GoalBlockTF", "JointCommandTF", "JointSensorTF",
+    "ArmCommandTF", "BlockTF", "CompiledGraph", "DecoderTF", "GoalBlockTF", "JointCommandTF", "JointSensorTF",
     "LegacyViewTF", "Primary", "ProbeTF", "ProfileDecoderTF", "compile_graph", "find_primary",
-    "graph_cosim_config", "make_robot_engine",
+    "graph_cosim_config", "make_robot_engine", "resolve_joint_limits",
 ]

@@ -1,7 +1,7 @@
 """Pure numerical construction for TIAGo receding trajectories."""
 
 from dataclasses import dataclass
-from typing import Iterable, List, Optional, Sequence, Tuple
+from typing import Mapping, Iterable, List, Optional, Sequence, Tuple
 
 
 @dataclass(frozen=True)
@@ -64,6 +64,52 @@ def build_receding_trajectory(
     next_velocities = [0.0] * len(base)
     next_velocities[joint_idx] = first_velocity
 
+    return RecedingTrajectoryData(
+        points=tuple(points),
+        next_commanded_positions=tuple(next_positions),
+        next_commanded_velocities=tuple(next_velocities),
+    )
+
+
+def build_multi_joint_trajectory(
+    base_positions: Sequence[float],
+    horizons: Mapping[int, Iterable[float]],
+    dt_s: float,
+) -> Optional[RecedingTrajectoryData]:
+    """One receding horizon for several joints at once (plan phase 5).
+
+    Each commanded joint integrates its own velocity list; joints without a
+    horizon hold their commanded position.  Horizons of different lengths are
+    padded with zero velocity.  For a single joint the result equals
+    :func:`build_receding_trajectory` point for point.
+    """
+
+    lists = {int(joint): list(velocities) for joint, velocities in horizons.items()}
+    lists = {joint: values for joint, values in lists.items() if values}
+    if not lists:
+        return None
+    base = list(base_positions)
+    length = max(len(values) for values in lists.values())
+    positions = list(base)
+    points: List[TrajectoryPointData] = []
+    for i in range(length):
+        point_velocities = [0.0] * len(base)
+        for joint, values in lists.items():
+            velocity = values[i] if i < len(values) else 0.0
+            positions[joint] += velocity * dt_s
+            point_velocities[joint] = velocity
+        points.append(
+            TrajectoryPointData(
+                positions=tuple(positions),
+                velocities=tuple(point_velocities),
+                time_from_start_s=dt_s * (i + 1),
+            )
+        )
+    next_positions = list(base)
+    next_velocities = [0.0] * len(base)
+    for joint, values in lists.items():
+        next_positions[joint] += values[0] * dt_s
+        next_velocities[joint] = values[0]
     return RecedingTrajectoryData(
         points=tuple(points),
         next_commanded_positions=tuple(next_positions),
@@ -176,9 +222,26 @@ class CommandState:
         self.commanded_velocities = list(result.next_commanded_velocities)
         return result
 
+    def build_multi(
+        self,
+        horizons: Mapping[int, Iterable[float]],
+        dt_s: float,
+    ) -> Optional[RecedingTrajectoryData]:
+        """Several joints per horizon; consumes one step of each commanded joint."""
+
+        if not self.initialized or self.commanded_positions is None:
+            raise RuntimeError("Command state has not been primed")
+        result = build_multi_joint_trajectory(self.commanded_positions, horizons, dt_s)
+        if result is None:
+            return None
+        self.commanded_positions[:] = result.next_commanded_positions
+        self.commanded_velocities = list(result.next_commanded_velocities)
+        return result
+
 
 __all__ = [
     "CommandState",
+    "build_multi_joint_trajectory",
     "RecedingTrajectoryData",
     "TrajectoryPointData",
     "build_receding_trajectory",

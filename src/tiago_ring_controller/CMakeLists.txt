@@ -35,6 +35,8 @@ catkin_install_python(
     scripts/cosim_gazebo_smoke.py
     scripts/measure_legacy_tick.py
     scripts/run_cosim_trial.py
+    scripts/run_graph.py
+    scripts/sweep_feedback.py
     legacy/record_experiments.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

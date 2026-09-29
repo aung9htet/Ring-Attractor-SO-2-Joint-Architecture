@@ -201,6 +201,8 @@ class GraphNestEngine(Engine):
                     data.update({"counts": delta.tolist(), "total": total, "bump_index": bump, "centroid": centroid})
                 elif block.type_name == "Homeostasis":
                     data["counts"] = {label: int(delta[i]) for i, label in enumerate(block.population.labels)}
+                    data["left_counts"] = data["counts"]["left"]
+                    data["right_counts"] = data["counts"]["right"]
                 elif port in ("left_counts", "right_counts"):
                     data[port] = int(np.sum(delta))
                 else:
