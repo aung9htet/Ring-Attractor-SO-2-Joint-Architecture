@@ -1,8 +1,0 @@
-test_type,variant,param_label,param_value,avg_relative_error_mean,avg_relative_error_std,mean_goal_distance_after_t_mean,mean_goal_distance_after_t_std,n_runs
-neuron_loss,random_connection_removal,neuron_loss_percentage,1.0,0.11717487658578914,0.11548695566011763,23.434975317157825,23.097391132023528,10
-neuron_loss,random_connection_removal,neuron_loss_percentage,2.0,0.18921180186799602,0.12576815585717896,37.842360373599206,25.153631171435794,10
-neuron_loss,random_connection_removal,neuron_loss_percentage,3.0,0.1522183647869189,0.11449999988266298,30.44367295738378,22.899999976532595,10
-neuron_loss,random_connection_removal,neuron_loss_percentage,4.0,0.19097741709882401,0.10571691030997522,38.19548341976482,21.143382061995048,10
-neuron_loss,random_connection_removal,neuron_loss_percentage,5.0,0.2907345947261247,0.05963735826517411,58.14691894522493,11.927471653034825,10
-neuron_loss,random_connection_removal,neuron_loss_percentage,10.0,0.2509697767047065,0.0550235596960923,50.1939553409413,11.004711939218463,10
-neuron_loss,random_connection_removal,neuron_loss_percentage,20.0,0.23133192919745413,0.07028849514774077,46.26638583949083,14.057699029548157,10

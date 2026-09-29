@@ -14,17 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
 
 catkin_python_setup()
 
-# Catkin's Python relay files do not export symbols for top-level py_modules.
-# The legacy flat modules therefore remain importable in linked devel spaces by
-# placing their unchanged source directory ahead of the generated relays.  The
-# hook is devel-only; install spaces use the normal distutils installation.
-catkin_add_env_hooks(
-  50.tiago_ring_controller_pythonpath
-  SHELLS sh
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/env-hooks
-  SKIP_INSTALL
-)
-
 catkin_package(
   CATKIN_DEPENDS
     actionlib
@@ -37,39 +26,16 @@ catkin_package(
     trajectory_msgs
 )
 
+# Executables: the co-simulation scripts.  The flat research scripts under
+# legacy/ are frozen and not installed; the wrist force/torque logger started by
+# tiago_ring_controller.launch is the one exception.
 catkin_install_python(
   PROGRAMS
-    src/analysis_single_joint.py
-    src/calibrate_single_joint.py
-    src/compositional_fourier_decoder.py
-    src/demo_graphs.py
-    src/experiment_camera.py
-    src/gain_modulation_analysis.py
-    src/multi_ring_component.py
-    src/multi_ring_sawtooth_scalar_decoder.py
-    src/readout_mean_std_analysis.py
-    src/record_experiments.py
-    src/ring_attractor.py
-    src/single_joint_data_collector.py
-    src/single_joint_data_visualizer.py
-    src/single_joint_pid_data_collector.py
-    src/single_ring.py
-    src/train_homeostasis.py
-    src/train_ring_model.py
+    scripts/cosim_gazebo_smoke.py
+    scripts/measure_legacy_tick.py
+    scripts/run_cosim_trial.py
+    legacy/record_experiments.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-catkin_install_python(
-  PROGRAMS
-    src/builders_analysis/ring_attractor_analysis.py
-    src/builders_analysis/single_joint_ring_component_analysis.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}/builders_analysis
-)
-
-catkin_install_python(
-  PROGRAMS
-    src/trainer/train_ring_model.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}/trainer
 )
 
 foreach(dir launch worlds)

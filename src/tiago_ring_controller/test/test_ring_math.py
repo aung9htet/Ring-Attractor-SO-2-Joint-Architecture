@@ -16,6 +16,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
+LEGACY_DIR = ROOT / "legacy"
 
 
 class _FakeNodeCollection:
@@ -29,12 +30,14 @@ def _load_module(name, path):
     previous_nest = sys.modules.get("nest")
     sys.modules["nest"] = fake_nest
     sys.path.insert(0, str(SRC))
+    sys.path.insert(0, str(LEGACY_DIR))
     try:
         spec = importlib.util.spec_from_file_location(name, path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
     finally:
+        sys.path.remove(str(LEGACY_DIR))
         sys.path.remove(str(SRC))
         if previous_nest is None:
             sys.modules.pop("nest", None)
@@ -42,9 +45,9 @@ def _load_module(name, path):
             sys.modules["nest"] = previous_nest
 
 
-LEGACY = _load_module("baseline_legacy_ring", SRC / "ring_attractor.py")
-BUILDER = _load_module("baseline_builder_ring", SRC / "builders/ring_attractor.py")
-COMPONENT = _load_module("baseline_ring_component", SRC / "ring_component.py")
+LEGACY = _load_module("baseline_legacy_ring", LEGACY_DIR / "ring_attractor.py")
+BUILDER = _load_module("baseline_builder_ring", LEGACY_DIR / "builders/ring_attractor.py")
+COMPONENT = _load_module("baseline_ring_component", LEGACY_DIR / "ring_component.py")
 
 
 def _load_trainer_module():
@@ -54,14 +57,16 @@ def _load_trainer_module():
     sys.modules["nest"] = fake_nest
     sys.modules["ring_attractor"] = LEGACY
     sys.path.insert(0, str(SRC))
+    sys.path.insert(0, str(LEGACY_DIR))
     try:
         spec = importlib.util.spec_from_file_location(
-            "facade_train_ring_model", SRC / "train_ring_model.py"
+            "facade_train_ring_model", LEGACY_DIR / "train_ring_model.py"
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
     finally:
+        sys.path.remove(str(LEGACY_DIR))
         sys.path.remove(str(SRC))
         if previous_nest is None:
             sys.modules.pop("nest", None)
@@ -170,73 +175,6 @@ class RingCoordinateTests(unittest.TestCase):
         counts[:] = 0.0
         counts[75] = 3.0
         self.assertAlmostEqual(ring.decode_angle_from_spikes(counts), -math.pi / 2, places=14)
-
-
-class BuilderStandaloneImportTests(unittest.TestCase):
-    def _run_from_builders_directory(self, code):
-        environment = dict(os.environ)
-        environment.pop("PYTHONPATH", None)
-        environment["PYTHONDONTWRITEBYTECODE"] = "1"
-        return subprocess.run(
-            [sys.executable, "-c", code],
-            cwd=str(SRC / "builders"),
-            env=environment,
-            check=False,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
-
-    def test_flat_ring_attractor_import_adds_src_only_when_package_is_missing(self):
-        completed = self._run_from_builders_directory(
-            """
-import sys
-import types
-nest = types.ModuleType("nest")
-nest.NodeCollection = type("NodeCollection", (), {})
-sys.modules["nest"] = nest
-import ring_attractor
-assert ring_attractor.RingAttractor.__module__ == "ring_attractor"
-"""
-        )
-        self.assertEqual(completed.returncode, 0, completed.stderr)
-
-    def test_flat_import_does_not_swallow_unrelated_module_not_found(self):
-        completed = self._run_from_builders_directory(
-            """
-import importlib.abc
-import sys
-import types
-
-nest = types.ModuleType("nest")
-nest.NodeCollection = type("NodeCollection", (), {})
-sys.modules["nest"] = nest
-package = types.ModuleType("tiago_ring_controller")
-package.__path__ = []
-math_package = types.ModuleType("tiago_ring_controller.math")
-math_package.__path__ = []
-sys.modules["tiago_ring_controller"] = package
-sys.modules["tiago_ring_controller.math"] = math_package
-
-class RaiseUnrelated(importlib.abc.MetaPathFinder):
-    def find_spec(self, fullname, path=None, target=None):
-        if fullname == "tiago_ring_controller.math.circular":
-            raise ModuleNotFoundError(
-                "No module named 'unrelated_dependency'",
-                name="unrelated_dependency",
-            )
-        return None
-
-sys.meta_path.insert(0, RaiseUnrelated())
-try:
-    import ring_attractor
-except ModuleNotFoundError as exc:
-    assert exc.name == "unrelated_dependency", exc.name
-else:
-    raise AssertionError("unrelated ModuleNotFoundError was swallowed")
-"""
-        )
-        self.assertEqual(completed.returncode, 0, completed.stderr)
 
 
 class FourierArtifactConventionTests(unittest.TestCase):

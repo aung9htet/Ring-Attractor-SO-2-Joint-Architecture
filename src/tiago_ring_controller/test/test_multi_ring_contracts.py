@@ -12,6 +12,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
+LEGACY = ROOT / "legacy"
 FEATURE_ORDER = [
     "cos1_pos",
     "cos1_neg",
@@ -79,9 +80,10 @@ def _load_multi_ring_module():
     previous_ring = sys.modules.get("ring_attractor")
     sys.modules["nest"] = fake_nest
     sys.path.insert(0, str(SRC))
+    sys.path.insert(0, str(LEGACY))
     try:
         ring_spec = importlib.util.spec_from_file_location(
-            "ring_attractor", SRC / "ring_attractor.py"
+            "ring_attractor", LEGACY / "ring_attractor.py"
         )
         ring_module = importlib.util.module_from_spec(ring_spec)
         sys.modules["ring_attractor"] = ring_module
@@ -89,12 +91,13 @@ def _load_multi_ring_module():
 
         spec = importlib.util.spec_from_file_location(
             "baseline_compositional_fourier_decoder",
-            SRC / "compositional_fourier_decoder.py",
+            LEGACY / "compositional_fourier_decoder.py",
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module, fake_nest
     finally:
+        sys.path.remove(str(LEGACY))
         sys.path.remove(str(SRC))
         if previous_nest is None:
             sys.modules.pop("nest", None)
@@ -115,9 +118,10 @@ def _load_multi_ring_inference_module():
     previous_ring = sys.modules.get("ring_attractor")
     sys.modules["nest"] = fake_nest
     sys.path.insert(0, str(SRC))
+    sys.path.insert(0, str(LEGACY))
     try:
         ring_spec = importlib.util.spec_from_file_location(
-            "ring_attractor", SRC / "ring_attractor.py"
+            "ring_attractor", LEGACY / "ring_attractor.py"
         )
         ring_module = importlib.util.module_from_spec(ring_spec)
         sys.modules["ring_attractor"] = ring_module
@@ -125,12 +129,13 @@ def _load_multi_ring_inference_module():
 
         spec = importlib.util.spec_from_file_location(
             "baseline_multi_ring_component",
-            SRC / "multi_ring_component.py",
+            LEGACY / "multi_ring_component.py",
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         return module
     finally:
+        sys.path.remove(str(LEGACY))
         sys.path.remove(str(SRC))
         if previous_nest is None:
             sys.modules.pop("nest", None)

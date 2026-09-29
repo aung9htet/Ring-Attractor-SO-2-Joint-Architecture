@@ -1,60 +1,15 @@
 """Schemas consumed by existing analysis and visualization entrypoints."""
 
 import json
-import hashlib
 import unittest
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-import numpy as np
-from PIL import Image
-
 
 ROOT = Path(__file__).resolve().parents[1]
-ENVIRONMENT_MANIFEST = ROOT / "test/golden/environment_manifest.json"
-CHECKED_OUTPUT_MANIFEST = ROOT / "test/golden/checked_output_manifest.json"
-
-
-class CheckedFigureOutputTests(unittest.TestCase):
-    def test_all_checked_png_bytes_and_dimensions_match_the_baseline(self):
-        manifest = json.loads(CHECKED_OUTPUT_MANIFEST.read_text(encoding="utf-8"))
-        current = {
-            path.relative_to(ROOT).as_posix()
-            for path in ROOT.rglob("*.png")
-            if "test" not in path.relative_to(ROOT).parts
-            and "docs" not in path.relative_to(ROOT).parts
-        }
-        self.assertEqual(set(manifest["files"]), current)
-        for relative, expected in manifest["files"].items():
-            with self.subTest(path=relative):
-                path = ROOT / relative
-                self.assertEqual(path.stat().st_size, expected["bytes"])
-                self.assertEqual(
-                    hashlib.sha256(path.read_bytes()).hexdigest(),
-                    expected["sha256"],
-                )
-                with Image.open(path) as image:
-                    self.assertEqual(image.format, expected["format"])
-                    self.assertEqual(image.mode, expected["mode"])
-                    self.assertEqual(image.size, (expected["width"], expected["height"]))
 
 
 class DecoderOutputSchemaTests(unittest.TestCase):
-    def test_all_checked_in_fourier_results_have_the_same_schema(self):
-        paths = sorted((ROOT / "outputs/train/single_joint_ring_component").glob("results_*/fourier_results.npz"))
-        paths.append(ROOT / "src/outputs/ring_decoding/fourier_results.npz")
-        self.assertEqual(len(paths), 10)
-        for path in paths:
-            with self.subTest(path=path.relative_to(ROOT).as_posix()):
-                with np.load(path, allow_pickle=False) as data:
-                    self.assertEqual(data.files, ["phi_true", "phi_est"])
-                    self.assertEqual(data["phi_true"].shape, (30,))
-                    self.assertEqual(data["phi_est"].shape, (30,))
-                    self.assertEqual(str(data["phi_true"].dtype), "float64")
-                    self.assertEqual(str(data["phi_est"].dtype), "float64")
-                    self.assertTrue(np.all(np.isfinite(data["phi_true"])))
-                    self.assertTrue(np.all(np.isfinite(data["phi_est"])))
-
     def test_homeostasis_metadata_feature_order(self):
         for population_size, harmonics in ((100, 5), (200, 20)):
             path = ROOT / (
@@ -155,15 +110,6 @@ class ConfigurationSchemaTests(unittest.TestCase):
 
 
 class WorldAndLaunchSchemaTests(unittest.TestCase):
-    def test_current_external_world_resolution_matches_environment_manifest(self):
-        manifest = json.loads(ENVIRONMENT_MANIFEST.read_text(encoding="utf-8"))
-        expected = manifest["ros"]
-        path = Path(expected["resolved_world"])
-        self.assertTrue(path.is_file())
-        self.assertEqual(path.stat().st_size, expected["resolved_world_bytes"])
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        self.assertEqual(digest, expected["resolved_world_sha256"])
-
     def test_local_world_is_camera_less_sdf_1_4(self):
         root = ET.parse(ROOT / "worlds/tiago_ring_controller.world").getroot()
         self.assertEqual(root.tag, "sdf")

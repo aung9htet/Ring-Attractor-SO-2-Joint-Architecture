@@ -141,6 +141,12 @@ def source_config_path(*parts: str) -> str:
     return os.path.join(source_root(), "config", *parts)
 
 
+def legacy_root() -> str:
+    """Return the frozen ``legacy/`` folder beside ``src`` (flat research scripts)."""
+
+    return os.path.join(os.path.dirname(source_root()), "legacy")
+
+
 def load_json(path: str) -> Any:
     """Load JSON using the same permissive parser as the legacy modules."""
 

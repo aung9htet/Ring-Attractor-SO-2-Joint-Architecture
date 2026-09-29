@@ -1,5 +1,0 @@
-test_type,variant,param_label,param_value,avg_relative_error_mean,avg_relative_error_std,mean_goal_distance_after_t_mean,mean_goal_distance_after_t_std,n_runs
-noise_localized,schedule_persistent,noise_strength_hz,5.0,0.33650730834837733,0.0943873398259377,67.30146166967549,18.87746796518754,10
-noise_localized,schedule_persistent,noise_strength_hz,10.0,0.372789978784112,0.024135313728844452,74.55799575682241,4.827062745768889,10
-noise_localized,schedule_persistent,noise_strength_hz,15.0,0.36350800548255047,0.004243525043992895,72.70160109651009,0.8487050087985759,10
-noise_localized,schedule_persistent,noise_strength_hz,20.0,0.36835829310912116,0.0123580853092846,73.67165862182424,2.4716170618569158,10

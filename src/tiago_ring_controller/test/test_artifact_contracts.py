@@ -30,7 +30,10 @@ from tiago_ring_controller.artifacts import (  # noqa: E402
 
 MANIFEST_PATH = ROOT / "test/golden/artifact_manifest.json"
 SCHEMA_MANIFEST_PATH = ROOT / "test/golden/artifact_schema_manifest.json"
-TRACKED_SUFFIXES = {".json", ".npy", ".npz", ".pdf", ".world"}
+TRACKED_SUFFIXES = {".json", ".npy", ".npz", ".world"}
+# Scientific inputs.  Generated results (src/outputs, results, outputs) are not
+# tracked on this branch; the frozen baseline on main keeps their manifests.
+SCOPE_ROOTS = ("src/config", "worlds")
 
 
 def _sha256(path):
@@ -43,13 +46,14 @@ def _sha256(path):
 
 def _manifest_scope():
     paths = set()
-    for path in ROOT.rglob("*"):
-        if not path.is_file() or path.suffix.lower() not in TRACKED_SUFFIXES:
-            continue
-        relative = path.relative_to(ROOT)
-        if relative.parts[0] in {"docs", "test"} or "__pycache__" in relative.parts:
-            continue
-        paths.add(relative.as_posix())
+    for scope_root in SCOPE_ROOTS:
+        for path in (ROOT / scope_root).rglob("*"):
+            if not path.is_file() or path.suffix.lower() not in TRACKED_SUFFIXES:
+                continue
+            relative = path.relative_to(ROOT)
+            if "__pycache__" in relative.parts:
+                continue
+            paths.add(relative.as_posix())
     return paths
 
 

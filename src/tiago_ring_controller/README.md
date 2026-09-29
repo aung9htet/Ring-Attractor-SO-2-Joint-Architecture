@@ -12,12 +12,24 @@ The code uses NEST populations and ordinary NumPy linear algebra.  It is
 ensembles, encoders, intercepts, gains, evaluation-point objects, or NEF
 solvers.
 
-## Compatibility policy
+## Layout and legacy policy (branch `blocks-refactor`)
 
-The flat modules in `src/` are the research entrypoints and compatibility API.
-Their class names, method signatures, ROS interfaces, configuration defaults,
-artifact formats, and output paths are retained.  Reusable implementation is
-being separated under `src/tiago_ring_controller/` behind those facades.
+- `src/tiago_ring_controller/` is the importable package (pure math, NEST
+  builders, control, evaluation, ROS contracts, the `cosim/` loop).  It imports
+  without NEST or ROS.
+- `scripts/` holds the executables (`run_cosim_trial.py`, `cosim_gazebo_smoke.py`,
+  `measure_legacy_tick.py`); these are what Catkin installs.
+- `legacy/` holds every flat research script that produced the paper results,
+  frozen and unmaintained (see `legacy/README.md`).  `main` and the tag
+  `legacy-loop-baseline` keep them at their historical `src/` paths together with
+  the byte-for-byte freeze tests, which this branch deletes.
+- `src/config/` keeps the scientific inputs (neuron parameters, fitted weights,
+  calibration); their hashes and schemas are still pinned by
+  `test/test_artifact_contracts.py`.  Generated results (`src/outputs/`, `results/`,
+  `outputs/`) are no longer tracked.
+
+The block architecture that replaces the flat scripts is planned in the
+repository's `docs/blocks/plan.md`; progress is logged in `docs/blocks/progress.md`.
 
 Important observed behavior:
 
@@ -57,16 +69,31 @@ The repository uses the standard-library `unittest` runner rather than pytest:
 
 ```bash
 cd /tiago_public_ws/src/tiago_ring_controller
-python3 -m unittest discover -s test -p 'test_*.py'
+python3 -B -m unittest discover -s test -p 'test_*.py'
 ```
 
-## Non-robot workflows
-
-Run these from `src/` because legacy configuration and output paths are
-working-directory-relative:
+Without the launcher, the same suite runs in the image with the package
+bind-mounted (the real-NEST tests need the pinned NEST, so this is the reference
+run):
 
 ```bash
-cd /tiago_public_ws/src/tiago_ring_controller/src
+docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e PYTHONDONTWRITEBYTECODE=1 -e MPLBACKEND=Agg \
+  -v "$PWD/src/tiago_ring_controller:/tiago_public_ws/src/tiago_ring_controller" \
+  --entrypoint bash aung9htet/ubuntu-20.04:tiago_ring_forward -c 'source /opt/ros/noetic/setup.bash; \
+  source /tiago_public_ws/devel/setup.bash; source /usr/local/nest/bin/nest_vars.sh; \
+  export PYTHONPATH=/tiago_public_ws/src/tiago_ring_controller/src:$PYTHONPATH; \
+  cd /tiago_public_ws/src/tiago_ring_controller && python3 -B -m unittest discover -s test -p "test_*.py"'
+```
+
+## Non-robot workflows (legacy scripts)
+
+Run these from `legacy/` with the folder and the package on the path; the
+configuration and output paths are working-directory-relative (`legacy/config`
+links to `src/config`):
+
+```bash
+cd /tiago_public_ws/src/tiago_ring_controller/legacy
+export PYTHONPATH=$PWD:$PWD/../src:$PYTHONPATH
 python3 single_ring.py
 python3 gain_modulation_analysis.py
 python3 readout_mean_std_analysis.py
@@ -97,7 +124,8 @@ Launch arguments are `world`, `gui`, `public_sim`, `arm`, `end_effector`, and
 That external world contains the `/recording_camera/image_raw` camera used by
 the camera/demo scripts.
 
-Robot-moving entrypoints must be run only in simulation or after an explicit
+Robot-moving entrypoints (legacy scripts, same `legacy/` working directory and
+`PYTHONPATH` as above) must be run only in simulation or after an explicit
 hardware safety review:
 
 ```bash
@@ -123,14 +151,18 @@ legacy entrypoints above still run their own loops. Importing the package needs
 neither NEST nor ROS.
 
 ```bash
-cd /tiago_public_ws/src/tiago_ring_controller/src
-python3 ../scripts/run_cosim_trial.py --engines fake --goal 0.6     # no simulators
-python3 ../scripts/run_cosim_trial.py --engines nest --seed 13579   # real NEST, fake robot
-python3 ../scripts/run_cosim_trial.py --engines full --goal 0.6     # NEST + Gazebo (simulation running)
-python3 ../scripts/cosim_gazebo_smoke.py                            # lock-stepped Gazebo check
-python3 ../scripts/run_cosim_trial.py --engines full --dashboard             # browser dashboard, http://localhost:8765/
-python3 ../scripts/run_cosim_trial.py --engines full --goal 0.6 --monitor --monitor-hold   # Matplotlib window
+cd /tiago_public_ws/src/tiago_ring_controller
+python3 scripts/run_cosim_trial.py --engines fake --goal 0.6     # no simulators
+python3 scripts/run_cosim_trial.py --engines nest --seed 13579   # real NEST, fake robot
+python3 scripts/run_cosim_trial.py --engines full --goal 0.6     # NEST + Gazebo (simulation running)
+python3 scripts/cosim_gazebo_smoke.py                            # lock-stepped Gazebo check
+python3 scripts/run_cosim_trial.py --engines full --dashboard             # browser dashboard, http://localhost:8765/
+python3 scripts/run_cosim_trial.py --engines full --goal 0.6 --monitor --monitor-hold   # Matplotlib window
 ```
+
+The scripts resolve `src/config/` themselves and import the `SingleRingModel`
+facade from `legacy/` until the block runtime replaces it (plan phase 4), so they
+run from any working directory.
 
 `--dashboard` serves a page (standard-library HTTP server, server-sent events)
 that shows the ring live and starts or stops trials on request; it needs no
@@ -157,7 +189,9 @@ artifacts.  Do not delete or rewrite apparently unused artifacts without a
 separate provenance decision.  Characterization tests record their filenames,
 hashes, NPZ key order, shapes, and dtypes.
 
-Runtime and analysis outputs are written beneath `src/outputs/`,
-`src/collected_data/`, `src/plots/`, `src/results_plots/`, `results/`, and the
-package-adjacent `experiment_results/`, depending on the legacy entrypoint.
+Runtime and analysis outputs are written beneath `legacy/outputs/`,
+`legacy/collected_data/`, `legacy/plots/`, `legacy/results_plots/`, `results/`,
+`src/outputs/` (co-simulation runs) and the package-adjacent
+`experiment_results/`, depending on the entrypoint.  None of them is tracked on
+this branch.
 

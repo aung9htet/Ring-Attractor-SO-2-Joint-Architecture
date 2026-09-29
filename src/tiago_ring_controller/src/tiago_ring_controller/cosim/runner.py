@@ -20,7 +20,7 @@ from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence
 import numpy as np
 
 from ..artifacts import save_json_legacy, save_npz_compressed_legacy
-from ..config import load_ring_spec, source_config_path, source_root
+from ..config import legacy_root, load_ring_spec, source_config_path
 from ..control.controller import decoder_features_from_spikes
 from ..evaluation.serialization import (
     RING_RASTER_FIELDS,
@@ -123,9 +123,9 @@ def make_nest_engine(
         import nest as backend  # noqa: WPS433 - lazy by design
     population_size = ring_population_size(config)
     if model_factory is None:
-        src = source_root()
-        if src not in sys.path:
-            sys.path.insert(0, src)
+        legacy = legacy_root()
+        if legacy not in sys.path:
+            sys.path.insert(0, legacy)
         from single_ring import SingleRingModel  # noqa: WPS433 - legacy facade
 
         ring_params = config.ring_params_file or source_config_path("model_params", "ring_params.json")

@@ -20,8 +20,10 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(os.path.dirname(HERE), "src")
-if SRC not in sys.path:
-    sys.path.insert(0, SRC)
+LEGACY = os.path.join(os.path.dirname(HERE), "legacy")
+for path in (SRC, LEGACY):
+    if path not in sys.path:
+        sys.path.insert(0, path)
 
 
 def main(argv=None):

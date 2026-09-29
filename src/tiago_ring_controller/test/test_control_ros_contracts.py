@@ -15,6 +15,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "src"
+LEGACY = ROOT / "legacy"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
@@ -300,7 +301,7 @@ class RosContractTests(unittest.TestCase):
         self.assertEqual(sensor[-7:], tuple("%0.6f" % value for value in range(7)))
 
     def test_logger_package_root_is_exact_in_source_and_catkin_install_space(self):
-        source_module = SRC / "record_experiments.py"
+        source_module = LEGACY / "record_experiments.py"
         self.assertEqual(Path(package_root_for_module(str(source_module))), ROOT)
         with tempfile.TemporaryDirectory() as directory:
             prefix = Path(directory)
@@ -420,7 +421,7 @@ def _load_tiago_controller_with_ros_stubs():
     sys.modules.update(modules)
     try:
         spec = importlib.util.spec_from_file_location(
-            "facade_tiago_controller_contract_test", SRC / "tiago_controller.py"
+            "facade_tiago_controller_contract_test", LEGACY / "tiago_controller.py"
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -451,7 +452,7 @@ def _load_analysis_with_dependency_stubs():
     try:
         spec = importlib.util.spec_from_file_location(
             "facade_analysis_single_joint_contract_test",
-            SRC / "analysis_single_joint.py",
+            LEGACY / "analysis_single_joint.py",
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -481,7 +482,7 @@ def _load_neural_control_facade(filename):
     sys.modules.update(modules)
     try:
         module_name = "facade_%s_control_trace_test" % Path(filename).stem
-        spec = importlib.util.spec_from_file_location(module_name, SRC / filename)
+        spec = importlib.util.spec_from_file_location(module_name, LEGACY / filename)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
     finally:
@@ -516,7 +517,7 @@ def _load_record_experiments_with_ros_stubs():
     try:
         spec = importlib.util.spec_from_file_location(
             "facade_record_experiments_contract_test",
-            SRC / "record_experiments.py",
+            LEGACY / "record_experiments.py",
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -551,7 +552,7 @@ def _load_experiment_camera_with_ros_stubs():
     try:
         spec = importlib.util.spec_from_file_location(
             "facade_experiment_camera_contract_test",
-            SRC / "experiment_camera.py",
+            LEGACY / "experiment_camera.py",
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)

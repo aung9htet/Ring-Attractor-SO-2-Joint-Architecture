@@ -1,6 +1,0 @@
-_tiago_ring_controller_source_pythonpath="@CMAKE_CURRENT_SOURCE_DIR@/src"
-case ":${PYTHONPATH}:" in
-  *":${_tiago_ring_controller_source_pythonpath}:"*) ;;
-  *) export PYTHONPATH="${_tiago_ring_controller_source_pythonpath}${PYTHONPATH:+:${PYTHONPATH}}" ;;
-esac
-unset _tiago_ring_controller_source_pythonpath
