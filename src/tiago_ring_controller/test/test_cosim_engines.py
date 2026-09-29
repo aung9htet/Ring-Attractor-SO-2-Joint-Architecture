@@ -44,6 +44,7 @@ from tiago_ring_controller.cosim.runner import (  # noqa: E402
 )
 from tiago_ring_controller.cosim.stepping import ClockWaitStepper, PluginStepper  # noqa: E402
 from tiago_ring_controller.cosim.tf import bump_datapack  # noqa: E402
+from tiago_ring_controller.cosim.nest_engine import GeneratorStimulusPort  # noqa: E402
 from tiago_ring_controller.evaluation.serialization import (  # noqa: E402
     RING_RASTER_FIELDS,
     RING_TIMESERIES_FIELDS,
@@ -301,6 +302,118 @@ class FakeTransport(RosTransport):
 
     def get_param(self, name):
         return self.params.get(name)
+
+
+def generator_model_factory(backend, population=8):
+    """Like ``scripted_model_factory`` but bumps are generator rate changes."""
+
+    def factory():
+        groups = {}
+        for group in ("r1", "r2", "left", "right"):
+            recorders = []
+            for _ in range(population):
+                neuron = backend.Create("iaf_psc_alpha", params={"V_th": 1.0})
+                recorder = backend.Create("spike_recorder")
+                backend.Connect(neuron, recorder)
+                recorders.append(recorder)
+            groups[group] = recorders
+        backend.recorders = groups
+        generators = {name: backend.Create("poisson_generator", population, params={"rate": 0.0}) for name in ("r1", "r2")}
+        backend.bumps = []
+        backend.cleared = []
+
+        def make_inject(ring):
+            def inject(center, half_width, rate_hz=200.0):
+                backend.SetStatus(generators[ring], {"rate": rate_hz})
+                backend.bumps.append((ring, center, half_width, rate_hz, backend.sim_step))
+            return inject
+
+        def clear(ring):
+            backend.SetStatus(generators[ring], {"rate": 0.0})
+            backend.cleared.append((ring, backend.sim_step))
+
+        return RingModelPorts(
+            population_size=population,
+            r1_recorders=groups["r1"], r2_recorders=groups["r2"],
+            left_recorders=groups["left"], right_recorders=groups["right"],
+            inject_state=make_inject("r1"), inject_goal=make_inject("r2"),
+            extra={"clear_bumps": clear},
+        )
+
+    return factory
+
+
+class GeneratorStimulusPortTests(unittest.TestCase):
+    def _engine(self, backend):
+        engine = NestEngine(backend, generator_model_factory(backend), stimulus_port=GeneratorStimulusPort())
+        engine.initialize()
+        engine.reset()
+        return engine
+
+    def test_bumps_are_rate_changes_with_no_hidden_time_and_expire_after_their_duration(self):
+        backend = ScriptedNest(PLAN)
+        engine = self._engine(backend)
+        engine.set_datapacks({
+            "goal_bump": bump_datapack("goal_bump", 0.0, 6, 1, "goal"),
+            "state_bump": bump_datapack("state_bump", 0.0, 2, 1, "proprioception", duration_ms=100.0),
+        })
+        engine.advance(50.0)
+        counts = engine.get_datapacks()["ring_counts"]
+        self.assertEqual(counts["hidden_ms"], 0.0)
+        self.assertEqual(counts["nest_step"], 1)
+        self.assertEqual(backend.simulate_calls, [])          # no Simulate inside the port
+        self.assertEqual([b[:4] for b in backend.bumps], [("r2", 6, 1, 200.0), ("r1", 2, 1, 200.0)])
+        self.assertEqual(backend.cleared, [("r2", 1)])       # goal bump lasted one tick
+        self.assertEqual(engine.stimulus_port.active, {"state_bump": 100.0})
+        engine.advance(50.0)
+        self.assertEqual(backend.cleared, [("r2", 1), ("r1", 2)])
+        self.assertEqual(engine.stimulus_port.active, {})
+        # Rate changes while prepared are followed by Cleanup/Prepare (NEST reads rates at Prepare).
+        self.assertEqual(
+            backend.lifecycle_calls,
+            ["Prepare", ("Run", 50.0), "Cleanup", "Prepare", ("Run", 50.0), "Cleanup", "Prepare"],
+        )
+        self.assertEqual(engine.recalibrations, 2)
+        # The scripted spikes of step 0 (the first tick) are counted, nothing is hidden.
+        self.assertEqual((counts["left"], counts["right"]), (9, 9))
+
+    def test_mid_trial_bumps_are_accepted_and_replace_the_window(self):
+        backend = ScriptedNest(PLAN)
+        engine = self._engine(backend)
+        engine.set_datapacks({"goal_bump": bump_datapack("goal_bump", 0.0, 6, 1, "goal")})
+        engine.advance(50.0)
+        engine.advance(50.0)
+        engine.set_datapacks({"state_bump": bump_datapack("state_bump", 100.0, 3, 2, "proprioception", rate_hz=80.0)})
+        engine.advance(50.0)
+        self.assertEqual(backend.bumps[-1][:4], ("r1", 3, 2, 80.0))
+        # apply -> Cleanup/Prepare, Run, expiry -> Cleanup/Prepare
+        self.assertEqual(backend.lifecycle_calls[-5:], ["Cleanup", "Prepare", ("Run", 50.0), "Cleanup", "Prepare"])
+        self.assertEqual(engine.stimulus_port.applied[-1]["nest_step"], 2)
+        self.assertEqual(engine.stimulus_port.applied[-1]["t_nest_ms"], 100.0)
+        self.assertEqual(backend.cleared[-1], ("r1", 3))
+        self.assertEqual(engine.hidden_ms, 0.0)
+        self.assertTrue(engine.stimulus_port.supports_mid_trial)
+        with self.assertRaises(EngineError):
+            engine.stimulus_port.apply(engine, "other_bump", bump_datapack("other_bump", 0.0, 1, 1, "x"))
+        engine.finish_trial()
+        engine.reset()
+        self.assertEqual(engine.stimulus_port.applied, [])
+        self.assertEqual(engine.stimulus_port.active, {})
+
+    def test_from_network_adapts_the_vectorised_model(self):
+        from tiago_ring_controller.nest.single_ring import build_single_ring_network
+
+        backend = RecordingNest()
+        network = build_single_ring_network(backend, seed=1)
+        ports = RingModelPorts.from_network(network)
+        self.assertEqual(ports.population_size, 200)
+        self.assertEqual(len(ports.r1_recorders), 200)
+        self.assertEqual(ports.r1_recorders[3].ids, (network.r1.recorders.ids[3],))
+        ports.inject_state(60, 5, 120.0)
+        self.assertEqual(network.stimulus["r1"].rates[60], 120.0)
+        ports.extra["clear_bumps"]("r1")
+        self.assertEqual(network.stimulus["r1"].rates.sum(), 0.0)
+        self.assertEqual(ports.extra["describe"]()["model"], "vectorised_single_ring")
 
 
 class GazeboEngineTests(unittest.TestCase):

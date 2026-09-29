@@ -120,3 +120,50 @@ def generate_center_indices(population_size: int, num_positions: int) -> np.ndar
             for k in range(1, num_positions + 1)
         ]
     )
+
+
+def ring_weight_matrix(
+    population_size: int,
+    variant: str = "legacy",
+    max_distance: float = 50,
+    excitation_std_dev: float = 10,
+    inhibition_std_dev: float = 5,
+) -> np.ndarray:
+    """Recurrent weights as a ``(pre, post)`` matrix, one entry per synapse.
+
+    Row ``pre`` holds the weights the legacy loop assigns in order
+    ``post = (pre + distance_index) % N``; the diagonal is the self-connection
+    (distance 0).  Both ring variants are supported; the values are the same
+    rounded numbers the per-synapse builders pass to ``Connect``.
+    """
+
+    size = int(population_size)
+    if size < 1:
+        raise ValueError("population_size must be positive")
+    if variant == "legacy":
+        distances = legacy_ring_distances(size, max_distance)
+        profile = np.array(
+            [legacy_ring_weight(d, sd_1=excitation_std_dev, sd_2=inhibition_std_dev) for d in distances],
+            dtype=float,
+        )
+    elif variant == "builder":
+        distances = builder_ring_distances(size, max_distance)
+        profile = np.array(
+            [
+                builder_ring_weight(
+                    d,
+                    population_size=size,
+                    excitation_std_dev=excitation_std_dev,
+                    inhibition_std_dev=inhibition_std_dev,
+                )
+                for d in distances
+            ],
+            dtype=float,
+        )
+    else:
+        raise ValueError("Unknown ring variant: {}".format(variant))
+    pre = np.arange(size)[:, None]
+    shift = np.arange(size)[None, :]
+    matrix = np.zeros((size, size), dtype=float)
+    matrix[pre, (pre + shift) % size] = profile[None, :]
+    return matrix

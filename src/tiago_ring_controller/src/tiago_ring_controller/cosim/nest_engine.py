@@ -34,6 +34,9 @@ from .datapack import DataPack
 from .engine import Engine, EngineError, EngineStateError
 from .fakes import ring_readout
 
+STIMULUS_RATE_HZ = 200.0
+STIMULUS_DURATION_MS = 50.0
+
 
 class StimulusNotSupportedError(EngineError):
     """The stimulus port cannot apply a bump at this point of the trial."""
@@ -68,6 +71,33 @@ class RingModelPorts:
             model=model,
         )
 
+    @classmethod
+    def from_network(cls, network: Any) -> "RingModelPorts":
+        """Adapt ``nest.single_ring.SingleRingNetwork`` (build-time generators).
+
+        ``inject_*`` set generator rates and never simulate; the matching
+        :class:`GeneratorStimulusPort` switches them off again after the bump's
+        duration of *loop* time.
+        """
+
+        def inject_state(center: int, half_width: int, rate_hz: float = STIMULUS_RATE_HZ) -> None:
+            network.set_bump("r1", center, half_width, rate_hz)
+
+        def inject_goal(center: int, half_width: int, rate_hz: float = STIMULUS_RATE_HZ) -> None:
+            network.set_bump("r2", center, half_width, rate_hz)
+
+        return cls(
+            population_size=int(network.population_size),
+            r1_recorders=list(network.r1_recorders),
+            r2_recorders=list(network.r2_recorders),
+            left_recorders=list(network.left_recorders),
+            right_recorders=list(network.right_recorders),
+            inject_state=inject_state,
+            inject_goal=inject_goal,
+            model=network,
+            extra={"clear_bumps": network.clear_bumps, "describe": network.describe},
+        )
+
 
 class StimulusPort(ABC):
     """How bumps reach the network.  Swappable to close the loop later."""
@@ -81,6 +111,11 @@ class StimulusPort(ABC):
     @abstractmethod
     def apply(self, engine: "NestEngine", name: str, bump: DataPack) -> None:
         raise NotImplementedError
+
+    def after_step(self, engine: "NestEngine") -> None:
+        """Called after every ``Run``/``Simulate``; default does nothing."""
+
+        return None
 
 
 class LegacyInjectStimulusPort(StimulusPort):
@@ -122,6 +157,71 @@ class LegacyInjectStimulusPort(StimulusPort):
             {"name": name, "center_index": center, "half_width": half_width,
              "nest_step": engine.step_index}
         )
+
+
+class GeneratorStimulusPort(StimulusPort):
+    """Bumps as rate changes on build-time Poisson generators (plan B.4).
+
+    A bump switches its window on at the start of the tick it arrives in and
+    off again once ``duration_ms`` of loop time has elapsed (one tick for the
+    legacy 50 ms).  No simulated time is hidden, so ``hidden_ms`` is always 0,
+    and bumps are legal at any tick: this is what closes the sensorimotor loop.
+    A new bump for the same ring replaces the previous window.
+
+    NEST (HEAD@41892a5) reads a ``poisson_generator``'s rate at ``Prepare``
+    only, so a rate set between ``Run`` calls has no effect until the kernel is
+    prepared again (measured: zero spikes in the window until Cleanup/Prepare).
+    Every rate change therefore ends with :meth:`NestEngine.recalibrate`, a
+    ``Cleanup``/``Prepare`` pair costing about 0.2 ms; in ``simulate`` step mode
+    nothing is prepared and the pair is skipped.
+    """
+
+    supports_mid_trial = True
+    RING_FOR = {"goal_bump": "r2", "state_bump": "r1"}
+
+    def __init__(self) -> None:
+        self.hidden_ms = 0.0
+        self.applied: List[Dict[str, Any]] = []
+        self._expires_ms: Dict[str, float] = {}
+
+    def reset(self) -> None:
+        self.applied = []
+        self._expires_ms = {}
+
+    def apply(self, engine: "NestEngine", name: str, bump: DataPack) -> None:
+        if name not in self.RING_FOR:
+            raise EngineError("unknown bump %r" % name)
+        center = int(bump["center_index"])
+        half_width = int(bump["half_width"])
+        rate_hz = float(bump.get("rate_hz", STIMULUS_RATE_HZ))
+        duration_ms = float(bump.get("duration_ms", STIMULUS_DURATION_MS))
+        if name == "goal_bump":
+            engine.ports.inject_goal(center, half_width, rate_hz)
+        else:
+            engine.ports.inject_state(center, half_width, rate_hz)
+        self._expires_ms[name] = engine.kernel_time_ms + duration_ms
+        self.applied.append(
+            {"name": name, "center_index": center, "half_width": half_width,
+             "rate_hz": rate_hz, "duration_ms": duration_ms, "nest_step": engine.step_index,
+             "t_nest_ms": engine.kernel_time_ms}
+        )
+        engine.recalibrate()
+
+    def after_step(self, engine: "NestEngine") -> None:
+        clear = engine.ports.extra.get("clear_bumps") if engine.ports is not None else None
+        changed = False
+        for name in list(self._expires_ms):
+            if engine.kernel_time_ms + 1e-9 >= self._expires_ms[name]:
+                del self._expires_ms[name]
+                if clear is not None:
+                    clear(self.RING_FOR[name])
+                    changed = True
+        if changed:
+            engine.recalibrate()
+
+    @property
+    def active(self) -> Dict[str, float]:
+        return dict(self._expires_ms)
 
 
 def _global_id(backend: Any, node: Any) -> int:
@@ -212,6 +312,7 @@ class NestEngine(Engine):
         #: kernel time at which the current trial started (raster window)
         self.trial_start_ms = 0.0
         self.rebuild_count = 0
+        self.recalibrations = 0
 
     # -- lifecycle --------------------------------------------------------
     def _do_reset(self) -> None:
@@ -240,6 +341,14 @@ class NestEngine(Engine):
         if self.prepared:
             self.backend.Cleanup()
             self.prepared = False
+
+    def recalibrate(self) -> None:
+        """Make device parameter changes effective while prepared (Cleanup/Prepare)."""
+
+        if self.prepared:
+            self.backend.Cleanup()
+            self.backend.Prepare()
+            self.recalibrations += 1
 
     def _do_finish_trial(self) -> None:
         self._cleanup()
@@ -296,6 +405,7 @@ class NestEngine(Engine):
         else:
             self.backend.Simulate(dt_ms)
         self.kernel_time_ms += dt_ms
+        self.stimulus_port.after_step(self)
 
         current = {key: reader.read() for key, reader in self._readers.items()}
         left = int(np.sum(current["left"] - self._prev["left"]))
@@ -362,6 +472,7 @@ class NestEngine(Engine):
 
 
 __all__ = [
+    "GeneratorStimulusPort",
     "LegacyInjectStimulusPort",
     "NestEngine",
     "RingModelPorts",

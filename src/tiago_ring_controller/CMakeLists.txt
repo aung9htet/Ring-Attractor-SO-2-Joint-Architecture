@@ -31,6 +31,7 @@ catkin_package(
 # tiago_ring_controller.launch is the one exception.
 catkin_install_python(
   PROGRAMS
+    scripts/benchmark_build.py
     scripts/cosim_gazebo_smoke.py
     scripts/measure_legacy_tick.py
     scripts/run_cosim_trial.py

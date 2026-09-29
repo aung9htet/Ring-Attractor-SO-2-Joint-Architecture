@@ -160,9 +160,13 @@ python3 scripts/run_cosim_trial.py --engines full --dashboard             # brow
 python3 scripts/run_cosim_trial.py --engines full --goal 0.6 --monitor --monitor-hold   # Matplotlib window
 ```
 
-The scripts resolve `src/config/` themselves and import the `SingleRingModel`
-facade from `legacy/` until the block runtime replaces it (plan phase 4), so they
-run from any working directory.
+The scripts resolve `src/config/` themselves and run from any working
+directory. `--model legacy` (default) imports the frozen `SingleRingModel` facade
+from `legacy/`; `--model vectorised` builds the same circuit through
+`tiago_ring_controller.nest.single_ring` in about 40 ms instead of 12 s and uses
+build-time Poisson generators, so proprioceptive bumps are accepted at every tick
+(`--proprioception continuous`). The two are compared in the repository's
+`docs/blocks/equivalence.md`; `scripts/benchmark_build.py` reproduces the numbers.
 
 `--dashboard` serves a page (standard-library HTTP server, server-sent events)
 that shows the ring live and starts or stops trials on request; it needs no

@@ -12,6 +12,7 @@ from ..control.profiles import LegacyControlProfile, get_legacy_control_profile
 
 
 NEST_STEP_MODES = ("run", "simulate")
+NEST_MODELS = ("legacy", "vectorised")
 STEPPERS = ("clock_wait", "plugin")
 
 
@@ -45,6 +46,10 @@ class CosimConfig:
     step_timeout_s: float = 5.0
     ring_params_file: Optional[str] = None
     weights_dir: Optional[str] = None
+    #: "legacy": the frozen SingleRingModel facade (per-synapse build, bumps
+    #: only before the first step); "vectorised": nest.single_ring with
+    #: build-time generators (bumps at any tick, no hidden simulated time).
+    nest_model: str = "legacy"
 
     def __post_init__(self) -> None:
         get_legacy_control_profile(self.profile)
@@ -56,6 +61,8 @@ class CosimConfig:
             raise ValueError("max_steps must be positive")
         if self.nest_step_mode not in NEST_STEP_MODES:
             raise ValueError("nest_step_mode must be one of %r" % (NEST_STEP_MODES,))
+        if self.nest_model not in NEST_MODELS:
+            raise ValueError("nest_model must be one of %r" % (NEST_MODELS,))
         if self.stepper not in STEPPERS:
             raise ValueError("stepper must be one of %r" % (STEPPERS,))
         if self.reset_mode not in ("rebuild", "continue"):

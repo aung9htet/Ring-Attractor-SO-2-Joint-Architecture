@@ -95,3 +95,79 @@ READMEs append `:$PYTHONPATH` for that reason.
 Not run: Gazebo (needs `./run_model_docker.bash` with the simulation launched; no
 robot code changed in this phase) and the browser dashboard (no dashboard code
 changed; its end-to-end test with the fakes is part of the suite above).
+
+## 2026-09-29 — Phase 2: optimisation and robustness pass
+
+Full report with the measured numbers: `equivalence.md`.
+
+### Changes
+
+- `math/ring.py`: `ring_weight_matrix` (the legacy per-synapse weights as a
+  `(pre, post)` matrix, both variants).
+- `nest/populations.py`: vectorised builders (`Population` = neuron collection +
+  one recorder per neuron; ring, Fourier readout, decision circuit with feature
+  projections, gain populations with cross-inhibition and shifted feedback,
+  build-time Poisson generators with `set_bump` / `clear_stimulus`);
+  `validate_neuron_parameters` against `GetDefaults`; `BuildError` names the
+  population. The per-synapse builders the legacy scripts import are untouched.
+- `nest/single_ring.py`: `load_single_ring_artifacts` (all `config/` inputs
+  validated up front) and `build_single_ring_network` (seed and threads recorded,
+  `describe()`, `set_bump` / `clear_bumps`, recorder lists in the facade's shape).
+- `blocks/params.py`: `ParamSpec`, `ParamSchema`, schemas for the eight primitives,
+  JSON round trip, all problems of a block reported at once.
+- cosim: `GeneratorStimulusPort` (bumps at any tick, no hidden time, windows expire
+  after `duration_ms` of loop time, `NestEngine.recalibrate()` = Cleanup/Prepare
+  after a rate change because NEST reads generator rates at Prepare);
+  `RingModelPorts.from_network`; `CosimConfig.nest_model` (`legacy` default,
+  `vectorised`); `run_cosim_trial.py --model`; `scripts/benchmark_build.py`.
+- Tests: `test_vectorised_topology.py` (fake-NEST connection-set equivalence per
+  builder and for the whole N=200 model, 11 tests), `test_block_params.py` (5),
+  generator-port tests in `test_cosim_engines.py` (3), `test_vectorised_real_nest.py`
+  (rate-profile equivalence, determinism + build time, pinned golden, mid-trial
+  bump; 4, container only). Golden: `test/golden/vectorised_single_ring_seed13579.json`.
+
+### Gates
+
+Host (`/usr/bin/python3` 3.13):
+
+```
+Ran 181 tests in 7.171s
+FAILED (errors=1, skipped=3)      # test_evaluation_facade_plots: No module named 'colorcet' (host only, pre-existing)
+```
+
+Container (full suite; the pinned-golden, equivalence, determinism and mid-trial
+tests ran, as did the legacy parity test `test_cosim_real_nest.py` unchanged):
+
+```
+Ran 193 tests in 87.411s
+OK
+EQUIVALENCE {'r1_l1': 0.049, 'r2_l1': 0.051, ...}
+MIDTRIAL {'centroid_before': 60.0, 'centroid_after': 104.43, 'window_spikes': 209.0}
+```
+
+Build time N=200 (`scripts/benchmark_build.py`, container, 1 thread, min of 3):
+legacy 12.01 s → vectorised 0.041 s (target was < 3 s). Per tick: `Run(50)` 5.8 ms,
+readout of r1 + left + right 1.6 ms.
+
+`run_cosim_trial.py --engines nest --model vectorised --seed 13579 --goal 0.6`:
+
+```
+trial 1 timing: reset [nest 0.1 s, robot 0.0 s]; lead 0.04 s; 203 ticks in 1.4 s (7.0 ms/tick)
+trial 1: goal=0.6000 start=0.0000 final=0.5917 |err|=0.0083 steps=203 stop=drive_settled
+```
+
+Same with `--proprioception continuous` (a 200 Hz state bump every tick):
+
+```
+trial 1: goal=0.6000 start=0.0000 final=-0.0840 |err|=0.6840 steps=400 stop=max_steps
+```
+
+The continuous stimulus at the legacy rate pins the state bump to the measured
+joint and the loop does not converge; this is exactly the phase 5 sweep
+(`Encoder.mode`, rate, half width, dead band), not a defect of the port. Recorded
+here so the phase 5 baseline is known.
+
+Item 3 (recorders): measured both options, kept per-neuron recorders (flat cost,
+per-neuron deltas); numbers in `equivalence.md`.
+
+Not run: Gazebo (no robot code changed) and the browser dashboard (unchanged).

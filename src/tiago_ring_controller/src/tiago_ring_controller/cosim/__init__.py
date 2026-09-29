@@ -13,6 +13,7 @@ from .engine import Engine, EngineClock, EngineError, EngineStateError, StepTime
 from .fakes import FakeNestEngine, FakeRobotEngine
 from .loop import AnyOf, FTILoop, LoopObserver, MaxSteps, SettledFlag, TickRecord, TrialRecord
 from .nest_engine import (
+    GeneratorStimulusPort,
     LegacyInjectStimulusPort,
     NestEngine,
     RingModelPorts,
@@ -38,6 +39,7 @@ __all__ = [
     "FakeRobotEngine",
     "GazeboStepper",
     "GoalTF",
+    "GeneratorStimulusPort",
     "LegacyInjectStimulusPort",
     "LoopObserver",
     "MaxSteps",

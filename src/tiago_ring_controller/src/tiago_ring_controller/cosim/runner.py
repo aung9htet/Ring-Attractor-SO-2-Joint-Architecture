@@ -32,7 +32,7 @@ from .config import CosimConfig
 from .engine import Engine
 from .fakes import FakeNestEngine, FakeRobotEngine
 from .loop import AnyOf, FTILoop, LoopObserver, MaxSteps, SettledFlag, StopCondition, TrialRecord
-from .nest_engine import NestEngine, RingModelPorts
+from .nest_engine import GeneratorStimulusPort, NestEngine, RingModelPorts
 from .tf import GoalTF, MotorTF, ProprioceptionTF, TransceiverFunction
 
 
@@ -122,7 +122,22 @@ def make_nest_engine(
     if backend is None:
         import nest as backend  # noqa: WPS433 - lazy by design
     population_size = ring_population_size(config)
-    if model_factory is None:
+    stimulus_port = None
+    if model_factory is None and config.nest_model == "vectorised":
+        from ..nest.single_ring import build_single_ring_network
+
+        ring_params = config.ring_params_file or source_config_path("model_params", "ring_params.json")
+        weights_dir = config.weights_dir or source_config_path("ring_decoding_weights")
+
+        def model_factory() -> RingModelPorts:  # type: ignore[no-redef]
+            network = build_single_ring_network(
+                backend, seed=config.rng_seed, local_num_threads=config.local_num_threads,
+                ring_params_file=ring_params, weights_dir=weights_dir,
+            )
+            return RingModelPorts.from_network(network)
+
+        stimulus_port = GeneratorStimulusPort()
+    elif model_factory is None:
         legacy = legacy_root()
         if legacy not in sys.path:
             sys.path.insert(0, legacy)
@@ -141,7 +156,8 @@ def make_nest_engine(
             return RingModelPorts.from_single_ring_model(model)
 
     return NestEngine(
-        backend, model_factory, step_mode=config.nest_step_mode, population_size=population_size
+        backend, model_factory, step_mode=config.nest_step_mode,
+        stimulus_port=stimulus_port, population_size=population_size,
     )
 
 

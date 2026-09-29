@@ -50,6 +50,9 @@ def parse_args(argv=None):
     parser.add_argument("--lead", type=int, default=None, help="NEST lead steps (default: profile lookahead)")
     parser.add_argument("--max-steps", type=int, default=None)
     parser.add_argument("--step-mode", choices=("run", "simulate"), default="run")
+    parser.add_argument("--model", choices=("legacy", "vectorised"), default="legacy",
+                        help="NEST model: the frozen legacy facade or the vectorised build with "
+                             "build-time stimulus generators (bumps at any tick)")
     parser.add_argument("--stepper", choices=("clock_wait", "plugin"), default="clock_wait")
     parser.add_argument("--proprioception", choices=("once", "continuous", "off"), default="once")
     parser.add_argument("--reset-mode", choices=("rebuild", "continue"), default="rebuild",
@@ -83,7 +86,8 @@ def build_config(args):
             # Fakes do not care about the mapping range; real runs must have limits.
             config = CosimConfig.from_dict(dict(config.to_dict(), joint_min=-1.0, joint_max=1.0))
     overrides = {"nest_step_mode": args.step_mode, "stepper": args.stepper,
-                 "proprioception_mode": args.proprioception, "reset_mode": args.reset_mode}
+                 "proprioception_mode": args.proprioception, "reset_mode": args.reset_mode,
+                 "nest_model": args.model}
     if args.seed is not None:
         overrides["rng_seed"] = args.seed
     if args.lead is not None:
