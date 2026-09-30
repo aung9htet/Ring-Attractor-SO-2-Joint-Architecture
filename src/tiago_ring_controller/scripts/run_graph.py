@@ -122,6 +122,7 @@ def main(argv=None):
             return compiled.loop, compiled.config
 
         compiled = attach(compile_graph(graph, engines=args.engines))
+        print("engines: " + ", ".join("%s=%s" % (e.name, type(e).__name__) for e in compiled.loop.engines))
         server = None
         try:
             server = DashboardServer(state, args.dashboard_host, args.dashboard_port).start()
@@ -151,6 +152,7 @@ def main(argv=None):
                 session["compiled"].loop.shutdown()
         return 0
 
+    print("engines: %s" % args.engines + (" (NEST + Gazebo through ROS)" if args.engines == "full" else " (fake robot)"))
     goal_values = [g if g is not None else (graph.blocks[b].value() if (b := next((i for i, blk in graph.blocks.items() if blk.type_name == "Goal"), None)) else 0.0) for g in goals]
     started = time.monotonic()
     results = run_graph(graph, engines=args.engines, goals=goal_values, out_dir=args.out, on_trial=report_timing)

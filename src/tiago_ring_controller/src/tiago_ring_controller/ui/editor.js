@@ -23,7 +23,7 @@
     return {
       schema: "ring-blocks/1", name: "untitled",
       simulation: { dt_ms: 50.0, nest_lead_steps: 4, max_steps: 400, rng_seed: 13579, local_num_threads: 1, step_mode: "run", reset_mode: "rebuild" },
-      blocks: [], edges: [], robot: { engine: "fake", stepper: "clock_wait" },
+      blocks: [], edges: [], robot: { engine: "gazebo", stepper: "clock_wait" },
     };
   }
 
@@ -330,7 +330,7 @@
   // -- documents ----------------------------------------------------------------
   function loadDocument(doc, path) {
     state.doc = JSON.parse(JSON.stringify(doc));
-    if (!state.doc.robot) state.doc.robot = { engine: "fake", stepper: "clock_wait" };
+    if (!state.doc.robot) state.doc.robot = { engine: "gazebo", stepper: "clock_wait" };
     state.doc.blocks.forEach((block, index) => {
       if (!block.params) block.params = {};
       if (!block.ui) block.ui = { x: 40 + 190 * (index % 6), y: 40 + 130 * Math.floor(index / 6) };

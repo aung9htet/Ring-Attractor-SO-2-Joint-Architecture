@@ -396,14 +396,20 @@ def _signal_order(graph: Graph) -> List[Block]:
 
 
 def make_robot_engine(graph: Graph, config: CosimConfig, engines: str, transport: Any = None) -> Engine:
-    kind = graph.robot.get("engine", "fake") if engines == "full" else "fake"
-    if kind == "fake":
-        return FakeRobotEngine("robot")
-    if kind == "gazebo":
-        from ..cosim.runner import make_gazebo_engine
+    """``engines="full"`` always drives the real robot (Gazebo through ROS); ``fake`` / ``nest`` use the fake robot.
 
-        return make_gazebo_engine(config, transport)
-    raise GraphError(["robot.engine must be one of %r, got %r" % (ROBOT_ENGINES, kind)])
+    ``graph.robot["engine"]`` documents the intended target and must be a known
+    kind; the stepper comes from ``graph.robot["stepper"]`` through the config.
+    """
+
+    kind = graph.robot.get("engine", "gazebo")
+    if kind not in ROBOT_ENGINES:
+        raise GraphError(["robot.engine must be one of %r, got %r" % (ROBOT_ENGINES, kind)])
+    if engines != "full":
+        return FakeRobotEngine("robot")
+    from ..cosim.runner import make_gazebo_engine
+
+    return make_gazebo_engine(config, transport)
 
 
 def resolve_joint_limits(graph: Graph, transport: Any) -> Dict[str, Any]:

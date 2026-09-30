@@ -38,8 +38,9 @@ problems reported together):
   inputs).
 - `simulation`: `dt_ms > 0`, `nest_lead_steps ≥ 0`, `max_steps > 0`,
   `step_mode` run|simulate, `reset_mode` rebuild|continue, `local_num_threads ≥ 1`.
-- `robot.engine`: fake|gazebo (used with `--engines full`), `robot.stepper`:
-  clock_wait|plugin.
+- `robot.engine`: the intended robot, fake|gazebo (documentation: `--engines
+  full` always drives Gazebo, `fake` and `nest` always the fake robot);
+  `robot.stepper`: clock_wait|plugin.
 
 Canonical form: parameters are written resolved (every parameter, defaults
 filled) in schema order, `json.dumps(indent=2)`, one trailing newline. A graph

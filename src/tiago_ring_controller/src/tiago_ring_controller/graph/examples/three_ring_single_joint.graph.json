@@ -87,7 +87,7 @@
     }
   ],
   "robot": {
-    "engine": "fake",
+    "engine": "gazebo",
     "stepper": "clock_wait"
   }
 }

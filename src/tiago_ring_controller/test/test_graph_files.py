@@ -162,6 +162,26 @@ class CompilerTests(unittest.TestCase):
         self.assertIsNone(compiled.loop.lead_engine)
         self.assertEqual(compiled.nest_engine.inputs, {"angle_q1", "angle_q2"})
 
+    def test_engines_full_always_uses_the_gazebo_engine(self):
+        import importlib.util
+
+        from tiago_ring_controller.cosim.gazebo_ros_engine import GazeboRosEngine
+
+        spec = importlib.util.spec_from_file_location("engine_tests", ROOT / "test/test_cosim_engines.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        graph = two_ring_single_joint()
+        self.assertEqual(graph.robot["engine"], "gazebo")
+        compiled = compile_graph(graph, engines="full", backend=FakeNestBackend(), transport=module.FakeTransport())
+        self.assertIsInstance(compiled.robot_engine, GazeboRosEngine)
+        self.assertIsInstance(compile_graph(graph, engines="nest", backend=FakeNestBackend()).robot_engine, type(compile_graph(graph, engines="fake").robot_engine))
+        graph.robot["engine"] = "fake"        # the file's value never turns --engines full into a fake run
+        compiled = compile_graph(graph, engines="full", backend=FakeNestBackend(), transport=module.FakeTransport())
+        self.assertIsInstance(compiled.robot_engine, GazeboRosEngine)
+        graph.robot["engine"] = "nope"
+        with self.assertRaisesRegex(GraphError, "robot.engine must be one of"):
+            compile_graph(graph, engines="fake")
+
     def test_find_primary_on_a_graph_without_the_motif(self):
         g = Graph("signals only")
         goal, joint, dec = g.add(Goal("goal")), g.add(Joint("j")), g.add(Decoder("dec"))

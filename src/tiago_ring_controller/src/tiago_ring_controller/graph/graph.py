@@ -142,7 +142,8 @@ class Graph:
         self._port_maps: Dict[str, Dict[str, PortRef]] = {}
         self.edges: List[Edge] = []
         self.declared_edges: List[Edge] = []
-        self.robot: Dict[str, Any] = {"engine": "fake", "stepper": "clock_wait"}
+        #: the intended robot target; --engines full uses Gazebo, fake/nest the fake robot
+        self.robot: Dict[str, Any] = {"engine": "gazebo", "stepper": "clock_wait"}
 
     # -- construction -----------------------------------------------------
     def add(self, block: Block, _declared: bool = True) -> Block:
