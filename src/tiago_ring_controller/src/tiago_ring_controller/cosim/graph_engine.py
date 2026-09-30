@@ -65,6 +65,14 @@ class GraphNestEngine(Engine):
         self.rebuild_count = 0
         self.recalibrations = 0
         self.applied: List[Dict[str, Any]] = []
+        #: (state ring id, gain id, goal ring id): when set, the engine also emits the
+        #: NestEngine-style ``ring_counts`` datapack and the collector's raster keys, so
+        #: the dashboard, the monitor and the collector record work on graph runs.
+        self.legacy_view: Optional[Dict[str, Optional[str]]] = None
+
+    def set_legacy_view(self, state_ring: str, gain: str, goal_ring: Optional[str] = None) -> None:
+        self.legacy_view = {"state_ring": state_ring, "gain": gain, "goal_ring": goal_ring}
+        self.outputs = frozenset(set(self.outputs) | {"ring_counts"})
 
     # -- lifecycle --------------------------------------------------------
     def _do_reset(self) -> None:
@@ -208,6 +216,19 @@ class GraphNestEngine(Engine):
                 else:
                     data[port] = delta.tolist()
             packs[block_id] = DataPack(block_id, t_after, data)
+        view = self.legacy_view
+        if view is not None and view["state_ring"] in packs and view["gain"] in packs:
+            ring, gain = packs[view["state_ring"]], packs[view["gain"]]
+            packs["ring_counts"] = DataPack(
+                "ring_counts", t_after,
+                {
+                    "left": int(gain["left_counts"]), "right": int(gain["right_counts"]),
+                    "r1_delta": list(ring["counts"]), "r1_spike_count": float(ring["total"]),
+                    "r1_bump_index": ring["bump_index"], "r1_centroid": ring["centroid"],
+                    "t_nest_ms": t_after, "nest_step": step, "hidden_ms": 0.0,
+                    "step_mode": self.step_mode, "readout_mode": self.readout_mode,
+                },
+            )
         self.last = packs
 
     # -- trial-end readout ------------------------------------------------
@@ -232,6 +253,34 @@ class GraphNestEngine(Engine):
                         senders.append(int(sender))
             result[ring.id + "_times"] = np.array(times, dtype=float)
             result[ring.id + "_senders"] = np.array(senders, dtype=int)
+        view = self.legacy_view
+        if view is not None:
+            def gather(recorders):
+                times: List[float] = []
+                senders: List[int] = []
+                for recorder in recorders:
+                    try:
+                        events = recorder_events(self.backend, recorder)
+                    except Exception:
+                        continue
+                    for t, sender in zip(events.get("times", []), events.get("senders", [])):
+                        if float(t) > start or start <= 0.0:
+                            times.append(float(t))
+                            senders.append(int(sender))
+                return np.array(times, dtype=float), np.array(senders, dtype=int)
+
+            for alias, ring_id in (("r1", view["state_ring"]), ("r2", view["goal_ring"])):
+                if ring_id is not None and ring_id + "_times" in result:
+                    result[alias + "_times"], result[alias + "_senders"] = result[ring_id + "_times"], result[ring_id + "_senders"]
+                else:
+                    result[alias + "_times"], result[alias + "_senders"] = np.array([], dtype=float), np.array([], dtype=int)
+            gain = self.graph.blocks.get(view["gain"])
+            populations = getattr(gain, "populations", None)
+            for side in ("left", "right"):
+                if populations is not None:
+                    result[side + "_times"], result[side + "_senders"] = gather(getattr(populations, side).recorder_list())
+                else:
+                    result[side + "_times"], result[side + "_senders"] = np.array([], dtype=float), np.array([], dtype=int)
         return result
 
     def describe(self) -> Dict[str, Any]:

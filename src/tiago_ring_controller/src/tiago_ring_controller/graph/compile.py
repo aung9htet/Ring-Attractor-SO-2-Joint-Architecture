@@ -10,8 +10,10 @@ Datapack conventions of a compiled graph:
   ``Joint`` blocks read the first and the one fed by a ``Decoder`` writes the
   second (the ``MotorTF`` schema, so records, stop conditions, the dashboard
   and the monitor work unchanged);
-* when the graph has the single-joint motif (Decoder ← Gain ← Ring), a
-  ``LegacyViewTF`` also emits ``ring_counts`` for the existing observers.
+* when the graph has the single-joint motif (Decoder ← Gain ← Ring), the NEST
+  engine also emits the ``ring_counts`` datapack and the goal / joint
+  transceivers emit ``goal_bump`` / ``state_bump``, so the dashboard, the
+  monitor and the collector record work unchanged.
 """
 
 from __future__ import annotations
@@ -134,12 +136,14 @@ class BlockTF(TransceiverFunction):
 class GoalBlockTF(BlockTF, GoalTF):
     """``Goal`` → ``{"angle": ...}``; ``set_goal`` is what the runner and the dashboard call."""
 
-    def __init__(self, graph: Graph, block: Goal, encoder: Optional[Block] = None) -> None:
+    def __init__(self, graph: Graph, block: Goal, encoder: Optional[Block] = None, emit_bump: bool = False) -> None:
         BlockTF.__init__(self, graph, block)
         self.encoder = encoder
         self.goal_rad = block.value()
         self.last_index = None
         self.mode = "once"
+        self.emit_bump = emit_bump and encoder is not None
+        self.outputs = frozenset({block.id, "goal_bump"}) if self.emit_bump else frozenset({block.id})
 
     def set_goal(self, goal_rad: float) -> None:
         self.block.set(goal_rad)
@@ -152,15 +156,22 @@ class GoalBlockTF(BlockTF, GoalTF):
     def __call__(self, inputs: Mapping[str, DataPack], ctx: TickContext) -> Dict[str, DataPack]:
         angle = self.block.value(ctx.t_ms)
         self.goal_rad = angle
+        packs = self.emit(ctx, angle=angle)
         if self.encoder is not None and getattr(self.encoder, "ring_size", 0):
             self.last_index = self.encoder.ring_index(angle)
-        return self.emit(ctx, angle=angle)
+        if self.emit_bump and self.last_index is not None:
+            # The dashboard and the monitor draw the goal marker from this pack (legacy GoalTF schema).
+            packs["goal_bump"] = DataPack("goal_bump", ctx.t_ms, {
+                "center_index": int(self.last_index), "half_width": self.encoder.effective_half_width(),
+                "goal_rad": float(angle), "source": "goal", "mode": self.encoder.params["mode"],
+            })
+        return packs
 
 
 class JointSensorTF(BlockTF):
     """``joint_state`` → ``{"angle", "velocity_measured"}`` of one joint."""
 
-    def __init__(self, graph: Graph, block: Joint) -> None:
+    def __init__(self, graph: Graph, block: Joint, emit_bump: bool = False) -> None:
         BlockTF.__init__(self, graph, block)
         self.inputs = frozenset({"joint_state"})
         self.last_index = None
@@ -168,15 +179,29 @@ class JointSensorTF(BlockTF):
         for edge in graph.edges_from(block, "angle"):
             if edge.target.block.type_name == "Encoder":
                 self.encoder = edge.target.block
+        self.emit_bump = emit_bump and self.encoder is not None
+        self.outputs = frozenset({block.id, "state_bump"}) if self.emit_bump else frozenset({block.id})
+
+    def reset(self) -> None:
+        self.block.reset()
+        self.last_index = None
 
     def __call__(self, inputs: Mapping[str, DataPack], ctx: TickContext) -> Dict[str, DataPack]:
         state = inputs.get("joint_state")
         if state is None:
             return {}
         values = self.block.read(state)
+        packs = self.emit(ctx, **values)
         if self.last_index is None and self.encoder is not None and getattr(self.encoder, "ring_size", 0):
             self.last_index = self.encoder.ring_index(values["angle"])
-        return self.emit(ctx, **values)
+            if not self.emit_bump:
+                return packs
+            # First measurement of the trial: the observers' initial-index marker (legacy ProprioceptionTF schema).
+            packs["state_bump"] = DataPack("state_bump", ctx.t_ms, {
+                "center_index": int(self.last_index), "half_width": self.encoder.effective_half_width(),
+                "joint_position": float(values["angle"]), "source": "proprioception", "mode": self.encoder.params["mode"],
+            })
+        return packs
 
 
 class DecoderTF(BlockTF):
@@ -212,17 +237,17 @@ class JointCommandTF(BlockTF):
         self.name = block.id + ".command"
         self.decoder = decoder
         self.source_id = source_id
-        self.inputs = frozenset({source_id})
+        self.inputs = frozenset({source_id, "ring_counts"})
         self.outputs = frozenset({self.name})
-        self._ring_fields: Optional[LegacyViewTF] = None
 
     def __call__(self, inputs: Mapping[str, DataPack], ctx: TickContext) -> Dict[str, DataPack]:
         pack = inputs.get(self.source_id)
         if pack is None:
             return {}
         consumed = dict(pack["consumed"])
-        # The collector record and the dashboard expect the ring fields on the consumed sample.
-        view = self._ring_fields.last if self._ring_fields is not None else None
+        # The collector record and the dashboard expect the ring fields on the consumed sample;
+        # the NEST engine emits ring_counts when the graph has the single-joint motif.
+        view = inputs.get("ring_counts")
         consumed.setdefault("r1_spike_count", 0.0 if view is None else view.get("r1_spike_count", 0.0))
         consumed.setdefault("r1_bump_index", None if view is None else view.get("r1_bump_index"))
         consumed.setdefault("r1_centroid", float("nan") if view is None else view.get("r1_centroid", float("nan")))
@@ -303,37 +328,6 @@ class ProbeTF(BlockTF):
         if value is not None:
             self.block.record(ctx.t_ms, value)
         return {}
-
-
-class LegacyViewTF(TransceiverFunction):
-    """``ring_counts`` (the NestEngine schema) from the primary ring and gain datapacks."""
-
-    name = "legacy_view"
-    outputs = frozenset({"ring_counts"})
-
-    def __init__(self, primary: Primary, step_mode: str) -> None:
-        self.primary = primary
-        self.step_mode = step_mode
-        self.inputs = frozenset({primary.state_ring.id, primary.gain.id})
-        self.last: Optional[Dict[str, Any]] = None
-
-    def reset(self) -> None:
-        self.last = None
-
-    def __call__(self, inputs: Mapping[str, DataPack], ctx: TickContext) -> Dict[str, DataPack]:
-        ring = inputs.get(self.primary.state_ring.id)
-        gain = inputs.get(self.primary.gain.id)
-        if ring is None or gain is None:
-            return {}
-        data = {
-            "left": int(gain["left_counts"]), "right": int(gain["right_counts"]),
-            "r1_delta": list(ring["counts"]), "r1_spike_count": float(ring["total"]),
-            "r1_bump_index": ring["bump_index"], "r1_centroid": ring["centroid"],
-            "t_nest_ms": ring["t_nest_ms"], "nest_step": ring["nest_step"], "hidden_ms": 0.0,
-            "step_mode": self.step_mode, "readout_mode": "node_collection",
-        }
-        self.last = data
-        return {"ring_counts": DataPack("ring_counts", ring.t_ms, data)}
 
 
 # -- compilation ------------------------------------------------------------------
@@ -475,9 +469,9 @@ def compile_graph(
             for edge in graph.edges_from(block, "angle"):
                 if edge.target.block.type_name == "Encoder":
                     encoder = edge.target.block
-            tfs.append(GoalBlockTF(graph, block, encoder))
+            tfs.append(GoalBlockTF(graph, block, encoder, emit_bump=encoder is not None and encoder is primary.goal_encoder))
         elif isinstance(block, Joint):
-            tfs.append(JointSensorTF(graph, block))
+            tfs.append(JointSensorTF(graph, block, emit_bump=block is primary.joint))
             decoder = source_of(graph, block, "velocity")
             if isinstance(decoder, Decoder):
                 tfs.append(JointCommandTF(graph, block, decoder, decoder.id))
@@ -487,18 +481,15 @@ def compile_graph(
             tfs.append(ProfileDecoderTF(graph, block))
         elif isinstance(block, Probe):
             tfs.append(ProbeTF(graph, block))
-    legacy_view = None
     if primary.complete and nest_engine is not None:
-        legacy_view = LegacyViewTF(primary, graph.simulation.step_mode)
-        for tf in tfs:
-            if isinstance(tf, JointCommandTF):
-                tf._ring_fields = legacy_view
-        tfs.insert(0, legacy_view)
+        nest_engine.set_legacy_view(
+            primary.state_ring.id, primary.gain.id, None if primary.goal_ring is None else primary.goal_ring.id
+        )
     command_tfs = [tf for tf in tfs if isinstance(tf, JointCommandTF)]
     if command_tfs:
         tfs.append(ArmCommandTF(command_tfs, primary.joint, graph))
     # Sensors and goals must run before the blocks reading them; commands after their decoders; the merge last.
-    tfs.sort(key=lambda tf: 0 if isinstance(tf, LegacyViewTF) else 1 if isinstance(tf, (JointSensorTF, GoalBlockTF))
+    tfs.sort(key=lambda tf: 1 if isinstance(tf, (JointSensorTF, GoalBlockTF))
              else 3 if isinstance(tf, JointCommandTF) else 4 if isinstance(tf, ArmCommandTF) else 2)
 
     lead_steps = graph.simulation.nest_lead_steps if nest_engine is not None else 0
@@ -516,6 +507,6 @@ def compile_graph(
 
 __all__ = [
     "ArmCommandTF", "BlockTF", "CompiledGraph", "DecoderTF", "GoalBlockTF", "JointCommandTF", "JointSensorTF",
-    "LegacyViewTF", "Primary", "ProbeTF", "ProfileDecoderTF", "compile_graph", "find_primary",
+    "Primary", "ProbeTF", "ProfileDecoderTF", "compile_graph", "find_primary",
     "graph_cosim_config", "make_robot_engine", "resolve_joint_limits",
 ]

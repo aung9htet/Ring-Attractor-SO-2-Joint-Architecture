@@ -41,7 +41,6 @@ from tiago_ring_controller.graph.compile import (  # noqa: E402
     GoalBlockTF,
     JointCommandTF,
     JointSensorTF,
-    LegacyViewTF,
     ProfileDecoderTF,
 )
 
@@ -123,9 +122,15 @@ class CompilerTests(unittest.TestCase):
         graph = two_ring_single_joint()
         compiled = compile_graph(graph, engines="fake")
         names = [type(tf).__name__ for tf in compiled.tfs]
-        self.assertEqual(names, ["LegacyViewTF", "JointSensorTF", "GoalBlockTF", "DecoderTF", "JointCommandTF", "ArmCommandTF"])
+        self.assertEqual(names, ["JointSensorTF", "GoalBlockTF", "DecoderTF", "JointCommandTF", "ArmCommandTF"])
         self.assertEqual([e.name for e in compiled.loop.engines], ["nest", "robot"])
         self.assertEqual(compiled.nest_engine.inputs, {"j5", "goal"})
+        self.assertIn("ring_counts", compiled.nest_engine.outputs)
+        self.assertEqual(compiled.nest_engine.legacy_view, {"state_ring": "r1", "gain": "gain", "goal_ring": "r2"})
+        goal_tf = next(tf for tf in compiled.tfs if isinstance(tf, GoalBlockTF))
+        self.assertEqual(goal_tf.outputs, {"goal", "goal_bump"})
+        sensor_tf = next(tf for tf in compiled.tfs if isinstance(tf, JointSensorTF))
+        self.assertEqual(sensor_tf.outputs, {"j5", "state_bump"})
         self.assertEqual(compiled.loop.lead_engine, "nest")
         primary = compiled.primary
         self.assertTrue(primary.complete)
@@ -140,7 +145,7 @@ class CompilerTests(unittest.TestCase):
         self.assertEqual(decoder_tf.sources, {"left_counts": ("gain", "left_counts"), "right_counts": ("gain", "right_counts")})
         self.assertEqual(decoder_tf.inputs, {"gain"})
         command = next(tf for tf in compiled.tfs if isinstance(tf, JointCommandTF))
-        self.assertEqual((command.inputs, command.outputs), ({"dec"}, {"j5.command"}))
+        self.assertEqual((command.inputs, command.outputs), ({"dec", "ring_counts"}, {"j5.command"}))
         merge = next(tf for tf in compiled.tfs if isinstance(tf, ArmCommandTF))
         self.assertEqual((merge.inputs, merge.outputs, merge.primary_id), ({"j5.command"}, {"arm_velocity_cmd"}, "j5.command"))
         with self.assertRaisesRegex(GraphError, "engines must be"):
@@ -151,7 +156,8 @@ class CompilerTests(unittest.TestCase):
         names = [type(tf).__name__ for tf in compiled.tfs]
         self.assertEqual(names[:2], ["GoalBlockTF", "GoalBlockTF"])
         self.assertEqual(names.count("ProfileDecoderTF"), 3)
-        self.assertNotIn("LegacyViewTF", names)
+        self.assertIsNone(compiled.nest_engine.legacy_view)
+        self.assertNotIn("ring_counts", compiled.nest_engine.outputs)
         self.assertFalse(compiled.primary.complete)
         self.assertIsNone(compiled.loop.lead_engine)
         self.assertEqual(compiled.nest_engine.inputs, {"angle_q1", "angle_q2"})
@@ -193,8 +199,15 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(sorted(os.listdir(directory)), ["session_meta.json", "trials", "trials_summary.csv"])
             self.assertIn("trial_0002_cosim.json", os.listdir(os.path.join(directory, "trials")))
             record = results[0]["record"]
-            self.assertIn("ring_counts", record.main_ticks[0].outputs)
-            self.assertIn("arm_velocity_cmd", record.main_ticks[0].outputs)
+            tick = record.main_ticks[0]
+            self.assertIn("ring_counts", tick.inputs)            # engine datapack, like the legacy loop
+            self.assertIn("arm_velocity_cmd", tick.outputs)
+            self.assertEqual(tick.outputs["goal_bump"]["goal_rad"], 0.3)
+            first = record.ticks[0]                              # the first lead tick carries the initial state bump
+            self.assertIn("center_index", first.outputs["state_bump"])
+            self.assertNotIn("state_bump", tick.outputs)
+            self.assertEqual(sorted(k for k in results[0]["legacy"]["raster"]), sorted(
+                ["r1_times", "r1_senders", "r2_times", "r2_senders", "left_times", "left_senders", "right_times", "right_senders"]))
             self.assertEqual(record.main_ticks[0].outputs["arm_velocity_cmd"]["joint_index"], 5)
             self.assertIsNotNone(record.meta["goal_ring_index"])
             self.assertIsNotNone(record.meta["initial_ring_index"])
