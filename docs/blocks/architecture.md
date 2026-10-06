@@ -1,8 +1,8 @@
 # Block architecture
 
-Branch `blocks-refactor`, phases 1–6 (see `progress.md`). This page is the map;
+Branch `blocks-refactor`, phases 1–6 (see `../archive/blocks-progress.md`). This page is the map;
 the block reference is `blocks.md`, the file format `graph-schema.md`, the
-measurements `equivalence.md` and `feedback.md`.
+measurements `equivalence.md` (the earlier feedback sweep is archived: `../archive/blocks/feedback.md`).
 
 ## Layers
 
@@ -66,16 +66,19 @@ golden is pinned (`equivalence.md`). The legacy scripts stay runnable in
 |---|---|---|
 | `two_ring_single_joint` | Ring ×2, FourierReadout ×2, Homeostasis, Gain, Encoder ×2, Decoder, Joint, Goal | tick-for-tick equal to the cosim runner on the vectorised model |
 | `multi_joint_two_ring` | the above per joint, one robot engine | both joints move toward their goals on the fakes with NEST |
-| `three_ring_single_joint` | `JointTriple` (T/B/A rings, three encoders, two transports), Decoder, Joint, Goal | builds and runs; produces no drive in the first ten ticks (phase 5 open item) |
+| `three_ring_single_joint` | `JointTriple` (goal, predictive and state rings on the bounded ring, three encoders, two comparator + gain pairs each with a ring projection, two `RingState` readouts), Decoder, Joint, Goal | architecture v4: measured on all joints in NEST and Gazebo (`../architecture.md`, `../results.md`) |
 | `two_joint_forward_kinematics` | Ring ×2 (N=100), Encoder ×2 (circular), SignedProduct, OutputRing ×3, ProfileDecoder ×3 | matches legacy `MultiRingDecode` within tolerance |
 | `task_space_error` | the above + `TaskGain` | not built: `TaskGain` is a port-contract stub |
 
 ## Open items
 
-- Gazebo: no phase was run against the simulation (`run_graph.py --engines
-  full`, `cosim_gazebo_smoke.py --joints 5 6`, `sweep_feedback.py --engines
-  full`); all fake-robot numbers must be repeated there.
-- Comparator sensitivity: below about 18 ring indices of goal distance the
-  decision pair produces no drive (`feedback.md` §2); the motor-signal
-  experiment (`Decoder.source`) is prepared but not run.
+- Gazebo: the single-joint templates have been run against the simulation on
+  all seven joints (`../results.md`); `multi_joint_two_ring`,
+  `cosim_gazebo_smoke.py --joints 5 6` and `archive/sweep_feedback.py --engines full`
+  have not.
+- Comparator sensitivity: the ramp comparator gives no drive when goal and
+  state bumps are closer than 6-10 indices (`../archive/blocks/feedback.md` §2, measured again
+  in `../v4-tuning.md`). Architecture v4 removes this with a ring
+  projection onto the gain pair; v3 keeps it. The motor-signal experiment
+  (`Decoder.source`) is prepared but not run.
 - The signed-product layer still builds with per-cell `Connect` calls (≈5 s).

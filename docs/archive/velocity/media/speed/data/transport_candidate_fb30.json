@@ -1,0 +1,112 @@
+{
+  "schema": "transport-calibration/1",
+  "model": "dead_zone",
+  "index_per_spike": 0.050528435127566114,
+  "dead_zone": 40.0,
+  "decoder_tau_s": 0.15,
+  "decoder_delay_steps": 0,
+  "dt_ms": 50.0,
+  "network_fingerprint": "6b073b5181be84de725e5ddc142aaaf0a1318ae01ecb8c98b4c08e450cf4dcaf",
+  "fit": {
+    "model": "dead_zone",
+    "index_per_spike": 0.050528435127566114,
+    "dead_zone": 40.0,
+    "candidates": {
+      "linear": {
+        "index_per_spike": 0.02243138327471809,
+        "dead_zone": 0.0
+      },
+      "dead_zone": {
+        "index_per_spike": 0.050528435127566114,
+        "dead_zone": 40.0
+      }
+    },
+    "cv": {
+      "linear": {
+        "n": 94,
+        "median_abs_rel": 0.3250690704751895,
+        "p90_abs_rel": 0.8236324080396895,
+        "max_abs_rel": 1.1060334079184488,
+        "bias_left": 0.3487329650662896,
+        "bias_right": -0.023501724749045712,
+        "median_abs_index": 17.772363896882467,
+        "p90_abs_index": 33.26823579636711
+      },
+      "dead_zone": {
+        "n": 94,
+        "median_abs_rel": 0.11143988858030357,
+        "p90_abs_rel": 0.32327417339484993,
+        "max_abs_rel": 0.7850972328946619,
+        "bias_left": 0.1201017813883021,
+        "bias_right": -0.045849489194301034,
+        "median_abs_index": 5.799121471915008,
+        "p90_abs_index": 14.404258982634971
+      }
+    },
+    "folds": [
+      {
+        "held_out": "13579",
+        "dead_zone": 40.0,
+        "index_per_spike": 0.05127649945046826
+      },
+      {
+        "held_out": "2024",
+        "dead_zone": 40.0,
+        "index_per_spike": 0.05087211155798118
+      },
+      {
+        "held_out": "7",
+        "dead_zone": 40.0,
+        "index_per_spike": 0.049995015230151
+      },
+      {
+        "held_out": "99",
+        "dead_zone": 40.0,
+        "index_per_spike": 0.05001503949584484
+      }
+    ],
+    "counts": {
+      "silent": 0,
+      "no_motion": 2,
+      "edge": 0,
+      "stuck": 0,
+      "ok": 94
+    }
+  },
+  "dataset": {
+    "graph": "two_ring_single_joint (bounded)",
+    "starts_index": [
+      45,
+      70,
+      95,
+      120,
+      145
+    ],
+    "goals_index": [
+      45,
+      70,
+      95,
+      120,
+      145,
+      155
+    ],
+    "min_distance": 22,
+    "seeds": [
+      "13579",
+      "2024",
+      "7",
+      "99"
+    ],
+    "n_trials": 96,
+    "ring_size": 200,
+    "valid_index_range": [
+      15.0,
+      184.0
+    ],
+    "skip_steps": 3,
+    "min_displacement": 5.0
+  },
+  "actuator": {},
+  "created": "2026-10-03 13:11:33",
+  "nest_version": "HEAD@41892a5"
+}

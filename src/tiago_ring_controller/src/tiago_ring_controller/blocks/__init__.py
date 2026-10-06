@@ -32,13 +32,14 @@ from .params import PRIMITIVE_SCHEMAS, ParamError, ParamSchema, ParamSpec, schem
 from .probe import Probe
 from .readout import FourierReadout
 from .ring import Ring
+from .state import RingState
 from .taskgain import TaskGain
 
 REGISTRY: "OrderedDict[str, Type[Block]]" = OrderedDict(
     (cls.type_name, cls)
     for cls in (
         Ring, FourierReadout, Homeostasis, Gain, Encoder, FeatureEncoder, Decoder, Joint, Goal, Probe,
-        SignedProduct, OutputRing, ProfileDecoder, TaskGain, Transport, JointTriple,
+        SignedProduct, OutputRing, ProfileDecoder, RingState, TaskGain, Transport, JointTriple,
     )
 )
 
@@ -61,6 +62,6 @@ __all__ = [
     "Block", "BlockError", "BuildContext", "Composite", "Connection", "Decoder", "Encoder", "FeatureEncoder",
     "FourierReadout", "Gain", "Goal", "Homeostasis", "Joint", "JointTriple", "OutputRing", "PRIMITIVE_SCHEMAS",
     "ParamError", "ParamSchema", "ParamSpec", "Port", "PortKind", "PortRef", "Probe", "ProfileDecoder", "REGISTRY",
-    "Ring", "SignedProduct", "TaskGain", "Transport", "block_from_type", "describe_types", "schema_for",
+    "Ring", "RingState", "SignedProduct", "TaskGain", "Transport", "block_from_type", "describe_types", "schema_for",
     "signal_in", "signal_out", "spikes_in", "spikes_out",
 ]

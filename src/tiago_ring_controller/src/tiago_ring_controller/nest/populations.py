@@ -179,6 +179,23 @@ def connect_matrix(backend: Any, pre: Any, post: Any, weights_pre_by_post: np.nd
     )
 
 
+def wall_profile(population_size: int, low: float, high: float, outside_scale: float, taper: int = 0) -> np.ndarray:
+    """Per-neuron bias-current factor: 1 on ``[low, high]``, ``outside_scale`` around the seam.
+
+    With ``taper`` the factor changes linearly over that many indices outside
+    each end.  Used to make the out-of-range sector of a bounded ring unable to
+    hold a bump.
+    """
+
+    indices = np.arange(int(population_size), dtype=float)
+    distance = np.maximum(low - indices, 0.0) + np.maximum(indices - high, 0.0)
+    if taper > 0:
+        fraction = np.clip(distance / float(taper), 0.0, 1.0)
+    else:
+        fraction = (distance > 0).astype(float)
+    return 1.0 - fraction * (1.0 - float(outside_scale))
+
+
 def build_ring_population(
     backend: Any,
     name: str,
@@ -188,7 +205,10 @@ def build_ring_population(
     max_distance: float = 50,
     excitation_std_dev: float = 10,
     inhibition_std_dev: float = 5,
+    current_profile: Optional[Sequence[float]] = None,
 ) -> RingPopulation:
+    """``current_profile`` multiplies each neuron's bias current ``I_e`` (bounded ring wall)."""
+
     try:
         matrix = ring_weight_matrix(
             population_size, variant, max_distance, excitation_std_dev, inhibition_std_dev
@@ -196,6 +216,12 @@ def build_ring_population(
     except ValueError as exc:
         raise BuildError("%s: %s" % (name, exc))
     base = create_population(backend, name, population_size, neuron_parameters)
+    if current_profile is not None:
+        factors = np.asarray(current_profile, dtype=float)
+        if factors.shape != (int(population_size),):
+            raise BuildError("%s: current profile has shape %r, expected (%d,)" % (name, factors.shape, int(population_size)))
+        bias = float(dict(neuron_parameters).get("I_e", 0.0))
+        backend.SetStatus(base.neurons, [{"I_e": bias * float(f)} for f in factors])
     connect_matrix(backend, base.neurons, base.neurons, matrix)
     return RingPopulation(
         name=base.name, neurons=base.neurons, recorders=base.recorders, size=base.size,
@@ -311,8 +337,15 @@ def connect_gain_inputs(
     left_decision: Any,
     right_decision: Any,
     spec: GainSpec,
+    left_drive: Optional[Sequence[float]] = None,
+    right_drive: Optional[Sequence[float]] = None,
 ) -> None:
-    """Decision nodes gate the populations, the ring drives them one_to_one."""
+    """Decision nodes gate the populations, the ring drives them one_to_one.
+
+    ``left_drive`` / ``right_drive`` scale the ring's drive per neuron (the
+    bounded ring fades the population that moves the bump toward a joint limit);
+    ``None`` keeps the single weight of the legacy build.
+    """
 
     if ring.size != gain.left.size or ring.size != gain.right.size:
         raise BuildError(
@@ -323,8 +356,15 @@ def connect_gain_inputs(
     backend.Connect(right_decision, gain.right.neurons, syn_spec={"weight": float(spec.right_homeostasis_gain_weight)})
     backend.Connect(left_decision, gain.right.neurons, syn_spec={"weight": float(spec.cross_inhibition_weight)})
     backend.Connect(right_decision, gain.left.neurons, syn_spec={"weight": float(spec.cross_inhibition_weight)})
-    backend.Connect(ring.neurons, gain.left.neurons, "one_to_one", {"weight": float(spec.ring_to_gain_weight)})
-    backend.Connect(ring.neurons, gain.right.neurons, "one_to_one", {"weight": float(spec.ring_to_gain_weight)})
+    for population, drive in ((gain.left, left_drive), (gain.right, right_drive)):
+        if drive is None:
+            backend.Connect(ring.neurons, population.neurons, "one_to_one", {"weight": float(spec.ring_to_gain_weight)})
+            continue
+        factors = np.asarray(drive, dtype=float)
+        if factors.shape != (ring.size,):
+            raise BuildError("%s: drive profile has shape %r, expected (%d,)" % (population.name, factors.shape, ring.size))
+        backend.Connect(ring.neurons, population.neurons, "one_to_one",
+                        {"weight": float(spec.ring_to_gain_weight) * factors})
 
 
 def build_output_ring_population(
@@ -387,6 +427,49 @@ def connect_gain_feedback_populations(
         "one_to_one",
         {"weight": float(weight)},
     )
+    return count
+
+
+def connect_gain_reference(
+    backend: Any,
+    gain: GainPopulations,
+    reference: Population,
+    exc_weight: float,
+    inh_weight: float,
+    window: int,
+) -> int:
+    """A reference ring steers the gain populations directly (the sharp comparison of v4).
+
+    Gain neuron ``i`` of the right population (which moves the bump up) is
+    excited by reference neurons ``i+1 .. i+window`` and inhibited by
+    ``i-window .. i-1``; the left population is the mirror image.  With the
+    bump at ``i`` gating both populations, the side whose direction leads to
+    the reference bump wins, down to an offset of one index.  No wrap around
+    the seam.  One ``one_to_one`` call per shift; returns the synapses per
+    population.
+    """
+
+    size = reference.size
+    if size != gain.left.size or size != gain.right.size:
+        raise BuildError(
+            "%s: reference ring %s has %d neurons, gain populations %d / %d"
+            % (gain.left.name, reference.name, size, gain.left.size, gain.right.size)
+        )
+    window = int(window)
+    if not 1 <= window < size:
+        raise BuildError("%s: reference window must be in 1..%d, got %d" % (gain.left.name, size - 1, window))
+    exc, inh = float(exc_weight), -abs(float(inh_weight))
+    count = 0
+    for shift in range(1, window + 1):
+        above, below = reference.neurons[shift:size], reference.neurons[0:size - shift]
+        low, high = slice(0, size - shift), slice(shift, size)
+        for source, population, target, weight in (
+            (above, gain.right, low, exc), (below, gain.right, high, inh),
+            (below, gain.left, high, exc), (above, gain.left, low, inh),
+        ):
+            if weight != 0.0:
+                backend.Connect(source, population.neurons[target], "one_to_one", {"weight": weight})
+        count += 2 * (size - shift)
     return count
 
 
@@ -453,10 +536,12 @@ __all__ = [
     "connect_gain_feedback_populations",
     "connect_gain_inputs",
     "connect_gain_populations",
+    "connect_gain_reference",
     "connect_matrix",
     "create_population",
     "readout_feature_names",
     "set_bump",
     "set_stimulus_rates",
     "validate_neuron_parameters",
+    "wall_profile",
 ]

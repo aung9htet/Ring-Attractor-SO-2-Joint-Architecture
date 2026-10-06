@@ -288,7 +288,7 @@ class SchemaAndRegistryTests(unittest.TestCase):
     def test_registry_and_type_descriptions(self):
         self.assertEqual(list(REGISTRY), list(describe_types()))
         gain = describe_types()["Gain"]
-        self.assertEqual([p["name"] for p in gain["ports"]], ["ring", "left_in", "right_in", "feedback", "left_counts", "right_counts"])
+        self.assertEqual([p["name"] for p in gain["ports"]], ["ring", "left_in", "right_in", "reference", "feedback", "left_counts", "right_counts"])
         self.assertTrue(gain["neural"])
         self.assertFalse(describe_types()["Decoder"]["neural"])
         ring = describe_types()["Ring"]
@@ -449,7 +449,8 @@ class MultiRingBlockTests(unittest.TestCase):
         g.connect(goal.angle, jt.goal_angle)
         g.connect(joint.angle, jt.measured_angle)
         g.connect(joint.angle, jt.initial_angle)
-        self.assertEqual(len(g.blocks), 3 + 3 + 3 + 2 * 2 + 2)
+        # three rings, readouts and encoders, two comparator + gain pairs, two RingState readouts, goal, joint
+        self.assertEqual(len(g.blocks), 3 + 3 + 3 + 2 * 2 + 2 + 2)
         self.assertEqual(sorted(b.type_name for b in g.blocks.values()).count("Ring"), 3)
         # Comparator artifacts exist only for N=100/200; a 20-ring cannot load them.
         with self.assertRaisesRegex(BlockError, "^Homeostasis 'j__ct_goal__cmp': cannot load fitted weights"):
@@ -462,11 +463,15 @@ class MultiRingBlockTests(unittest.TestCase):
         g.connect(joint.angle, jt.initial_angle)
         backend = RecordingNest()
         built = g.build(BuildContext(backend))
-        self.assertEqual(built.order[:3], ["j__T", "j__B", "j__A"])
-        self.assertEqual(g.blocks["j__ct_goal__gain"].feedback_targets, {"j__B": 190})
-        self.assertEqual(g.blocks["j__ct_sense__gain"].feedback_targets, {"j__B": 190})
-        self.assertEqual(g.blocks["j__enc_state"].params["mode"], "continuous")
-        self.assertEqual(g.blocks["j__enc_belief"].params["mode"], "once")
+        self.assertEqual(built.order[:3], ["j__G", "j__P", "j__S"])
+        # both gain pairs gate on and move the predictive ring; each is steered by its reference ring
+        for pair, reference in (("j__ct_goal__gain", "j__G"), ("j__ct_body__gain", "j__S")):
+            self.assertEqual(g.blocks[pair].feedback_targets, {"j__P": 190})
+            self.assertEqual(list(g.blocks[pair].references), [reference])
+            self.assertEqual(g.blocks[pair].params["cross_inhibition_weight"], 0.0)
+        self.assertEqual(g.blocks["j__ct_body__gain"].params["gain_to_ring_weight"], -3.0)
+        self.assertEqual(g.blocks["j__enc_state"].params["mode"], "corrective")
+        self.assertEqual(g.blocks["j__enc_pred"].params["mode"], "once")
         self.assertEqual(len(built.encoders()), 3)
 
 

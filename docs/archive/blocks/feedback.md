@@ -9,6 +9,13 @@ before they are used for the robot. Raw data: `feedback_sweep.json`
 (`scripts/sweep_feedback.py --out ... --markdown ...`), table
 `feedback_sweep_table.md`.
 
+> **Where this stands (2026-10-04).** This sweep fed the measured joint straight into the
+> **state ring of the two-ring model**, which made things worse: the encoder fights the gain pair
+> over one bump. Architecture v4 gives the measured joint its own ring and compares it with the
+> prediction instead; that works ([`../architecture.md`](../../architecture.md),
+> [`../velocity/v4-feedback.md`](../../v4-tuning.md)). The finding of section 2 (no drive
+> below a goal distance) is the blind band that v4's ring projection removes.
+
 ## 1. Sweep: mode, rate `r`, half width `h`, dead band
 
 State encoder (`enc_state`, `Joint.angle → Encoder.angle → r1.stim`), goals

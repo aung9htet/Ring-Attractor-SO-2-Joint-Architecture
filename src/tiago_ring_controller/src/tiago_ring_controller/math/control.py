@@ -61,6 +61,22 @@ def signed_gain_signal(left_count: float, right_count: float, spike_scale: float
     return (right_count - left_count) * spike_scale
 
 
+def dead_zone(signal: Any, threshold: float) -> Any:
+    """``sign(x) * max(|x| - threshold, 0)`` for a scalar or an array.
+
+    The state bump does not move below a minimum gain rate and moves in
+    proportion to the rate above it (docs/archive/velocity/calibration.md), so the
+    decoder removes that offset before scaling.  A threshold of zero returns
+    the signal unchanged.
+    """
+
+    if threshold <= 0.0:
+        return signal
+    values = np.asarray(signal, dtype=float)
+    result = np.sign(values) * np.maximum(np.abs(values) - threshold, 0.0)
+    return float(result) if np.ndim(result) == 0 else result
+
+
 def legacy_joint_to_ring_index(
     position: float,
     joint_min: float,

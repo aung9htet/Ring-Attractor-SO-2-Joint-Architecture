@@ -46,10 +46,15 @@ class Homeostasis(Block):
 
     def fitted_weights(self, ctx: BuildContext, n_features: int, ring_size: int):
         p = self.params
+        # Relative artifact paths are inside the config directory, so graph files stay portable.
         weights_path = p["weights_artifact"] or ctx.artifact("homeostasis", "N_%d_homeostasis_weights.npy" % ring_size)
+        if not os.path.isabs(weights_path) and not os.path.exists(weights_path):
+            weights_path = ctx.artifact(weights_path)
         metadata_path = p["metadata_artifact"] or os.path.join(
             os.path.dirname(weights_path), "N_%d_homeostasis_metadata.json" % ring_size
         )
+        if not os.path.isabs(metadata_path) and not os.path.exists(metadata_path):
+            metadata_path = ctx.artifact(metadata_path)
         try:
             matrix = np.asarray(load_numpy_legacy(weights_path), dtype=float)
             metadata = load_json_legacy(metadata_path)
@@ -82,6 +87,10 @@ class Homeostasis(Block):
                 ctx.backend, self.id, ctx.neuron_parameters("homeostasis", self.params["neuron_params"]), self.spec()
             )
             connect_features_to_decision(ctx.backend, self.population, state_pop, target_pop, warm, cold, self.params["weight_scale"])
+            if self.params["ramp_current"]:
+                bias = float(ctx.neuron_parameters("homeostasis", self.params["neuron_params"]).get("I_e", 0.0))
+                for label in ("warm", "cold"):
+                    ctx.backend.SetStatus(self.population.node(label), {"I_e": bias + float(self.params["ramp_current"])})
         except BuildError as exc:
             raise self.error(str(exc))
         self.feature_names = names

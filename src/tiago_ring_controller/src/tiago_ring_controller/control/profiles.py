@@ -95,6 +95,58 @@ class LegacyControlProfile:
             )
         raise ValueError("Unknown legacy mapping mode: %s" % self.mapping_mode)
 
+    def index_range(self, population_size: int, requested_half_width: int = 5) -> "tuple[float, float]":
+        """``(first, span)``: the ring position of ``joint_min`` and the indices the joint range covers.
+
+        A joint position maps to ``first + phase * span`` before the mode's
+        integer conversion (truncation or rounding), so ``span`` is the slope
+        of :meth:`joint_to_ring_index` over the whole joint range.
+        """
+
+        half_width = self.effective_half_width(requested_half_width)
+        n = int(population_size)
+        if self.mapping_mode == CALIBRATION_MARGIN_ROUNDED:
+            edge_margin = int(round(float(self.ring_edge_margin_fraction) * n))
+            lower = max(half_width, edge_margin)
+            upper = min(n - 1 - half_width, n - edge_margin)
+            if upper < lower:
+                lower, upper = half_width, n - 1 - half_width
+            return float(lower), float(upper - lower)
+        if self.mapping_mode == FULL_RANGE_TRUNCATED:
+            return float(half_width), float(n - half_width * 2)
+        raise ValueError("Unknown legacy mapping mode: %s" % self.mapping_mode)
+
+    def radians_per_index(
+        self,
+        joint_min: float,
+        joint_max: float,
+        population_size: int,
+        requested_half_width: int = 5,
+    ) -> float:
+        """Joint angle that one ring index stands for under this mapping.
+
+        The decoder gain is this value times the bump's index displacement per
+        spike, divided by the tick length (``training.transport``).
+        """
+
+        _, span = self.index_range(population_size, requested_half_width)
+        return (float(joint_max) - float(joint_min)) / span
+
+    def ring_index_to_joint(
+        self,
+        index: float,
+        joint_min: float,
+        joint_max: float,
+        population_size: int,
+        requested_half_width: int = 5,
+    ) -> float:
+        """A joint position that :meth:`joint_to_ring_index` maps to ``index`` (the middle of its cell)."""
+
+        first, span = self.index_range(population_size, requested_half_width)
+        offset = 0.5 if self.mapping_mode == FULL_RANGE_TRUNCATED else 0.0
+        phase = (float(index) - first + offset) / span
+        return float(joint_min) + phase * (float(joint_max) - float(joint_min))
+
 
 def _full_range_joint_to_ring_index(
     joint_position: float,

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, ClassVar, Dict, Mapping, Optional, Sequence, Tuple
+from typing import Any, ClassVar, Dict, List, Mapping, Optional, Sequence, Tuple
 
 from .base import Block, Port, signal_in, signal_out
 from .params import GOAL_SCHEMA, JOINT_SCHEMA
@@ -27,11 +27,22 @@ class Joint(Block):
         return float(self.params["joint_min"]), float(self.params["joint_max"])
 
     def read(self, joint_state: Mapping[str, Any]) -> Dict[str, float]:
-        """Extract this joint's angle and velocity from a ``joint_state`` datapack."""
+        """Extract this joint's angle and velocity from a ``joint_state`` datapack.
+
+        The velocity is the engine's finite-difference estimate (``velocities_fd``)
+        when it has one: Gazebo's own velocity field is not usable for the wrist.
+        """
 
         positions = joint_state["positions"]
-        velocities = joint_state.get("velocities") or [0.0] * len(positions)
+        velocities = joint_state.get("velocities_fd") or joint_state.get("velocities") or [0.0] * len(positions)
         return {"angle": float(positions[self.index]), "velocity_measured": float(velocities[self.index])}
+
+    def clip_velocities(self, velocities: Sequence[float]) -> Tuple[List[float], bool]:
+        """Clip a horizon to ``max_velocity``; the flag tells whether anything was clipped."""
+
+        bound = float(self.params["max_velocity"])
+        clipped = [min(max(float(v), -bound), bound) for v in velocities]
+        return clipped, any(c != float(v) for c, v in zip(clipped, velocities))
 
 
 class Goal(Block):

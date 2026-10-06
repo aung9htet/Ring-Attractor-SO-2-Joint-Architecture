@@ -5,6 +5,7 @@ import csv
 import os
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -304,6 +305,27 @@ class FakeTransport(RosTransport):
         return self.params.get(name)
 
 
+class BogusVelocityTransport(FakeTransport):
+    """Gazebo's velocity field for the wrist: about -1.45 rad/s whatever the joint does.
+
+    ``drift`` (rad per clock wait) keeps joint 5 moving while the simulation runs.
+    """
+
+    drift = 0.0
+    drifted = 0.0
+
+    def latest_joint_state(self):
+        return tuple(self.positions), (-1.45,) * 7, self.sim_time
+
+    def wait_until_sim_time(self, target_s, timeout_s):
+        reached = super().wait_until_sim_time(target_s, timeout_s)
+        if reached and self.drift:
+            # the base class puts the joints on the last trajectory point; drift on top of that
+            self.drifted += self.drift
+            self.positions[5] += self.drifted
+        return reached
+
+
 def generator_model_factory(backend, population=8):
     """Like ``scripted_model_factory`` but bumps are generator rate changes."""
 
@@ -479,10 +501,11 @@ class GazeboEngineTests(unittest.TestCase):
         self.assertEqual(packs["sim_clock"]["stepper"], "clock_wait")
         self.assertAlmostEqual(packs["joint_state"]["positions"][5], 0.6 + 0.1 * 0.05)
         self.assertEqual(engine.t_ms, 50.0)
-        # Advancing without a command holds the commanded state, still lock-stepped.
+        # Advancing without a command holds the commanded state, still lock-stepped.  The second
+        # step targets the schedule (before + 2 dt), so the overshoot is not added twice.
         engine.advance(50.0)
         self.assertEqual(len(transport.published), 1)
-        self.assertAlmostEqual(transport.sim_time - before, 0.104)
+        self.assertAlmostEqual(transport.sim_time - before, 0.102)
 
     def test_step_timeout_leaves_physics_paused_and_raises(self):
         engine, transport = self.make_engine(clock_stalls=True)
@@ -519,6 +542,67 @@ class GazeboEngineTests(unittest.TestCase):
         stepper = ClockWaitStepper(transport, timeout_s=0.01)
         with self.assertRaises(ValueError):
             stepper.step(0)
+
+    def test_clock_wait_stepper_keeps_an_absolute_schedule(self):
+        transport = FakeTransport(overshoot_s=0.001)        # what Gazebo does: one iteration late every step
+        stepper = ClockWaitStepper(transport, timeout_s=0.05)
+        start = transport.sim_time
+        results = [stepper.step(50) for _ in range(20)]
+        # Twenty ticks are one second plus one overshoot, not twenty overshoots.
+        self.assertAlmostEqual(transport.sim_time - start, 20 * 0.05 + 0.001, places=6)
+        np.testing.assert_allclose([r.overshoot_s for r in results], 0.001, atol=1e-6)
+        np.testing.assert_allclose([r.advanced_s for r in results[1:]], 0.05, atol=1e-6)
+        # The clock ran freely in between (a reset): the next step is measured from the clock again.
+        transport.sim_time += 3.0
+        late = stepper.step(50)
+        self.assertAlmostEqual(late.target_s, late.sim_time_before_s + 0.05)
+        stepper.reset()
+        fresh = stepper.step(50)
+        self.assertAlmostEqual(fresh.target_s, fresh.sim_time_before_s + 0.05)
+
+    def test_stillness_is_judged_from_positions_not_from_the_reported_velocity(self):
+        transport = BogusVelocityTransport()
+        engine = GazeboRosEngine(transport, settle_timeout_s=5.0, step_timeout_s=0.05)
+        engine.initialize()
+        started = time.monotonic()
+        engine.reset()                                      # the old velocity check ran to the timeout here
+        self.assertLess(time.monotonic() - started, 1.0)
+        reference = transport.sim_time
+        engine.set_datapacks({
+            "arm_velocity_cmd": DataPack("arm_velocity_cmd", 0.0, {"joint_index": 5, "velocities": [0.5], "dt_s": 0.05})
+        })
+        engine.advance(50.0)
+        state = engine.get_datapacks()["joint_state"]
+        self.assertEqual(state["velocities"][5], -1.45)
+        self.assertAlmostEqual(state["velocities_fd"][5], 0.5 * 0.05 / (transport.sim_time - reference), places=6)
+        self.assertEqual(state["velocities_fd"][0], 0.0)
+        before = transport.sim_time
+        self.assertTrue(engine.stop_and_settle(5))
+        self.assertLess(transport.sim_time - before, 0.2)   # a few ticks, not settle_timeout_s of stepping
+        self.assertEqual(engine.velocities_fd[5], 0.0)
+        # With the simulation running, a joint that keeps moving is not declared still; the others are.
+        transport.unpause()
+        transport.drift = 0.01
+        watcher = GazeboRosEngine(transport, settle_timeout_s=0.2)
+        self.assertFalse(watcher.wait_until_still([5]))
+        self.assertTrue(watcher.wait_for_settled(4))
+
+    def test_commanded_positions_never_pass_the_limits_carried_by_the_command(self):
+        engine, transport = self.make_engine()
+        engine.reset()                                      # joint 5 starts at 0.6
+        command = {"joint_index": 5, "velocities": [1.0] * 4, "dt_s": 0.05,
+                   "commands": [{"joint_index": 5, "velocities": [1.0] * 4, "limits": [-0.7, 0.68]}]}
+        for _ in range(4):
+            engine.set_datapacks({"arm_velocity_cmd": DataPack("arm_velocity_cmd", engine.t_ms, command)})
+            engine.advance(50.0)
+        _, points, _ = transport.published[-1]
+        self.assertTrue(all(p.positions[5] <= 0.68 for _, pts, _ in transport.published for p in pts))
+        self.assertEqual([p.velocities[5] for p in points], [0.0] * 4)
+        self.assertAlmostEqual(engine.command_state.commanded_positions[5], 0.68)
+        self.assertEqual(engine.get_datapacks()["joint_state"]["clamped_joints"], [5])
+        self.assertEqual(engine.published[0]["clamped_joints"], [5])     # the horizon reached the limit at once
+        engine.advance(50.0)                                # no command: nothing is being held
+        self.assertEqual(engine.get_datapacks()["joint_state"]["clamped_joints"], [])
 
     def test_cosim_sources_never_block_on_ros_time(self):
         # Acceptance A4: no rospy.sleep / rospy.Rate anywhere under cosim/.

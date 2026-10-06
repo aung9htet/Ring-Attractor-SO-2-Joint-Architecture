@@ -6,12 +6,8 @@ from typing import Any, ClassVar, Dict, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 
-from ..control.profiles import get_legacy_control_profile
-from ..math.circular import angle_to_neuron_index, preferred_angles
-
-
-def _profile_for(mapping: str):
-    return None if mapping == "circular" else get_legacy_control_profile(mapping)
+from ..control.mapping import RingMapper
+from ..math.circular import preferred_angles
 from ..nest.populations import (
     BuildError,
     Population,
@@ -44,7 +40,6 @@ class Encoder(Block):
 
     def __init__(self, id: str, **params: Any) -> None:
         super().__init__(id, **params)
-        self.profile = _profile_for(self.params["mapping"])
         self.stimulus: Optional[StimulusGenerators] = None
         self.ring_id: Optional[str] = None
         self.ring_size = 0
@@ -79,18 +74,44 @@ class Encoder(Block):
         self.last_angle: Optional[float] = None
         self.active = False
 
+    def mapper(self, ring_size: Optional[int] = None) -> RingMapper:
+        """The angle <-> index mapping (``ring_size`` before the encoder is built)."""
+
+        size = int(ring_size or self.ring_size)
+        if size <= 0:
+            raise self.error("ring size is unknown: connect the encoder or pass ring_size")
+        p = self.params
+        return RingMapper(p["mapping"], p["joint_min"], p["joint_max"], size, p["half_width"], p["arc_fraction"])
+
     def ring_index(self, angle_rad: float) -> int:
-        if self.profile is None:
-            return angle_to_neuron_index(float(angle_rad), self.ring_size)
-        return self.profile.joint_to_ring_index(
-            float(angle_rad), self.params["joint_min"], self.params["joint_max"], self.ring_size,
-            requested_half_width=self.params["half_width"],
-        )
+        return self.mapper().index(angle_rad)
+
+    @property
+    def profile(self):
+        """The legacy control profile of the mapping; ``None`` for ``circular`` and ``bounded``."""
+
+        if self.params["mapping"] in ("circular", "bounded"):
+            return None
+        from ..control.profiles import get_legacy_control_profile
+
+        return get_legacy_control_profile(self.params["mapping"])
 
     def effective_half_width(self) -> int:
+        """Half width actually stimulated (the ``analysis`` profile doubles it)."""
+
         if self.profile is None:
             return int(self.params["half_width"])
         return self.profile.effective_half_width(self.params["half_width"])
+
+    def radians_per_index(self, ring_size: Optional[int] = None) -> float:
+        """Joint angle that one ring index stands for (``ring_size`` before the encoder is built)."""
+
+        return self.mapper(ring_size).radians_per_index
+
+    def index_to_angle(self, index: float, ring_size: Optional[int] = None) -> float:
+        """An angle that :meth:`ring_index` maps to ``index``."""
+
+        return self.mapper(ring_size).angle(index)
 
     def rates_for(self, angle_rad: float) -> np.ndarray:
         return self.rates_for_index(self.ring_index(angle_rad))
@@ -175,7 +196,6 @@ class FeatureEncoder(Block):
 
     def __init__(self, id: str, **params: Any) -> None:
         super().__init__(id, **params)
-        self.profile = _profile_for(self.params["mapping"])
         self.population: Optional[Population] = None
         self.reset()
 
@@ -198,12 +218,8 @@ class FeatureEncoder(Block):
 
     def rates_for(self, angle_rad: float) -> np.ndarray:
         size = self.source_ring_size
-        if self.profile is None:
-            index = angle_to_neuron_index(float(angle_rad), size)
-        else:
-            index = self.profile.joint_to_ring_index(
-                float(angle_rad), self.params["joint_min"], self.params["joint_max"], size, requested_half_width=0
-            )
+        p = self.params
+        index = RingMapper(p["mapping"], p["joint_min"], p["joint_max"], size, 0, p["arc_fraction"]).index(angle_rad)
         theta = preferred_angles(size)[int(index) % size]
         harmonics = int(self.params["num_fourier_k"])
         rates = np.zeros(2 * harmonics)

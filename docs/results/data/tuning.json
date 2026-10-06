@@ -1,0 +1,4919 @@
+{
+ "note": "v4 tuning sweeps on NEST with the fake robot, in the order they were run. 'overrides' are relative to the FEEDBACK defaults at the time of the run, which changed between stages: see docs/velocity/v4-feedback.md, section 3.",
+ "sweeps": [
+  {
+   "label": "v3_k1",
+   "measured": "2026-10-04 11:38:13",
+   "system": [
+    "B"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {},
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.1186,
+    0.3526,
+    0.4252
+   ],
+   "goal_error_index": [
+    5.86,
+    17.42,
+    21.0
+   ],
+   "overshoot_rad_p90_max": [
+    0.1555,
+    0.2801
+   ],
+   "time_to_90_s_median": 7.1,
+   "predicted_minus_state_index_median": null,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "v3_k3",
+   "measured": "2026-10-04 11:38:17",
+   "system": [
+    "B"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {},
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0861,
+    0.1756,
+    0.278
+   ],
+   "goal_error_index": [
+    4.25,
+    8.67,
+    13.73
+   ],
+   "overshoot_rad_p90_max": [
+    0.1656,
+    0.278
+   ],
+   "time_to_90_s_median": 2.35,
+   "predicted_minus_state_index_median": null,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "base",
+   "measured": "2026-10-04 11:38:59",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0605,
+    0.1127,
+    0.1839
+   ],
+   "goal_error_index": [
+    2.99,
+    5.57,
+    9.08
+   ],
+   "overshoot_rad_p90_max": [
+    0.0344,
+    0.184
+   ],
+   "time_to_90_s_median": 4.28,
+   "predicted_minus_state_index_median": 4.0,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "mg13",
+   "measured": "2026-10-04 11:39:00",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "motor_gain": 0.0068
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0331,
+    0.1144,
+    0.5387
+   ],
+   "goal_error_index": [
+    1.64,
+    5.65,
+    26.61
+   ],
+   "overshoot_rad_p90_max": [
+    0.1883,
+    0.5387
+   ],
+   "time_to_90_s_median": 3.65,
+   "predicted_minus_state_index_median": 3.01,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "bfw10",
+   "measured": "2026-10-04 11:39:01",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0541,
+    0.0769,
+    0.1426
+   ],
+   "goal_error_index": [
+    2.67,
+    3.8,
+    7.04
+   ],
+   "overshoot_rad_p90_max": [
+    0.0175,
+    0.1357
+   ],
+   "time_to_90_s_median": 4.3,
+   "predicted_minus_state_index_median": 3.11,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "bfw15",
+   "measured": "2026-10-04 11:39:17",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.5
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0243,
+    0.0498,
+    0.12
+   ],
+   "goal_error_index": [
+    1.2,
+    2.46,
+    5.93
+   ],
+   "overshoot_rad_p90_max": [
+    0.0242,
+    0.125
+   ],
+   "time_to_90_s_median": 5.1,
+   "predicted_minus_state_index_median": 1.74,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "full",
+   "measured": "2026-10-04 11:40:48",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 1000000
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0507,
+    0.0932,
+    0.1607
+   ],
+   "goal_error_index": [
+    2.5,
+    4.6,
+    7.94
+   ],
+   "overshoot_rad_p90_max": [
+    0.0389,
+    0.184
+   ],
+   "time_to_90_s_median": 4.38,
+   "predicted_minus_state_index_median": 3.41,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 36
+  },
+  {
+   "label": "bfw15_mg13",
+   "measured": "2026-10-04 11:42:38",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.5
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0155,
+    0.0432,
+    0.1747
+   ],
+   "goal_error_index": [
+    0.76,
+    2.13,
+    8.63
+   ],
+   "overshoot_rad_p90_max": [
+    0.0599,
+    0.1852
+   ],
+   "time_to_90_s_median": 3.62,
+   "predicted_minus_state_index_median": 1.63,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "bfw15_k2",
+   "measured": "2026-10-04 11:42:44",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 2,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.5
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0176,
+    0.0404,
+    0.1124
+   ],
+   "goal_error_index": [
+    0.87,
+    1.99,
+    5.55
+   ],
+   "overshoot_rad_p90_max": [
+    0.0383,
+    0.1201
+   ],
+   "time_to_90_s_median": 2.55,
+   "predicted_minus_state_index_median": 1.47,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "bfw15_gfw10",
+   "measured": "2026-10-04 11:42:47",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.5,
+    "goal_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0733,
+    0.1243,
+    1.0778
+   ],
+   "goal_error_index": [
+    3.62,
+    6.14,
+    53.23
+   ],
+   "overshoot_rad_p90_max": [
+    0.0,
+    0.0361
+   ],
+   "time_to_90_s_median": 4.45,
+   "predicted_minus_state_index_median": 4.53,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "bfw15_k3",
+   "measured": "2026-10-04 11:43:03",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.5
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0187,
+    0.0525,
+    0.1352
+   ],
+   "goal_error_index": [
+    0.92,
+    2.59,
+    6.68
+   ],
+   "overshoot_rad_p90_max": [
+    0.0823,
+    0.1574
+   ],
+   "time_to_90_s_median": 1.65,
+   "predicted_minus_state_index_median": 1.33,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "bfw20",
+   "measured": "2026-10-04 11:43:04",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -2.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0188,
+    0.035,
+    0.0556
+   ],
+   "goal_error_index": [
+    0.93,
+    1.73,
+    2.75
+   ],
+   "overshoot_rad_p90_max": [
+    0.0219,
+    0.105
+   ],
+   "time_to_90_s_median": 4.95,
+   "predicted_minus_state_index_median": 1.27,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "bfw30",
+   "measured": "2026-10-04 11:43:05",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.019,
+    0.0426,
+    0.059
+   ],
+   "goal_error_index": [
+    0.94,
+    2.1,
+    2.91
+   ],
+   "overshoot_rad_p90_max": [
+    0.0225,
+    0.033
+   ],
+   "time_to_90_s_median": 5.0,
+   "predicted_minus_state_index_median": 0.74,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "bfw15_exc4",
+   "measured": "2026-10-04 11:43:05",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.5,
+    "body_reference": {
+     "exc_weight": 40000.0
+    }
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0396,
+    0.0831,
+    0.0877
+   ],
+   "goal_error_index": [
+    1.96,
+    4.11,
+    4.33
+   ],
+   "overshoot_rad_p90_max": [
+    0.0,
+    0.0195
+   ],
+   "time_to_90_s_median": 5.15,
+   "predicted_minus_state_index_median": 1.5,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "bfw15_inh6",
+   "measured": "2026-10-04 11:43:08",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.5,
+    "body_reference": {
+     "inh_weight": 60000.0
+    }
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.1505,
+    0.1887,
+    0.2151
+   ],
+   "goal_error_index": [
+    7.43,
+    9.32,
+    10.62
+   ],
+   "overshoot_rad_p90_max": [
+    0.0659,
+    0.1364
+   ],
+   "time_to_90_s_median": 4.2,
+   "predicted_minus_state_index_median": 8.07,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 3
+  },
+  {
+   "label": "bfw15_corr",
+   "measured": "2026-10-04 11:43:13",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.5,
+    "goal_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0092,
+    0.0322,
+    0.0433
+   ],
+   "goal_error_index": [
+    0.45,
+    1.59,
+    2.14
+   ],
+   "overshoot_rad_p90_max": [
+    0.0228,
+    0.1144
+   ],
+   "time_to_90_s_median": 4.9,
+   "predicted_minus_state_index_median": 1.54,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 4
+  },
+  {
+   "label": "bfw15_mg07",
+   "measured": "2026-10-04 11:43:19",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "body_feedback_weight": -1.5
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0678,
+    0.1242,
+    0.1801
+   ],
+   "goal_error_index": [
+    3.35,
+    6.14,
+    8.9
+   ],
+   "overshoot_rad_p90_max": [
+    0.0,
+    0.0388
+   ],
+   "time_to_90_s_median": 6.65,
+   "predicted_minus_state_index_median": 1.84,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 2
+  },
+  {
+   "label": "c20_ns20",
+   "measured": "2026-10-04 11:45:26",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 20,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -2.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0093,
+    0.0225,
+    0.0374
+   ],
+   "goal_error_index": [
+    0.46,
+    1.11,
+    1.85
+   ],
+   "overshoot_rad_p90_max": [
+    0.0154,
+    0.1279
+   ],
+   "time_to_90_s_median": 4.8,
+   "predicted_minus_state_index_median": 1.49,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "c20_k2",
+   "measured": "2026-10-04 11:45:30",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 2,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -2.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0074,
+    0.0317,
+    0.0467
+   ],
+   "goal_error_index": [
+    0.37,
+    1.56,
+    2.3
+   ],
+   "overshoot_rad_p90_max": [
+    0.0366,
+    0.0455
+   ],
+   "time_to_90_s_median": 2.38,
+   "predicted_minus_state_index_median": 1.4,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "c30_k2",
+   "measured": "2026-10-04 11:45:31",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 2,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0135,
+    0.0326,
+    0.0488
+   ],
+   "goal_error_index": [
+    0.67,
+    1.61,
+    2.41
+   ],
+   "overshoot_rad_p90_max": [
+    0.0375,
+    0.061
+   ],
+   "time_to_90_s_median": 2.4,
+   "predicted_minus_state_index_median": 1.34,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "c20",
+   "measured": "2026-10-04 11:45:52",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -2.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0088,
+    0.0215,
+    0.0351
+   ],
+   "goal_error_index": [
+    0.43,
+    1.06,
+    1.73
+   ],
+   "overshoot_rad_p90_max": [
+    0.021,
+    0.1279
+   ],
+   "time_to_90_s_median": 4.83,
+   "predicted_minus_state_index_median": 1.33,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "c20_mg13",
+   "measured": "2026-10-04 11:45:55",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -2.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0128,
+    0.0205,
+    0.1476
+   ],
+   "goal_error_index": [
+    0.63,
+    1.01,
+    7.29
+   ],
+   "overshoot_rad_p90_max": [
+    0.0478,
+    0.1874
+   ],
+   "time_to_90_s_median": 3.73,
+   "predicted_minus_state_index_median": 1.52,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "c30_mg13",
+   "measured": "2026-10-04 11:45:56",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0166,
+    0.0278,
+    0.0326
+   ],
+   "goal_error_index": [
+    0.82,
+    1.37,
+    1.61
+   ],
+   "overshoot_rad_p90_max": [
+    0.0374,
+    0.1898
+   ],
+   "time_to_90_s_median": 3.78,
+   "predicted_minus_state_index_median": 0.93,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "c20_k3",
+   "measured": "2026-10-04 11:46:06",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -2.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0122,
+    0.0306,
+    0.1672
+   ],
+   "goal_error_index": [
+    0.6,
+    1.51,
+    8.26
+   ],
+   "overshoot_rad_p90_max": [
+    0.0835,
+    0.178
+   ],
+   "time_to_90_s_median": 1.65,
+   "predicted_minus_state_index_median": 1.18,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "c30_k3",
+   "measured": "2026-10-04 11:46:16",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0147,
+    0.0295,
+    0.0659
+   ],
+   "goal_error_index": [
+    0.73,
+    1.45,
+    3.26
+   ],
+   "overshoot_rad_p90_max": [
+    0.0866,
+    0.0937
+   ],
+   "time_to_90_s_median": 1.62,
+   "predicted_minus_state_index_median": 1.04,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "c30",
+   "measured": "2026-10-04 11:46:16",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0122,
+    0.0251,
+    0.0331
+   ],
+   "goal_error_index": [
+    0.6,
+    1.24,
+    1.64
+   ],
+   "overshoot_rad_p90_max": [
+    0.0236,
+    0.1132
+   ],
+   "time_to_90_s_median": 4.98,
+   "predicted_minus_state_index_median": 0.93,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "c20_db1",
+   "measured": "2026-10-04 11:46:26",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -2.0,
+    "goal_dead_band": 1
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.035,
+    0.0676,
+    0.0989
+   ],
+   "goal_error_index": [
+    1.73,
+    3.34,
+    4.89
+   ],
+   "overshoot_rad_p90_max": [
+    0.0908,
+    0.1553
+   ],
+   "time_to_90_s_median": 4.68,
+   "predicted_minus_state_index_median": 1.1,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 3
+  },
+  {
+   "label": "c30_mg07",
+   "measured": "2026-10-04 11:46:33",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.009,
+    0.0272,
+    0.0484
+   ],
+   "goal_error_index": [
+    0.45,
+    1.34,
+    2.39
+   ],
+   "overshoot_rad_p90_max": [
+    0.0155,
+    0.0213
+   ],
+   "time_to_90_s_median": 7.53,
+   "predicted_minus_state_index_median": 1.04,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "c20_mg07",
+   "measured": "2026-10-04 11:46:40",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -2.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0082,
+    0.0351,
+    0.0512
+   ],
+   "goal_error_index": [
+    0.4,
+    1.73,
+    2.53
+   ],
+   "overshoot_rad_p90_max": [
+    0.0133,
+    0.0173
+   ],
+   "time_to_90_s_median": 7.58,
+   "predicted_minus_state_index_median": 1.41,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 2
+  },
+  {
+   "label": "c20_dt2",
+   "measured": "2026-10-04 11:46:57",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -2.0,
+    "drive_threshold": 2
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0155,
+    0.0275,
+    0.0313
+   ],
+   "goal_error_index": [
+    0.77,
+    1.36,
+    1.55
+   ],
+   "overshoot_rad_p90_max": [
+    0.0263,
+    0.1279
+   ],
+   "time_to_90_s_median": 5.2,
+   "predicted_minus_state_index_median": 1.39,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 16
+  },
+  {
+   "label": "c20_dt2_mg07",
+   "measured": "2026-10-04 11:47:16",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -2.0,
+    "drive_threshold": 2
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0072,
+    0.0237,
+    0.0306
+   ],
+   "goal_error_index": [
+    0.35,
+    1.17,
+    1.51
+   ],
+   "overshoot_rad_p90_max": [
+    0.0164,
+    0.0294
+   ],
+   "time_to_90_s_median": 7.83,
+   "predicted_minus_state_index_median": 1.48,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 24
+  },
+  {
+   "label": "k3_ns10",
+   "measured": "2026-10-04 11:48:57",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 10,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0183,
+    0.0495,
+    0.0879
+   ],
+   "goal_error_index": [
+    0.91,
+    2.45,
+    4.34
+   ],
+   "overshoot_rad_p90_max": [
+    0.0866,
+    0.0937
+   ],
+   "time_to_90_s_median": 1.68,
+   "predicted_minus_state_index_median": 0.89,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_ns20",
+   "measured": "2026-10-04 11:49:23",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 20,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0162,
+    0.0423,
+    0.0794
+   ],
+   "goal_error_index": [
+    0.8,
+    2.09,
+    3.92
+   ],
+   "overshoot_rad_p90_max": [
+    0.0866,
+    0.0937
+   ],
+   "time_to_90_s_median": 1.62,
+   "predicted_minus_state_index_median": 1.03,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k2_seed7",
+   "measured": "2026-10-04 11:49:33",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 2,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.011,
+    0.0347,
+    0.051
+   ],
+   "goal_error_index": [
+    0.54,
+    1.71,
+    2.52
+   ],
+   "overshoot_rad_p90_max": [
+    0.0345,
+    0.0433
+   ],
+   "time_to_90_s_median": 2.5,
+   "predicted_minus_state_index_median": 1.31,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_mg085",
+   "measured": "2026-10-04 11:49:48",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.85,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.014,
+    0.0303,
+    0.0472
+   ],
+   "goal_error_index": [
+    0.69,
+    1.5,
+    2.33
+   ],
+   "overshoot_rad_p90_max": [
+    0.0499,
+    0.0575
+   ],
+   "time_to_90_s_median": 1.9,
+   "predicted_minus_state_index_median": 1.06,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_hg8",
+   "measured": "2026-10-04 11:49:56",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "homeostasis_gain_weight": 8000
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0108,
+    0.0255,
+    0.0366
+   ],
+   "goal_error_index": [
+    0.53,
+    1.26,
+    1.81
+   ],
+   "overshoot_rad_p90_max": [
+    0.0442,
+    0.0475
+   ],
+   "time_to_90_s_median": 2.3,
+   "predicted_minus_state_index_median": 0.66,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_seed7",
+   "measured": "2026-10-04 11:49:58",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0113,
+    0.0353,
+    0.0659
+   ],
+   "goal_error_index": [
+    0.56,
+    1.74,
+    3.25
+   ],
+   "overshoot_rad_p90_max": [
+    0.0778,
+    0.1773
+   ],
+   "time_to_90_s_median": 1.68,
+   "predicted_minus_state_index_median": 1.1,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_tau05",
+   "measured": "2026-10-04 11:49:58",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0131,
+    0.0262,
+    0.0314
+   ],
+   "goal_error_index": [
+    0.65,
+    1.29,
+    1.55
+   ],
+   "overshoot_rad_p90_max": [
+    0.0381,
+    0.0831
+   ],
+   "time_to_90_s_median": 1.6,
+   "predicted_minus_state_index_median": 1.36,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_tau25",
+   "measured": "2026-10-04 11:50:04",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.25
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.016,
+    0.0269,
+    0.0335
+   ],
+   "goal_error_index": [
+    0.79,
+    1.33,
+    1.65
+   ],
+   "overshoot_rad_p90_max": [
+    0.1519,
+    0.159
+   ],
+   "time_to_90_s_median": 1.85,
+   "predicted_minus_state_index_median": 1.21,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_bfw4",
+   "measured": "2026-10-04 11:50:06",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -4.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0141,
+    0.0318,
+    0.0593
+   ],
+   "goal_error_index": [
+    0.7,
+    1.57,
+    2.93
+   ],
+   "overshoot_rad_p90_max": [
+    0.0871,
+    0.091
+   ],
+   "time_to_90_s_median": 1.68,
+   "predicted_minus_state_index_median": 1.18,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_seed99",
+   "measured": "2026-10-04 11:50:07",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0133,
+    0.0338,
+    0.04
+   ],
+   "goal_error_index": [
+    0.66,
+    1.67,
+    1.98
+   ],
+   "overshoot_rad_p90_max": [
+    0.0777,
+    0.0982
+   ],
+   "time_to_90_s_median": 1.65,
+   "predicted_minus_state_index_median": 1.22,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_mg07",
+   "measured": "2026-10-04 11:50:10",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0116,
+    0.0281,
+    0.175
+   ],
+   "goal_error_index": [
+    0.57,
+    1.39,
+    8.64
+   ],
+   "overshoot_rad_p90_max": [
+    0.0245,
+    0.0341
+   ],
+   "time_to_90_s_median": 2.33,
+   "predicted_minus_state_index_median": 1.1,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "k3_mg13",
+   "measured": "2026-10-04 11:50:13",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0138,
+    0.0295,
+    0.1399
+   ],
+   "goal_error_index": [
+    0.68,
+    1.46,
+    6.91
+   ],
+   "overshoot_rad_p90_max": [
+    0.1626,
+    0.2886
+   ],
+   "time_to_90_s_median": 1.3,
+   "predicted_minus_state_index_median": 1.1,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "k3_tau10",
+   "measured": "2026-10-04 11:50:21",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.1
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0157,
+    0.038,
+    0.1231
+   ],
+   "goal_error_index": [
+    0.78,
+    1.88,
+    6.08
+   ],
+   "overshoot_rad_p90_max": [
+    0.0541,
+    0.1414
+   ],
+   "time_to_90_s_median": 1.58,
+   "predicted_minus_state_index_median": 1.14,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 2
+  },
+  {
+   "label": "t5k2_mg13",
+   "measured": "2026-10-04 11:52:40",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 2,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0173,
+    0.0358,
+    0.1576
+   ],
+   "goal_error_index": [
+    0.85,
+    1.77,
+    7.78
+   ],
+   "overshoot_rad_p90_max": [
+    0.0422,
+    0.2167
+   ],
+   "time_to_90_s_median": 1.8,
+   "predicted_minus_state_index_median": 1.3,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "t5k2",
+   "measured": "2026-10-04 11:53:01",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 2,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0089,
+    0.0286,
+    0.0527
+   ],
+   "goal_error_index": [
+    0.44,
+    1.41,
+    2.61
+   ],
+   "overshoot_rad_p90_max": [
+    0.0341,
+    0.1277
+   ],
+   "time_to_90_s_median": 2.43,
+   "predicted_minus_state_index_median": 1.21,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "t5_mg13",
+   "measured": "2026-10-04 11:53:22",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0138,
+    0.0318,
+    0.0643
+   ],
+   "goal_error_index": [
+    0.68,
+    1.57,
+    3.17
+   ],
+   "overshoot_rad_p90_max": [
+    0.0788,
+    0.2422
+   ],
+   "time_to_90_s_median": 1.23,
+   "predicted_minus_state_index_median": 1.1,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "t5_s99",
+   "measured": "2026-10-04 11:53:28",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0175,
+    0.0338,
+    0.0386
+   ],
+   "goal_error_index": [
+    0.86,
+    1.67,
+    1.91
+   ],
+   "overshoot_rad_p90_max": [
+    0.024,
+    0.1199
+   ],
+   "time_to_90_s_median": 1.65,
+   "predicted_minus_state_index_median": 1.14,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "t5_s7",
+   "measured": "2026-10-04 11:53:30",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.012,
+    0.0345,
+    0.0538
+   ],
+   "goal_error_index": [
+    0.59,
+    1.71,
+    2.66
+   ],
+   "overshoot_rad_p90_max": [
+    0.0378,
+    0.129
+   ],
+   "time_to_90_s_median": 1.6,
+   "predicted_minus_state_index_median": 1.07,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "t5_push",
+   "measured": "2026-10-04 11:53:39",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.2,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0131,
+    0.033,
+    0.0433
+   ],
+   "goal_error_index": [
+    0.65,
+    1.63,
+    2.14
+   ],
+   "overshoot_rad_p90_max": [
+    0.1741,
+    0.1942
+   ],
+   "time_to_90_s_median": 1.62,
+   "predicted_minus_state_index_median": 1.19,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "t5_mg07",
+   "measured": "2026-10-04 11:53:41",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0139,
+    0.0314,
+    0.1423
+   ],
+   "goal_error_index": [
+    0.69,
+    1.55,
+    7.03
+   ],
+   "overshoot_rad_p90_max": [
+    0.019,
+    0.0347
+   ],
+   "time_to_90_s_median": 2.55,
+   "predicted_minus_state_index_median": 1.19,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "t5k2_s7",
+   "measured": "2026-10-04 11:53:49",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 2,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0137,
+    0.0339,
+    0.0383
+   ],
+   "goal_error_index": [
+    0.68,
+    1.67,
+    1.89
+   ],
+   "overshoot_rad_p90_max": [
+    0.0323,
+    0.1323
+   ],
+   "time_to_90_s_median": 2.45,
+   "predicted_minus_state_index_median": 1.33,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "t5k2_mg07",
+   "measured": "2026-10-04 11:54:02",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 2,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0107,
+    0.0346,
+    0.0548
+   ],
+   "goal_error_index": [
+    0.53,
+    1.71,
+    2.71
+   ],
+   "overshoot_rad_p90_max": [
+    0.0146,
+    0.0256
+   ],
+   "time_to_90_s_median": 3.65,
+   "predicted_minus_state_index_median": 1.41,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "t0",
+   "measured": "2026-10-04 11:54:24",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0141,
+    0.0283,
+    0.0374
+   ],
+   "goal_error_index": [
+    0.7,
+    1.4,
+    1.85
+   ],
+   "overshoot_rad_p90_max": [
+    0.0355,
+    0.1107
+   ],
+   "time_to_90_s_median": 1.62,
+   "predicted_minus_state_index_median": 1.11,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 3
+  },
+  {
+   "label": "t5_hold",
+   "measured": "2026-10-04 11:54:50",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 2.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0158,
+    0.0288,
+    0.2956
+   ],
+   "goal_error_index": [
+    0.78,
+    1.42,
+    14.6
+   ],
+   "overshoot_rad_p90_max": [
+    0.0247,
+    0.0444
+   ],
+   "time_to_90_s_median": 3.75,
+   "predicted_minus_state_index_median": 1.21,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "t5_dt2",
+   "measured": "2026-10-04 11:57:17",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05,
+    "drive_threshold": 2
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.024,
+    0.0475,
+    0.057
+   ],
+   "goal_error_index": [
+    1.19,
+    2.34,
+    2.82
+   ],
+   "overshoot_rad_p90_max": [
+    0.0451,
+    0.0831
+   ],
+   "time_to_90_s_median": 1.7,
+   "predicted_minus_state_index_median": 0.86,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 26
+  },
+  {
+   "label": "t5_dt2_mg07",
+   "measured": "2026-10-04 11:57:49",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05,
+    "drive_threshold": 2
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0178,
+    0.0457,
+    0.0496
+   ],
+   "goal_error_index": [
+    0.88,
+    2.26,
+    2.45
+   ],
+   "overshoot_rad_p90_max": [
+    0.0349,
+    0.0472
+   ],
+   "time_to_90_s_median": 2.75,
+   "predicted_minus_state_index_median": 1.08,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 29
+  },
+  {
+   "label": "t5_dt2_mg13",
+   "measured": "2026-10-04 11:58:14",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "body_feedback_weight": -3.0,
+    "tau_s": 0.05,
+    "drive_threshold": 2
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0265,
+    0.0551,
+    0.0643
+   ],
+   "goal_error_index": [
+    1.31,
+    2.72,
+    3.18
+   ],
+   "overshoot_rad_p90_max": [
+    0.0788,
+    0.2422
+   ],
+   "time_to_90_s_median": 1.23,
+   "predicted_minus_state_index_median": 0.94,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 30
+  },
+  {
+   "label": "n1",
+   "measured": "2026-10-04 12:04:16",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0259,
+    0.0427,
+    0.0684
+   ],
+   "goal_error_index": [
+    1.28,
+    2.11,
+    3.38
+   ],
+   "overshoot_rad_p90_max": [
+    0.0633,
+    0.0751
+   ],
+   "time_to_90_s_median": 1.65,
+   "predicted_minus_state_index_median": 0.15,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n1_mg13",
+   "measured": "2026-10-04 12:04:18",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0209,
+    0.0533,
+    0.1512
+   ],
+   "goal_error_index": [
+    1.03,
+    2.63,
+    7.47
+   ],
+   "overshoot_rad_p90_max": [
+    0.1194,
+    0.2775
+   ],
+   "time_to_90_s_median": 1.28,
+   "predicted_minus_state_index_median": 0.11,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n03",
+   "measured": "2026-10-04 12:04:20",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0147,
+    0.0361,
+    0.0471
+   ],
+   "goal_error_index": [
+    0.73,
+    1.78,
+    2.33
+   ],
+   "overshoot_rad_p90_max": [
+    0.055,
+    0.0609
+   ],
+   "time_to_90_s_median": 1.58,
+   "predicted_minus_state_index_median": 0.2,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n1_s7",
+   "measured": "2026-10-04 12:04:21",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0295,
+    0.0457,
+    0.0681
+   ],
+   "goal_error_index": [
+    1.46,
+    2.26,
+    3.37
+   ],
+   "overshoot_rad_p90_max": [
+    0.0585,
+    0.0694
+   ],
+   "time_to_90_s_median": 1.68,
+   "predicted_minus_state_index_median": 0.12,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n06",
+   "measured": "2026-10-04 12:04:23",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.6
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.019,
+    0.0448,
+    0.0629
+   ],
+   "goal_error_index": [
+    0.94,
+    2.21,
+    3.11
+   ],
+   "overshoot_rad_p90_max": [
+    0.0631,
+    0.0707
+   ],
+   "time_to_90_s_median": 1.62,
+   "predicted_minus_state_index_median": 0.06,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n3",
+   "measured": "2026-10-04 12:04:27",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -3.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0364,
+    0.0594,
+    0.0676
+   ],
+   "goal_error_index": [
+    1.8,
+    2.94,
+    3.34
+   ],
+   "overshoot_rad_p90_max": [
+    0.0671,
+    0.0765
+   ],
+   "time_to_90_s_median": 1.7,
+   "predicted_minus_state_index_median": 0.05,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n1_k1",
+   "measured": "2026-10-04 12:04:29",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0307,
+    0.0513,
+    0.1254
+   ],
+   "goal_error_index": [
+    1.52,
+    2.53,
+    6.19
+   ],
+   "overshoot_rad_p90_max": [
+    0.0499,
+    0.0724
+   ],
+   "time_to_90_s_median": 5.6,
+   "predicted_minus_state_index_median": 0.06,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n1_mg15",
+   "measured": "2026-10-04 12:04:38",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.6,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0335,
+    0.3198,
+    0.861
+   ],
+   "goal_error_index": [
+    1.66,
+    15.8,
+    42.53
+   ],
+   "overshoot_rad_p90_max": [
+    0.3669,
+    0.8635
+   ],
+   "time_to_90_s_median": 1.1,
+   "predicted_minus_state_index_median": 0.15,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 2
+  },
+  {
+   "label": "n1_push",
+   "measured": "2026-10-04 12:04:39",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.2,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0298,
+    0.0773,
+    0.3575
+   ],
+   "goal_error_index": [
+    1.47,
+    3.82,
+    17.66
+   ],
+   "overshoot_rad_p90_max": [
+    0.2243,
+    0.3659
+   ],
+   "time_to_90_s_median": 1.65,
+   "predicted_minus_state_index_median": 0.16,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n1_hold",
+   "measured": "2026-10-04 12:04:40",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 2.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0255,
+    0.0438,
+    0.0553
+   ],
+   "goal_error_index": [
+    1.26,
+    2.17,
+    2.73
+   ],
+   "overshoot_rad_p90_max": [
+    0.0472,
+    0.0554
+   ],
+   "time_to_90_s_median": 3.78,
+   "predicted_minus_state_index_median": 0.13,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n1_mg07",
+   "measured": "2026-10-04 12:04:41",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0276,
+    0.0386,
+    0.0615
+   ],
+   "goal_error_index": [
+    1.36,
+    1.91,
+    3.04
+   ],
+   "overshoot_rad_p90_max": [
+    0.042,
+    0.0541
+   ],
+   "time_to_90_s_median": 2.5,
+   "predicted_minus_state_index_median": 0.17,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "n1_e3",
+   "measured": "2026-10-04 12:04:48",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 30000.0
+    },
+    "body_feedback_weight": -1.0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0143,
+    0.0374,
+    0.0487
+   ],
+   "goal_error_index": [
+    0.71,
+    1.85,
+    2.41
+   ],
+   "overshoot_rad_p90_max": [
+    0.0585,
+    0.0746
+   ],
+   "time_to_90_s_median": 1.65,
+   "predicted_minus_state_index_median": 0.11,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "B_push",
+   "measured": "2026-10-04 12:07:22",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 30000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.2,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.1848,
+    0.3777,
+    0.592
+   ],
+   "goal_error_index": [
+    9.13,
+    18.66,
+    29.24
+   ],
+   "overshoot_rad_p90_max": [
+    0.3866,
+    0.5957
+   ],
+   "time_to_90_s_median": 1.83,
+   "predicted_minus_state_index_median": 7.51,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "A",
+   "measured": "2026-10-04 12:07:30",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0147,
+    0.0361,
+    0.0471
+   ],
+   "goal_error_index": [
+    0.73,
+    1.78,
+    2.33
+   ],
+   "overshoot_rad_p90_max": [
+    0.055,
+    0.0609
+   ],
+   "time_to_90_s_median": 1.58,
+   "predicted_minus_state_index_median": 0.2,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "C",
+   "measured": "2026-10-04 12:07:34",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.15
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0323,
+    0.1368,
+    0.2562
+   ],
+   "goal_error_index": [
+    1.6,
+    6.76,
+    12.65
+   ],
+   "overshoot_rad_p90_max": [
+    0.1493,
+    0.2603
+   ],
+   "time_to_90_s_median": 1.77,
+   "predicted_minus_state_index_median": 0.92,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "B",
+   "measured": "2026-10-04 12:07:35",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 30000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0174,
+    0.1402,
+    0.5647
+   ],
+   "goal_error_index": [
+    0.86,
+    6.93,
+    27.89
+   ],
+   "overshoot_rad_p90_max": [
+    0.1442,
+    0.5669
+   ],
+   "time_to_90_s_median": 1.6,
+   "predicted_minus_state_index_median": 0.2,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "C_hold",
+   "measured": "2026-10-04 12:07:36",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.15
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 2.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.1896,
+    0.7562,
+    1.274
+   ],
+   "goal_error_index": [
+    9.36,
+    37.35,
+    62.93
+   ],
+   "overshoot_rad_p90_max": [
+    0.0067,
+    0.1832
+   ],
+   "time_to_90_s_median": 1.0,
+   "predicted_minus_state_index_median": 10.05,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "B_mg07",
+   "measured": "2026-10-04 12:07:38",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 30000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0883,
+    0.457,
+    0.7161
+   ],
+   "goal_error_index": [
+    4.36,
+    22.57,
+    35.37
+   ],
+   "overshoot_rad_p90_max": [
+    0.0,
+    0.0149
+   ],
+   "time_to_90_s_median": 2.0,
+   "predicted_minus_state_index_median": 5.07,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "C_mg07",
+   "measured": "2026-10-04 12:07:41",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.15
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.1107,
+    0.4156,
+    0.6896
+   ],
+   "goal_error_index": [
+    5.47,
+    20.53,
+    34.06
+   ],
+   "overshoot_rad_p90_max": [
+    0.0,
+    0.0
+   ],
+   "time_to_90_s_median": 1.88,
+   "predicted_minus_state_index_median": 5.96,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "C_push",
+   "measured": "2026-10-04 12:07:45",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.15
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.2,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.1759,
+    0.3383,
+    0.694
+   ],
+   "goal_error_index": [
+    8.69,
+    16.71,
+    34.28
+   ],
+   "overshoot_rad_p90_max": [
+    0.3444,
+    0.7062
+   ],
+   "time_to_90_s_median": 1.75,
+   "predicted_minus_state_index_median": 7.87,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "B_mg13",
+   "measured": "2026-10-04 12:07:45",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 30000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.1371,
+    0.5927,
+    1.0553
+   ],
+   "goal_error_index": [
+    6.77,
+    29.27,
+    52.12
+   ],
+   "overshoot_rad_p90_max": [
+    0.5966,
+    1.0885
+   ],
+   "time_to_90_s_median": 1.5,
+   "predicted_minus_state_index_median": 6.3,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "C_mg13",
+   "measured": "2026-10-04 12:07:50",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.15
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.1671,
+    0.7717,
+    1.0595
+   ],
+   "goal_error_index": [
+    8.25,
+    38.12,
+    52.33
+   ],
+   "overshoot_rad_p90_max": [
+    0.7726,
+    1.0704
+   ],
+   "time_to_90_s_median": 1.5,
+   "predicted_minus_state_index_median": 7.36,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "A_mg13",
+   "measured": "2026-10-04 12:07:51",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0309,
+    0.6633,
+    1.0828
+   ],
+   "goal_error_index": [
+    1.53,
+    32.76,
+    53.48
+   ],
+   "overshoot_rad_p90_max": [
+    0.6703,
+    1.0967
+   ],
+   "time_to_90_s_median": 1.38,
+   "predicted_minus_state_index_median": 0.39,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "B_hold",
+   "measured": "2026-10-04 12:07:58",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 30000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 2.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0667,
+    0.7412,
+    1.2724
+   ],
+   "goal_error_index": [
+    3.29,
+    36.61,
+    62.85
+   ],
+   "overshoot_rad_p90_max": [
+    0.0249,
+    0.0496
+   ],
+   "time_to_90_s_median": 1.0,
+   "predicted_minus_state_index_median": 3.32,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "A_hold",
+   "measured": "2026-10-04 12:08:05",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 2.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0216,
+    0.7419,
+    1.235
+   ],
+   "goal_error_index": [
+    1.07,
+    36.64,
+    61.0
+   ],
+   "overshoot_rad_p90_max": [
+    0.0237,
+    0.0338
+   ],
+   "time_to_90_s_median": 1.0,
+   "predicted_minus_state_index_median": 0.43,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "A_push",
+   "measured": "2026-10-04 12:08:09",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.2,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.1852,
+    0.2773,
+    0.8288
+   ],
+   "goal_error_index": [
+    9.15,
+    13.69,
+    40.93
+   ],
+   "overshoot_rad_p90_max": [
+    0.3098,
+    0.8392
+   ],
+   "time_to_90_s_median": 1.52,
+   "predicted_minus_state_index_median": 7.38,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "A_mg07",
+   "measured": "2026-10-04 12:08:42",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_homeostasis_gain_weight": 0,
+    "body_reference": {
+     "exc_weight": 40000.0
+    },
+    "body_feedback_weight": -0.3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0151,
+    0.4263,
+    0.7097
+   ],
+   "goal_error_index": [
+    0.75,
+    21.06,
+    35.05
+   ],
+   "overshoot_rad_p90_max": [
+    0.0222,
+    0.0452
+   ],
+   "time_to_90_s_median": 2.7,
+   "predicted_minus_state_index_median": 0.3,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "sc_s99",
+   "measured": "2026-10-04 12:12:59",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0107,
+    0.0249,
+    0.0351
+   ],
+   "goal_error_index": [
+    0.53,
+    1.23,
+    1.73
+   ],
+   "overshoot_rad_p90_max": [
+    0.0298,
+    0.0419
+   ],
+   "time_to_90_s_median": 1.68,
+   "predicted_minus_state_index_median": 0.43,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "sc_k2",
+   "measured": "2026-10-04 12:13:00",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 2,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0084,
+    0.0193,
+    0.0323
+   ],
+   "goal_error_index": [
+    0.42,
+    0.95,
+    1.6
+   ],
+   "overshoot_rad_p90_max": [
+    0.0313,
+    0.105
+   ],
+   "time_to_90_s_median": 2.55,
+   "predicted_minus_state_index_median": 0.43,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "sc_db0",
+   "measured": "2026-10-04 12:13:09",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective",
+    "state_dead_band": 0
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0131,
+    0.0262,
+    0.0314
+   ],
+   "goal_error_index": [
+    0.65,
+    1.29,
+    1.55
+   ],
+   "overshoot_rad_p90_max": [
+    0.0381,
+    0.0831
+   ],
+   "time_to_90_s_median": 1.6,
+   "predicted_minus_state_index_median": 1.36,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "sc_k1",
+   "measured": "2026-10-04 12:13:10",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 1,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0088,
+    0.0264,
+    0.0515
+   ],
+   "goal_error_index": [
+    0.44,
+    1.31,
+    2.54
+   ],
+   "overshoot_rad_p90_max": [
+    0.0221,
+    0.0326
+   ],
+   "time_to_90_s_median": 4.98,
+   "predicted_minus_state_index_median": 0.87,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 7
+  },
+  {
+   "label": "sc_bfw2_mg13",
+   "measured": "2026-10-04 12:13:25",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -2.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0112,
+    0.0242,
+    0.03
+   ],
+   "goal_error_index": [
+    0.55,
+    1.2,
+    1.48
+   ],
+   "overshoot_rad_p90_max": [
+    0.0876,
+    0.2824
+   ],
+   "time_to_90_s_median": 1.2,
+   "predicted_minus_state_index_median": 0.45,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "sc_s7",
+   "measured": "2026-10-04 12:13:30",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0092,
+    0.0215,
+    0.0301
+   ],
+   "goal_error_index": [
+    0.45,
+    1.06,
+    1.49
+   ],
+   "overshoot_rad_p90_max": [
+    0.0383,
+    0.0589
+   ],
+   "time_to_90_s_median": 1.65,
+   "predicted_minus_state_index_median": 0.42,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "sc_hold",
+   "measured": "2026-10-04 12:13:39",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 2.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0127,
+    0.0233,
+    0.0347
+   ],
+   "goal_error_index": [
+    0.63,
+    1.15,
+    1.71
+   ],
+   "overshoot_rad_p90_max": [
+    0.0262,
+    0.0449
+   ],
+   "time_to_90_s_median": 3.73,
+   "predicted_minus_state_index_median": 0.35,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 2
+  },
+  {
+   "label": "sc_bfw2_hold",
+   "measured": "2026-10-04 12:13:54",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -2.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 2.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0099,
+    0.0256,
+    0.0317
+   ],
+   "goal_error_index": [
+    0.49,
+    1.26,
+    1.57
+   ],
+   "overshoot_rad_p90_max": [
+    0.0324,
+    0.0395
+   ],
+   "time_to_90_s_median": 3.7,
+   "predicted_minus_state_index_median": 0.4,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "sc_mg16",
+   "measured": "2026-10-04 12:13:55",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.6,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0075,
+    0.0222,
+    0.0371
+   ],
+   "goal_error_index": [
+    0.37,
+    1.1,
+    1.83
+   ],
+   "overshoot_rad_p90_max": [
+    0.1696,
+    0.3371
+   ],
+   "time_to_90_s_median": 1.0,
+   "predicted_minus_state_index_median": 0.39,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "sc_mg07",
+   "measured": "2026-10-04 12:13:58",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0081,
+    0.0233,
+    0.0403
+   ],
+   "goal_error_index": [
+    0.4,
+    1.15,
+    1.99
+   ],
+   "overshoot_rad_p90_max": [
+    0.0224,
+    0.0249
+   ],
+   "time_to_90_s_median": 2.55,
+   "predicted_minus_state_index_median": 0.31,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 2
+  },
+  {
+   "label": "sc_bfw2",
+   "measured": "2026-10-04 12:14:08",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -2.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0107,
+    0.0232,
+    0.0295
+   ],
+   "goal_error_index": [
+    0.53,
+    1.15,
+    1.46
+   ],
+   "overshoot_rad_p90_max": [
+    0.0374,
+    0.1555
+   ],
+   "time_to_90_s_median": 1.8,
+   "predicted_minus_state_index_median": 0.32,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 0
+  },
+  {
+   "label": "sc_mg13",
+   "measured": "2026-10-04 12:14:25",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.3,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0093,
+    0.0181,
+    0.0272
+   ],
+   "goal_error_index": [
+    0.46,
+    0.9,
+    1.34
+   ],
+   "overshoot_rad_p90_max": [
+    0.0811,
+    0.2528
+   ],
+   "time_to_90_s_median": 1.2,
+   "predicted_minus_state_index_median": 0.43,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 3
+  },
+  {
+   "label": "sc",
+   "measured": "2026-10-04 12:14:25",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0096,
+    0.0147,
+    0.0214
+   ],
+   "goal_error_index": [
+    0.47,
+    0.73,
+    1.06
+   ],
+   "overshoot_rad_p90_max": [
+    0.0405,
+    0.1006
+   ],
+   "time_to_90_s_median": 1.6,
+   "predicted_minus_state_index_median": 0.27,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "sc_push",
+   "measured": "2026-10-04 12:14:37",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.2,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0109,
+    0.0222,
+    0.025
+   ],
+   "goal_error_index": [
+    0.54,
+    1.1,
+    1.23
+   ],
+   "overshoot_rad_p90_max": [
+    0.1824,
+    0.2012
+   ],
+   "time_to_90_s_median": 1.58,
+   "predicted_minus_state_index_median": 0.36,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "sc_push4",
+   "measured": "2026-10-04 12:14:40",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "n_settle": 40,
+    "goal_mode": "corrective",
+    "tau_s": 0.05,
+    "body_feedback_weight": -3.0,
+    "state_mode": "corrective"
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": -0.4,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0145,
+    0.029,
+    0.041
+   ],
+   "goal_error_index": [
+    0.71,
+    1.43,
+    2.02
+   ],
+   "overshoot_rad_p90_max": [
+    0.3698,
+    0.4468
+   ],
+   "time_to_90_s_median": 1.9,
+   "predicted_minus_state_index_median": 0.54,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 2
+  },
+  {
+   "label": "def",
+   "measured": "2026-10-04 12:17:43",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {},
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0096,
+    0.0147,
+    0.0214
+   ],
+   "goal_error_index": [
+    0.47,
+    0.73,
+    1.06
+   ],
+   "overshoot_rad_p90_max": [
+    0.0405,
+    0.1006
+   ],
+   "time_to_90_s_median": 1.6,
+   "predicted_minus_state_index_median": 0.27,
+   "hold_range_rad_median_p90": null,
+   "max_steps_trials": 1
+  },
+  {
+   "label": "dz5_ns15",
+   "measured": "2026-10-04 12:34:51",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "dead_zone": 5,
+    "n_settle": 15
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0098,
+    0.0466,
+    0.0682
+   ],
+   "goal_error_index": [
+    0.41,
+    2.09,
+    2.28
+   ],
+   "overshoot_rad_p90_max": [
+    0.0065,
+    0.0244
+   ],
+   "time_to_90_s_median": 1.4,
+   "predicted_minus_state_index_median": 0.79,
+   "hold_range_rad_median_p90": [
+    0.0311,
+    0.411
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz0_ge1",
+   "measured": "2026-10-04 12:35:03",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "goal_reference": {
+     "exc_weight": 10000.0
+    }
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0188,
+    0.0377,
+    0.0841
+   ],
+   "goal_error_index": [
+    0.83,
+    1.37,
+    2.82
+   ],
+   "overshoot_rad_p90_max": [
+    0.0244,
+    0.0307
+   ],
+   "time_to_90_s_median": 1.85,
+   "predicted_minus_state_index_median": 0.34,
+   "hold_range_rad_median_p90": [
+    0.0216,
+    0.0384
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz0_gdb3",
+   "measured": "2026-10-04 12:35:13",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "goal_dead_band": 3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0272,
+    0.0437,
+    0.06
+   ],
+   "goal_error_index": [
+    1.15,
+    1.61,
+    2.0
+   ],
+   "overshoot_rad_p90_max": [
+    0.0476,
+    0.0688
+   ],
+   "time_to_90_s_median": 1.55,
+   "predicted_minus_state_index_median": 0.21,
+   "hold_range_rad_median_p90": [
+    0.0158,
+    0.0284
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz0_gi9",
+   "measured": "2026-10-04 12:35:13",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "goal_reference": {
+     "inh_weight": 90000.0
+    }
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0118,
+    0.0313,
+    0.0511
+   ],
+   "goal_error_index": [
+    0.49,
+    1.3,
+    1.71
+   ],
+   "overshoot_rad_p90_max": [
+    0.0287,
+    0.039
+   ],
+   "time_to_90_s_median": 1.5,
+   "predicted_minus_state_index_median": 0.47,
+   "hold_range_rad_median_p90": [
+    0.0199,
+    0.0356
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz7_ns15",
+   "measured": "2026-10-04 12:35:20",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "dead_zone": 7,
+    "n_settle": 15
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0237,
+    0.0718,
+    0.0951
+   ],
+   "goal_error_index": [
+    1.01,
+    2.64,
+    3.18
+   ],
+   "overshoot_rad_p90_max": [
+    0.0,
+    0.0041
+   ],
+   "time_to_90_s_median": 1.4,
+   "predicted_minus_state_index_median": 0.62,
+   "hold_range_rad_median_p90": [
+    0.0173,
+    0.3615
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz0_tau15",
+   "measured": "2026-10-04 12:35:26",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "tau_s": 0.15
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0123,
+    0.025,
+    0.0413
+   ],
+   "goal_error_index": [
+    0.56,
+    1.01,
+    1.38
+   ],
+   "overshoot_rad_p90_max": [
+    0.1118,
+    0.1184
+   ],
+   "time_to_90_s_median": 1.33,
+   "predicted_minus_state_index_median": 0.39,
+   "hold_range_rad_median_p90": [
+    0.0212,
+    0.034
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz0_db2",
+   "measured": "2026-10-04 12:35:39",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "state_dead_band": 2
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0091,
+    0.0308,
+    0.0516
+   ],
+   "goal_error_index": [
+    0.37,
+    1.16,
+    1.72
+   ],
+   "overshoot_rad_p90_max": [
+    0.0499,
+    0.0705
+   ],
+   "time_to_90_s_median": 1.43,
+   "predicted_minus_state_index_median": 0.3,
+   "hold_range_rad_median_p90": [
+    0.0162,
+    0.0239
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz0",
+   "measured": "2026-10-04 12:35:49",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {},
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.011,
+    0.0303,
+    0.0437
+   ],
+   "goal_error_index": [
+    0.49,
+    1.14,
+    1.46
+   ],
+   "overshoot_rad_p90_max": [
+    0.0471,
+    0.0624
+   ],
+   "time_to_90_s_median": 1.45,
+   "predicted_minus_state_index_median": 0.25,
+   "hold_range_rad_median_p90": [
+    0.0173,
+    0.0317
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz3",
+   "measured": "2026-10-04 12:36:17",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "dead_zone": 3
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0057,
+    0.0264,
+    0.0407
+   ],
+   "goal_error_index": [
+    0.23,
+    1.1,
+    1.36
+   ],
+   "overshoot_rad_p90_max": [
+    0.028,
+    0.0392
+   ],
+   "time_to_90_s_median": 1.58,
+   "predicted_minus_state_index_median": 0.25,
+   "hold_range_rad_median_p90": [
+    0.0035,
+    0.0056
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz0_mg07",
+   "measured": "2026-10-04 12:36:24",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {},
+   "bounded_overrides": {},
+   "motor_gain_scale": 0.7,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0074,
+    0.038,
+    0.0596
+   ],
+   "goal_error_index": [
+    0.27,
+    1.37,
+    1.99
+   ],
+   "overshoot_rad_p90_max": [
+    0.0289,
+    0.0371
+   ],
+   "time_to_90_s_median": 2.48,
+   "predicted_minus_state_index_median": 0.43,
+   "hold_range_rad_median_p90": [
+    0.014,
+    0.0257
+   ],
+   "max_steps_trials": 2
+  },
+  {
+   "label": "dz5",
+   "measured": "2026-10-04 12:36:40",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "dead_zone": 5
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0114,
+    0.0325,
+    0.0632
+   ],
+   "goal_error_index": [
+    0.45,
+    1.16,
+    2.11
+   ],
+   "overshoot_rad_p90_max": [
+    0.018,
+    0.0304
+   ],
+   "time_to_90_s_median": 1.68,
+   "predicted_minus_state_index_median": 0.37,
+   "hold_range_rad_median_p90": [
+    0.0009,
+    0.0048
+   ],
+   "max_steps_trials": 4
+  },
+  {
+   "label": "dz0_gdb1",
+   "measured": "2026-10-04 12:36:56",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "goal_dead_band": 1
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0118,
+    0.0248,
+    0.0419
+   ],
+   "goal_error_index": [
+    0.48,
+    1.04,
+    1.41
+   ],
+   "overshoot_rad_p90_max": [
+    0.0567,
+    0.0706
+   ],
+   "time_to_90_s_median": 1.45,
+   "predicted_minus_state_index_median": 0.37,
+   "hold_range_rad_median_p90": [
+    0.0216,
+    0.0359
+   ],
+   "max_steps_trials": 11
+  },
+  {
+   "label": "dz7",
+   "measured": "2026-10-04 12:37:25",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "dead_zone": 7
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.0142,
+    0.054,
+    0.0726
+   ],
+   "goal_error_index": [
+    0.56,
+    2.19,
+    2.43
+   ],
+   "overshoot_rad_p90_max": [
+    0.0017,
+    0.0122
+   ],
+   "time_to_90_s_median": 1.6,
+   "predicted_minus_state_index_median": 0.42,
+   "hold_range_rad_median_p90": [
+    0.0001,
+    0.0011
+   ],
+   "max_steps_trials": 0
+  },
+  {
+   "label": "dz10",
+   "measured": "2026-10-04 12:38:13",
+   "system": [
+    "F"
+   ],
+   "joints": [
+    4,
+    5
+   ],
+   "trials": 36,
+   "time_scale": 3,
+   "overrides": {
+    "dead_zone": 10
+   },
+   "bounded_overrides": {},
+   "motor_gain_scale": 1.0,
+   "push_rad": 0.0,
+   "hold_s": 0.0,
+   "lost_bumps": 0,
+   "wrong_direction": 0,
+   "goal_error_rad": [
+    0.031,
+    0.0538,
+    0.0912
+   ],
+   "goal_error_index": [
+    1.21,
+    1.91,
+    3.05
+   ],
+   "overshoot_rad_p90_max": [
+    0.0,
+    0.0
+   ],
+   "time_to_90_s_median": 1.7,
+   "predicted_minus_state_index_median": 0.49,
+   "hold_range_rad_median_p90": [
+    0.0,
+    0.0028
+   ],
+   "max_steps_trials": 14
+  }
+ ]
+}

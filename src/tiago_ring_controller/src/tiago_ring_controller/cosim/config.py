@@ -35,6 +35,8 @@ class CosimConfig:
     decoder_gain_negative: float = -1e-4
     decoder_tau_s: float = 0.3
     decoder_delay_steps: int = 0
+    #: spikes per tick removed from the signed gain count before the filter (0 = legacy decoder)
+    decoder_dead_zone: float = 0.0
     joint_min: Optional[float] = None
     joint_max: Optional[float] = None
     rng_seed: Optional[int] = None
@@ -59,6 +61,8 @@ class CosimConfig:
             raise ValueError("nest_lead_steps must be >= 0")
         if self.max_steps <= 0:
             raise ValueError("max_steps must be positive")
+        if self.decoder_dead_zone < 0:
+            raise ValueError("decoder_dead_zone must be >= 0")
         if self.nest_step_mode not in NEST_STEP_MODES:
             raise ValueError("nest_step_mode must be one of %r" % (NEST_STEP_MODES,))
         if self.nest_model not in NEST_MODELS:

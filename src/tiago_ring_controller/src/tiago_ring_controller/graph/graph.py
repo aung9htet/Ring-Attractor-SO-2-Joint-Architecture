@@ -21,7 +21,8 @@ from ..blocks.base import Block, BlockError, BuildContext, Composite, Connection
 SCHEMA_ID = "ring-blocks/1"
 STEP_MODES = ("run", "simulate")
 RESET_MODES = ("rebuild", "continue")
-EDGE_PARAM_NAMES = ("weight", "margin")
+#: ``weight`` / ``margin``: spike edges into a ring; the rest: a ring into ``Gain.reference``
+EDGE_PARAM_NAMES = ("weight", "margin", "exc_weight", "inh_weight", "window")
 
 
 class GraphError(ValueError):
@@ -41,6 +42,9 @@ class Simulation:
     local_num_threads: int = 1
     step_mode: str = "run"
     reset_mode: str = "rebuild"
+    #: NEST steps of ``dt_ms`` per robot tick (docs/archive/velocity/speed.md): the network runs
+    #: ``time_scale`` times faster than the robot; 1 = network time equals robot time
+    time_scale: int = 1
 
     def validate(self) -> List[str]:
         problems = []
@@ -56,14 +60,19 @@ class Simulation:
             problems.append("simulation.reset_mode must be one of %r" % (RESET_MODES,))
         if self.local_num_threads < 1:
             problems.append("simulation.local_num_threads must be >= 1")
+        if not isinstance(self.time_scale, int) or isinstance(self.time_scale, bool) or self.time_scale < 1:
+            problems.append("simulation.time_scale must be an integer >= 1")
         return problems
 
     def to_dict(self) -> Dict[str, Any]:
-        return OrderedDict(
+        document = OrderedDict(
             dt_ms=self.dt_ms, nest_lead_steps=self.nest_lead_steps, max_steps=self.max_steps,
             rng_seed=self.rng_seed, local_num_threads=self.local_num_threads,
             step_mode=self.step_mode, reset_mode=self.reset_mode,
         )
+        if self.time_scale != 1:                    # files written before it existed stay unchanged
+            document["time_scale"] = self.time_scale
+        return document
 
 
 @dataclass

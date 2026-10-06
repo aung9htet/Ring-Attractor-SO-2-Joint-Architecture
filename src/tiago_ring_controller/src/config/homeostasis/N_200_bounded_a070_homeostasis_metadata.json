@@ -1,0 +1,81 @@
+{
+  "population_size": 200,
+  "feature_names": [
+    "sin_pos_k1",
+    "sin_neg_k1",
+    "sin_pos_k2",
+    "sin_neg_k2",
+    "sin_pos_k3",
+    "sin_neg_k3",
+    "sin_pos_k4",
+    "sin_neg_k4",
+    "sin_pos_k5",
+    "sin_neg_k5",
+    "sin_pos_k6",
+    "sin_neg_k6",
+    "sin_pos_k7",
+    "sin_neg_k7",
+    "sin_pos_k8",
+    "sin_neg_k8",
+    "sin_pos_k9",
+    "sin_neg_k9",
+    "sin_pos_k10",
+    "sin_neg_k10",
+    "sin_pos_k11",
+    "sin_neg_k11",
+    "sin_pos_k12",
+    "sin_neg_k12",
+    "sin_pos_k13",
+    "sin_neg_k13",
+    "sin_pos_k14",
+    "sin_neg_k14",
+    "sin_pos_k15",
+    "sin_neg_k15",
+    "sin_pos_k16",
+    "sin_neg_k16",
+    "sin_pos_k17",
+    "sin_neg_k17",
+    "sin_pos_k18",
+    "sin_neg_k18",
+    "sin_pos_k19",
+    "sin_neg_k19",
+    "sin_pos_k20",
+    "sin_neg_k20"
+  ],
+  "target": "bounded_ramp",
+  "rise_fraction": 0.8,
+  "arc_fraction": 0.7,
+  "num_positions": 100,
+  "window_ms": 1200.0,
+  "ridge_lambda": 1e-06,
+  "train_r2": 0.9967431996726329,
+  "test_rms": 0.019598577491256236,
+  "bias": 0.5001507213491361,
+  "fit": {
+    "train_r2": 0.9967431996726329,
+    "test_rms": 0.019598577491256236,
+    "test_max_error": 0.09210909610243911,
+    "weight_norm_vs_legacy": 0.8726068843579704,
+    "monotonicity": {
+      "0.95": {
+        "steps": 94,
+        "wrong_way": 31,
+        "smallest_step": -0.08090110855173038,
+        "mean_step": 0.002537208436039049
+      },
+      "0.70": {
+        "steps": 69,
+        "wrong_way": 14,
+        "smallest_step": -0.016007592736752896,
+        "mean_step": 0.013013566873961754
+      },
+      "0.80": {
+        "steps": 79,
+        "wrong_way": 16,
+        "smallest_step": -0.016007592736752896,
+        "mean_step": 0.01225386278970085
+      }
+    }
+  },
+  "note": "fitted by scripts/fit_comparator.py; docs/velocity/bounded-ring.md"
+}

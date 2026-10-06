@@ -1,0 +1,226 @@
+{
+  "dt_ms": 50.0,
+  "stepper": "clock_wait",
+  "measured": "2026-10-02 13:49:14",
+  "joints": {
+    "5": {
+      "joint": 5,
+      "displacement_gain": 0.9913867145437736,
+      "lag_ms": 7.96454382099876,
+      "static_offset_rad": -0.002050807482631356,
+      "max_position_error_rad": 0.009019219173489912,
+      "net_error_rad": -0.0022855515881845673,
+      "tick_sim_s": {
+        "mean": 0.050004545454545475,
+        "min": 0.04899999999999949,
+        "max": 0.05100000000000193
+      },
+      "overshoot_ms": {
+        "mean": 0.9318181821354636,
+        "max": 2.0000000005069296
+      },
+      "tick_wall_ms": 50.873538941033814,
+      "finish_wall_s": 0.051023131993133575,
+      "clamped_ticks": 0,
+      "within_tolerance": true,
+      "segments": [
+        {
+          "velocity": 0.1,
+          "ticks": 40,
+          "moved_rad": 0.1995914590359682,
+          "commanded_rad": 0.2,
+          "gain": 0.997957295179841,
+          "measured_velocity": 0.1004916707913207,
+          "lag_ms": 9.273935881677465
+        },
+        {
+          "velocity": -0.1,
+          "ticks": 40,
+          "moved_rad": -0.19912654308001088,
+          "commanded_rad": -0.2,
+          "gain": 0.9956327154000544,
+          "measured_velocity": -0.10041252885766731,
+          "lag_ms": 6.806465460864273
+        },
+        {
+          "velocity": 0.4,
+          "ticks": 20,
+          "moved_rad": 0.3954594658378232,
+          "commanded_rad": 0.4,
+          "gain": 0.988648664594558,
+          "measured_velocity": 0.4008715207352547,
+          "lag_ms": 7.374019359571826
+        },
+        {
+          "velocity": -0.4,
+          "ticks": 20,
+          "moved_rad": -0.3954019452108861,
+          "commanded_rad": -0.4,
+          "gain": 0.9885048630272153,
+          "measured_velocity": -0.40133469852561876,
+          "lag_ms": 8.555068282425692
+        },
+        {
+          "velocity": 0.02,
+          "ticks": 40,
+          "moved_rad": 0.039740112869591115,
+          "commanded_rad": 0.04000000000000001,
+          "gain": 0.9935028217397777,
+          "measured_velocity": 0.01999478434474957,
+          "lag_ms": 19.10399499351291
+        }
+      ],
+      "urdf_limits": [
+        -1.413716694115407,
+        1.413716694115407
+      ],
+      "trial_wall_s": 20.568671255998197
+    },
+    "4": {
+      "joint": 4,
+      "displacement_gain": 0.9889465769556278,
+      "lag_ms": 8.7465545007339,
+      "static_offset_rad": -0.00027614149440898086,
+      "max_position_error_rad": 0.007021997270981295,
+      "net_error_rad": -0.00032970013696510814,
+      "tick_sim_s": {
+        "mean": 0.050004545454545475,
+        "min": 0.04899999999999949,
+        "max": 0.05100000000000193
+      },
+      "overshoot_ms": {
+        "mean": 0.9681818184978204,
+        "max": 1.0000000006300525
+      },
+      "tick_wall_ms": 50.845939845748944,
+      "finish_wall_s": 0.05109881199314259,
+      "clamped_ticks": 0,
+      "within_tolerance": true,
+      "segments": [
+        {
+          "velocity": 0.1,
+          "ticks": 40,
+          "moved_rad": 0.1989768177512543,
+          "commanded_rad": 0.2,
+          "gain": 0.9948840887562715,
+          "measured_velocity": 0.09971038103016618,
+          "lag_ms": 8.739450405002417
+        },
+        {
+          "velocity": -0.1,
+          "ticks": 40,
+          "moved_rad": -0.198565991617615,
+          "commanded_rad": -0.2,
+          "gain": 0.9928299580880751,
+          "measured_velocity": -0.10001873707704571,
+          "lag_ms": 8.61931793933572
+        },
+        {
+          "velocity": 0.4,
+          "ticks": 20,
+          "moved_rad": 0.3944006010208634,
+          "commanded_rad": 0.4,
+          "gain": 0.9860015025521585,
+          "measured_velocity": 0.4001964110388276,
+          "lag_ms": 8.891019739572615
+        },
+        {
+          "velocity": -0.4,
+          "ticks": 20,
+          "moved_rad": -0.39456437839032965,
+          "commanded_rad": -0.4,
+          "gain": 0.9864109459758241,
+          "measured_velocity": -0.3999741644789536,
+          "lag_ms": 8.753658596465383
+        },
+        {
+          "velocity": 0.02,
+          "ticks": 40,
+          "moved_rad": 0.03978596664491629,
+          "commanded_rad": 0.04000000000000001,
+          "gain": 0.9946491661229071,
+          "measured_velocity": 0.019701003103329756,
+          "lag_ms": 18.26216058821586
+        }
+      ],
+      "urdf_limits": [
+        -2.0943951023931953,
+        2.0943951023931953
+      ],
+      "trial_wall_s": 20.332344170994475
+    },
+    "1": {
+      "joint": 1,
+      "displacement_gain": 0.9847904709857906,
+      "lag_ms": 14.196639263181101,
+      "static_offset_rad": -0.006719659260377416,
+      "max_position_error_rad": 0.01723047439553005,
+      "net_error_rad": -0.0068883389190626115,
+      "tick_sim_s": {
+        "mean": 0.05014545454545453,
+        "min": 0.04899999999999238,
+        "max": 0.0799999999999983
+      },
+      "overshoot_ms": {
+        "mean": 1.1954545456989958,
+        "max": 31.000000000076966
+      },
+      "tick_wall_ms": 51.05926465879416,
+      "finish_wall_s": 0.051511880999896675,
+      "clamped_ticks": 0,
+      "within_tolerance": true,
+      "segments": [
+        {
+          "velocity": 0.1,
+          "ticks": 40,
+          "moved_rad": 0.19866505321860117,
+          "commanded_rad": 0.2,
+          "gain": 0.9933252660930059,
+          "measured_velocity": 0.09992941796108942,
+          "lag_ms": 14.63889085387928
+        },
+        {
+          "velocity": -0.1,
+          "ticks": 40,
+          "moved_rad": -0.1981271397824047,
+          "commanded_rad": -0.2,
+          "gain": 0.9906356989120235,
+          "measured_velocity": -0.10007829787110052,
+          "lag_ms": 13.163480741598303
+        },
+        {
+          "velocity": 0.4,
+          "ticks": 20,
+          "moved_rad": 0.3926909092618658,
+          "commanded_rad": 0.4,
+          "gain": 0.9817272731546645,
+          "measured_velocity": 0.4015179861364257,
+          "lag_ms": 14.096507633616978
+        },
+        {
+          "velocity": -0.4,
+          "ticks": 20,
+          "moved_rad": -0.3925633215986455,
+          "commanded_rad": -0.4,
+          "gain": 0.9814083039966137,
+          "measured_velocity": -0.4016181810163773,
+          "lag_ms": 14.296770892745222
+        },
+        {
+          "velocity": 0.02,
+          "ticks": 40,
+          "moved_rad": 0.03909376016086341,
+          "commanded_rad": 0.04000000000000001,
+          "gain": 0.977344004021585,
+          "measured_velocity": 0.019967811598511596,
+          "lag_ms": 20.492135217071908
+        }
+      ],
+      "urdf_limits": [
+        -1.5707963267948966,
+        1.090830782496456
+      ],
+      "trial_wall_s": 20.39014147600392
+    }
+  }
+}

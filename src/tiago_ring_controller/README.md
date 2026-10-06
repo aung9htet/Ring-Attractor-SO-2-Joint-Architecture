@@ -1,234 +1,82 @@
-# TIAGo spiking ring controller
+# tiago_ring_controller (ROS 1 package)
 
-This ROS 1 package contains the research code for a NEST-based ring-attractor
-controller for revolute TIAGo joints.  The executable implementation includes
-two distinct ring builders, analytic positional Fourier readouts, a
-ridge-fitted homeostatic readout, opponent gain modulation, two-ring
-orientation decoding, robot calibration and data collection, and figure
-generation.
+The research code of the NEST ring-attractor controller for TIAGo's arm
+joints. **How to run, calibrate, measure and record every version is in the
+repository's top-level `README.md`**; this page only holds what is specific to
+the package.
 
-The code uses NEST populations and ordinary NumPy linear algebra.  It is
-**NEF-inspired**, but it is not a Nengo/NEF implementation: there are no Nengo
-ensembles, encoders, intercepts, gains, evaluation-point objects, or NEF
-solvers.
+## Layout
 
-## Layout and legacy policy (branch `blocks-refactor`)
+| Path | Content |
+| --- | --- |
+| `src/tiago_ring_controller/` | The importable package: `blocks/` (parameterised blocks), `graph/` (graphs, templates, calibration), `cosim/` (the lock-stepped loop, engines, dashboard), `nest/` (vectorised NEST builders), `control/`, `evaluation/`, `training/`, `ros/`, `ui/`. Importing it needs neither NEST nor ROS |
+| `scripts/` | The executables (what Catkin installs): `run_graph.py`, `validate_velocity.py`, `run_legacy_trials.py`, `results_report.py`, `record_video.py`, `calibrate_transport.py`, `fit_comparator.py`, `identify_actuator.py`, and smaller tools |
+| `src/config/` | Scientific inputs: neuron parameters, fitted comparator and readout weights, calibrations. Pinned by hash and schema in `test/test_artifact_contracts.py` (`scripts/update_artifact_manifest.py` registers a new file) |
+| `legacy/` | Every flat research script that produced the paper results, frozen (see `legacy/README.md` and the repository's `docs/legacy.md`) |
+| `test/` | `unittest` suite: fakes for NEST and ROS, real-NEST gates that run only with the pinned NEST |
+| `docs/` | The original model's documentation: `architecture.md`, `artifacts.md`, `paper_traceability.md`, `reproducibility.md`, `robot_safety.md` |
+| `launch/`, `worlds/` | `tiago_ring_controller.launch` (arguments `world`, `gui`, `public_sim`, `arm`, `end_effector`, `ft_sensor`) |
 
-- `src/tiago_ring_controller/` is the importable package (pure math, NEST
-  builders, control, evaluation, ROS contracts, the `cosim/` loop).  It imports
-  without NEST or ROS.
-- `scripts/` holds the executables (`run_cosim_trial.py`, `cosim_gazebo_smoke.py`,
-  `measure_legacy_tick.py`); these are what Catkin installs.
-- `legacy/` holds every flat research script that produced the paper results,
-  frozen and unmaintained (see `legacy/README.md`).  `main` and the tag
-  `legacy-loop-baseline` keep them at their historical `src/` paths together with
-  the byte-for-byte freeze tests, which this branch deletes.
-- `src/config/` keeps the scientific inputs (neuron parameters, fitted weights,
-  calibration); their hashes and schemas are still pinned by
-  `test/test_artifact_contracts.py`.  Generated results (`src/outputs/`, `results/`,
-  `outputs/`) are no longer tracked.
+## Things worth knowing about the code
 
-The block architecture that replaces the flat scripts is planned in the
-repository's `docs/blocks/plan.md`; progress is logged in `docs/blocks/progress.md`.
-
-Important observed behavior:
-
-- The robot path uses `right_spike_count - left_spike_count`, followed by an
-  exponential filter, integer delay, and separate positive/negative gains.
-- The positional readout has `2K` positive/negative **sine** channels.  The
-  checked-in N=200 model therefore has 40 readout neurons for K=20.
-- `train_ring_model.py` generates analytic half-wave sine masks; it does not
-  optimize those weights.
-- `train_homeostasis.py` and the multi-ring decoder use ordinary ridge
-  regression on measured NEST spike-count features.
-- The legacy and `builders/` ring implementations are not interchangeable.
-  They agree for the common N=100 even-size case but differ for other sizes.
+- It uses NEST populations and ordinary NumPy linear algebra. It is
+  NEF-inspired but not a Nengo/NEF implementation.
+- The robot path is `right spikes - left spikes`, a dead zone, an exponential
+  filter, an integer delay and separate positive and negative gains
+  (`blocks/decoder.py`).
+- The positional readout has `2K` positive and negative **sine** channels: 40
+  readout neurons for K = 20. Its weights are analytic half-wave sine masks;
+  the comparator ("homeostasis") weights are ridge-fitted on measured NEST
+  spike counts.
+- The legacy and `builders/` ring wirings agree for N = 100 and differ for
+  other sizes; the block `Ring` has a `variant` parameter for it.
 - Loaded homeostasis biases and several historical configuration fields are
-  currently unused.  They remain part of the artifact/configuration contract.
+  unused. They stay part of the artifact contract.
+- The world file comes from `pal_gazebo_worlds` (overridden by the
+  repository's `overrides/`), not from this package. It holds the table and
+  the `/recording_camera/image_raw` camera.
+- The robot's mobile base is not anchored. `cosim/gazebo_ros_engine.py` puts
+  it back at its spawn pose before every trial and logs how far a trial pushed it.
 
-See `docs/architecture.md`, `docs/artifacts.md`, and
-`docs/paper_traceability.md` for the detailed executable map.
+## Build and test
 
-## Environment
-
-The characterized environment is Ubuntu 20.04, ROS Noetic, Python 3.8, and
-PyNEST.  The Python workflows also use NumPy, Matplotlib, Pandas, SciPy,
-Colorcet, OpenCV, and `cv_bridge` where relevant.
-
-Build and test with Catkin:
-
-```bash
-cd /tiago_public_ws
-catkin build tiago_ring_controller --no-deps
-source devel/setup.bash
-catkin run_tests tiago_ring_controller
-catkin_test_results
-```
-
-The repository uses the standard-library `unittest` runner rather than pytest:
+The characterised environment is Ubuntu 20.04, ROS Noetic, Python 3.8 and
+PyNEST `HEAD@41892a5` (the image pinned in the repository's `docker/image.env`).
 
 ```bash
+cd /tiago_public_ws && catkin build tiago_ring_controller --no-deps && source devel/setup.bash
 cd /tiago_public_ws/src/tiago_ring_controller
 python3 -B -m unittest discover -s test -p 'test_*.py'
 ```
 
-Without the launcher, the same suite runs in the image with the package
-bind-mounted (the real-NEST tests need the pinned NEST, so this is the reference
-run):
+The suite uses the standard-library `unittest` runner, not pytest. From the
+host: `docker/batch.bash nest -- 'python3 -B -m unittest discover -s test -p "test_*.py"'`.
 
-```bash
-docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e PYTHONDONTWRITEBYTECODE=1 -e MPLBACKEND=Agg \
-  -v "$PWD/src/tiago_ring_controller:/tiago_public_ws/src/tiago_ring_controller" \
-  --entrypoint bash aung9htet/ubuntu-20.04:tiago_ring_forward -c 'source /opt/ros/noetic/setup.bash; \
-  source /tiago_public_ws/devel/setup.bash; source /usr/local/nest/bin/nest_vars.sh; \
-  export PYTHONPATH=/tiago_public_ws/src/tiago_ring_controller/src:$PYTHONPATH; \
-  cd /tiago_public_ws/src/tiago_ring_controller && python3 -B -m unittest discover -s test -p "test_*.py"'
-```
+## The legacy scripts
 
-## Non-robot workflows (legacy scripts)
-
-Run these from `legacy/` with the folder and the package on the path; the
-configuration and output paths are working-directory-relative (`legacy/config`
-links to `src/config`):
+Run them from `legacy/` with that folder and the package on the path
+(`legacy/config` links to `src/config`); configuration and output paths are
+relative to the working directory:
 
 ```bash
 cd /tiago_public_ws/src/tiago_ring_controller/legacy
 export PYTHONPATH=$PWD:$PWD/../src:$PYTHONPATH
-python3 single_ring.py
-python3 gain_modulation_analysis.py
-python3 readout_mean_std_analysis.py
-python3 multi_ring_component.py
+python3 single_ring.py                       # no robot
+python3 single_joint_data_collector.py       # moves the simulated robot
 ```
 
-Training scripts overwrite their default artifact destinations.  Run them only
-in a disposable package copy when validating or regenerating artifacts:
+Training scripts (`train_ring_model.py`, `train_homeostasis.py`,
+`compositional_fourier_decoder.py`) overwrite their default artifact
+destinations: run them only in a disposable copy. Robot-moving entry points
+(`single_joint_data_collector.py`, `single_joint_pid_data_collector.py`,
+`analysis_single_joint.py`, `calibrate_single_joint.py`, `demo_graphs.py`) are
+for simulation, or hardware only after a safety review (`docs/robot_safety.md`).
+To run the two collectors on chosen goals and score them like the other
+systems, use `scripts/run_legacy_trials.py` (top-level README, section 3.4).
 
-```bash
-python3 train_ring_model.py
-python3 trainer/train_ring_model.py
-python3 train_homeostasis.py
-python3 compositional_fourier_decoder.py
-```
+## Outputs
 
-## ROS and robot workflows
-
-The launch interface is:
-
-```bash
-roslaunch tiago_ring_controller tiago_ring_controller.launch
-```
-
-Launch arguments are `world`, `gui`, `public_sim`, `arm`, `end_effector`, and
-`ft_sensor`.  The included TIAGo launch stack currently resolves
-`tiago_ring_controller.world` from `pal_gazebo_worlds`, not from this package.
-That external world contains the `/recording_camera/image_raw` camera used by
-the camera/demo scripts.
-
-Robot-moving entrypoints (legacy scripts, same `legacy/` working directory and
-`PYTHONPATH` as above) must be run only in simulation or after an explicit
-hardware safety review:
-
-```bash
-python3 single_joint_data_collector.py
-python3 single_joint_pid_data_collector.py
-python3 analysis_single_joint.py
-python3 calibrate_single_joint.py
-python3 demo_graphs.py
-```
-
-`calibrate_single_joint.py` contains a manual joint-limit routine that can
-command sustained motion.  It is not an automated regression test.  Additional
-safety notes are in `docs/robot_safety.md`.
-
-## Co-simulation loop (branch `cosim-loop`, experimental)
-
-`src/tiago_ring_controller/cosim/` implements the NRP-style fixed-time-increment
-loop described in the repository's `docs/cosim/plan-b-inhouse-loop.md`: engines
-that own simulated time (`NestEngine`, `GazeboRosEngine`, and fakes), datapacks,
-transceiver functions, and `FTILoop`. It wraps the unchanged `SingleRingModel`
-and the existing `CommandState` / `build_receding_trajectory` contracts; the
-legacy entrypoints above still run their own loops. Importing the package needs
-neither NEST nor ROS.
-
-```bash
-cd /tiago_public_ws/src/tiago_ring_controller
-python3 scripts/run_cosim_trial.py --engines fake --goal 0.6     # no simulators
-python3 scripts/run_cosim_trial.py --engines nest --seed 13579   # real NEST, fake robot
-python3 scripts/run_cosim_trial.py --engines full --goal 0.6     # NEST + Gazebo (simulation running)
-python3 scripts/cosim_gazebo_smoke.py                            # lock-stepped Gazebo check
-python3 scripts/run_cosim_trial.py --engines full --dashboard             # browser dashboard, http://localhost:8765/
-python3 scripts/run_cosim_trial.py --engines full --goal 0.6 --monitor --monitor-hold   # Matplotlib window
-```
-
-The scripts resolve `src/config/` themselves and run from any working
-directory. `--model legacy` (default) imports the frozen `SingleRingModel` facade
-from `legacy/`; `--model vectorised` builds the same circuit through
-`tiago_ring_controller.nest.single_ring` in about 40 ms instead of 12 s and uses
-build-time Poisson generators, so proprioceptive bumps are accepted at every tick
-(`--proprioception continuous`). The two are compared in the repository's
-`docs/blocks/equivalence.md`; `scripts/benchmark_build.py` reproduces the numbers.
-
-`--dashboard` serves a page (standard-library HTTP server, server-sent events)
-that shows the ring live and starts or stops trials on request; it needs no
-display inside the container.
-
-`--monitor` opens a matplotlib window (state ring, rolling raster, gain counts,
-joint angle versus goal) redrawn every tick; `--monitor-every N` redraws less
-often, `--monitor-frames DIR` saves a PNG per redraw (works headless), and
-`--monitor-hold` keeps the window open after the last trial. The monitor is a
-loop observer: it reads the recorded datapacks and never changes the trial.
-The window needs X11 inside the container, i.e. a launcher started *without*
-`--headless`; the image's matplotlib defaults to Agg even with a display, so the
-monitor forces QtAgg, Qt5Agg, TkAgg or GTK3Agg in turn (`--monitor-backend` picks
-one explicitly). Without a display it says so and only `--monitor-frames` works.
-
-Tests are `test/test_cosim_loop.py`, `test/test_cosim_engines.py` (fake NEST and a
-fake ROS transport) and `test/test_cosim_real_nest.py` (parity with the legacy
-per-tick loop; runs only with the pinned NEST).
-
-## Graph files (branch `blocks-refactor`)
-
-An experiment is a graph of blocks (`tiago_ring_controller.blocks`), assembled in
-Python (`tiago_ring_controller.graph.Graph`) or loaded from a JSON file
-(`*.graph.json`, schema `ring-blocks/1`) and run through the same loop:
-
-```bash
-cd /tiago_public_ws/src/tiago_ring_controller
-python3 scripts/run_graph.py --template two_ring_single_joint --engines nest --goal 0.6
-python3 scripts/run_graph.py src/tiago_ring_controller/graph/examples/two_ring_single_joint.graph.json --engines full --dashboard
-python3 scripts/run_graph.py src/tiago_ring_controller/graph/examples/two_joint_forward_kinematics.graph.json --engines nest
-python3 scripts/run_graph.py my.graph.json --validate
-```
-
-`--dashboard` also serves the **graph editor** at `http://localhost:8765/editor`
-(plain JavaScript and SVG from `tiago_ring_controller/ui/`, no build step): a
-palette of block types with their declared parameters, blocks with typed ports
-on an SVG canvas, edges drawn by dragging from an output port to an input port
-(kinds checked in the browser and again on the server), a parameter panel with
-bounds and units, *Validate* (every problem at once), *Load* / *Save* of graph
-files (the server writes the canonical form, byte-identical to `Graph.save`),
-and *Run in session*, which compiles the drawn graph and swaps the running loop
-between trials. While a trial runs, the state ring, gain, decoder and joint
-blocks show live values.
-
-The three reference architectures are template functions in
-`graph/templates.py` with example files under `graph/examples/`
-(`two_ring_single_joint`: today's model, tick-for-tick equal to the cosim runner
-on the vectorised model; `three_ring_single_joint`: target/belief/actual rings
-with two compare-and-transport motifs; `two_joint_forward_kinematics`: the
-legacy two-joint stack). `--engines fake` runs without any simulator. The plan and
-progress log are in the repository's `docs/blocks/`.
-
-## Artifacts and results
-
-Checked-in files under `src/config/` are scientific inputs and compatibility
-artifacts.  Do not delete or rewrite apparently unused artifacts without a
-separate provenance decision.  Characterization tests record their filenames,
-hashes, NPZ key order, shapes, and dtypes.
-
-Runtime and analysis outputs are written beneath `legacy/outputs/`,
-`legacy/collected_data/`, `legacy/plots/`, `legacy/results_plots/`, `results/`,
-`src/outputs/` (co-simulation runs) and the package-adjacent
-`experiment_results/`, depending on the entrypoint.  None of them is tracked on
-this branch.
-
+Runtime outputs go to the `--out` folder of the script that wrote them; the
+legacy scripts write beneath `legacy/outputs/`, `legacy/collected_data/`,
+`legacy/plots/`, `legacy/results_plots/` and `experiment_results/`. None of
+these is tracked.

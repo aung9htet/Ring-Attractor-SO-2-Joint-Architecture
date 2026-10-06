@@ -68,7 +68,7 @@ class SchemaRoundTripTests(unittest.TestCase):
         document = json.loads(dumps(graph))
         entry = next(b for b in document["blocks"] if b["id"] == "jt")
         self.assertEqual((entry["type"], entry["ui"]), ("JointTriple", {"x": 10, "y": 20}))
-        self.assertNotIn("jt__B", [b["id"] for b in document["blocks"]])
+        self.assertNotIn("jt__P", [b["id"] for b in document["blocks"]])
         self.assertIn({"from": "goal.angle", "to": "jt.goal_angle"}, document["edges"])
         again = loads(json.dumps(document))
         self.assertEqual(again.declared["jt"].ui, {"x": 10, "y": 20})

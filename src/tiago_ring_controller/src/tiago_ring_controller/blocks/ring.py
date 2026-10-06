@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, ClassVar, Dict, Mapping, Sequence, Tuple
 
-from ..nest.populations import BuildError, build_ring_population
+from ..nest.populations import BuildError, build_ring_population, wall_profile
 from .base import Block, BuildContext, Connection, Port, signal_out, spikes_in, spikes_out
 from .params import RING_SCHEMA
 
@@ -37,12 +37,23 @@ class Ring(Block):
                 ctx.neuron_parameters("ring", p["neuron_params"]),
                 variant=p["variant"], max_distance=p["max_distance"],
                 excitation_std_dev=p["excitation_std_dev"], inhibition_std_dev=p["inhibition_std_dev"],
+                current_profile=self.current_profile(),
             )
         except BuildError as exc:
             raise self.error(str(exc))
         self.outputs = {"spikes": self.population}
         ctx.build_log.append("%s: ring N=%d (%s)" % (self.id, self.population.size, p["variant"]))
         self.built = True
+
+    def current_profile(self):
+        """Bias-current factor per neuron for a bounded ring's wall, or ``None``."""
+
+        p = self.params
+        if not p["wall"] or p["outside_current_scale"] == 1.0:
+            return None
+        if len(p["wall"]) != 2 or not 0 <= p["wall"][0] < p["wall"][1] < p["population_size"]:
+            raise self.error("wall must be [low, high] ring indices with low < high, got %r" % (p["wall"],))
+        return wall_profile(p["population_size"], p["wall"][0], p["wall"][1], p["outside_current_scale"], p["wall_taper"])
 
     def connect_late(self, ctx: BuildContext, connection: Connection) -> None:
         if connection.target_port.name != "stim":

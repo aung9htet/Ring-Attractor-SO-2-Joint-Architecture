@@ -1,14 +1,14 @@
-# Co-simulation layer (branch `cosim-loop`, continued on `blocks-refactor`)
+# Co-simulation layer
 
-This folder holds the assessment of the original hand-written NEST → Gazebo
-control loop, the two candidate designs for its replacement, and the design and
-progress record of the one that was built.
+The lock-stepped NEST and Gazebo loop that every graph version runs on. The
+assessment of the original hand-written loop, the two candidate designs for
+its replacement and the progress record of the one that was built are archived:
 
 | File | Purpose |
 | --- | --- |
-| [assessment.md](assessment.md) | What the current loop does, why it is defective, and what any replacement must fix. Cites file:line in the legacy code. |
-| [plan-a-nrp-core.md](plan-a-nrp-core.md) | Option A: migrate onto the HBP Neurorobotics Platform (`nrp-core`). Feasibility, risks, step list, go/no-go gates. |
-| [plan-b-inhouse-loop.md](plan-b-inhouse-loop.md) | Option B (**recommended**): implement an NRP-style fixed-time-increment loop inside this package. Design, phased tasks, acceptance tests. |
+| [assessment](../archive/cosim-assessment.md) | What the current loop does, why it is defective, and what any replacement must fix. Cites file:line in the legacy code. |
+| [plan A](../archive/cosim-plan-a-nrp-core.md) | Option A: migrate onto the HBP Neurorobotics Platform (`nrp-core`). Feasibility, risks, step list, go/no-go gates. |
+| [plan B](../archive/cosim-plan-b-inhouse-loop.md) | Option B (**recommended**): implement an NRP-style fixed-time-increment loop inside this package. Design, phased tasks, acceptance tests. |
 
 Implementation status is kept in the "Progress" section of plan B. The loop,
 fakes, real-NEST engine, Gazebo/ROS engine and dashboard live under
@@ -57,19 +57,26 @@ Gazebo 11, Python 3.8 and NEST `HEAD@41892a5`. Nothing in plan B needs a new ima
 the optional Gazebo step plugin (plan B, phase 5) builds with the existing
 `catkin build` of `tiago_ring_controller`.
 
-## Gazebo checks still open
+## Gazebo checks
 
-The Gazebo engine has been run against the simulation once by hand, never by a
-test, and the answers below are not recorded in `assessment.md` §6. With the
-simulation launched (`roslaunch tiago_ring_controller tiago_ring_controller.launch
-gui:=false` inside the container):
+Run on 2026-10-02 against the headless simulation (`gui:=false`, software
+rendering, pinned image); method and full output in `docs/archive/velocity/calibration.md`.
 
-- `rosparam get /use_sim_time` (expected `true`).
-- `rosservice list | grep gazebo` — `/gazebo/pause_physics`,
-  `/gazebo/unpause_physics`, `/gazebo/get_physics_properties`.
-- `rostopic hz /clock` and `rostopic hz /joint_states` (expected ~1000 Hz and
-  ~50–100 Hz); pause physics and confirm `/clock` stops.
-- `scripts/measure_legacy_tick.py` for the legacy loop's real tick period
-  (plan B phase 0), `scripts/cosim_gazebo_smoke.py` (phase 3 gate, `--joints 5 6`
-  for two joints), `scripts/run_graph.py --engines full --dashboard` for a graph
-  trial in Gazebo.
+| Check | Result |
+| --- | --- |
+| `/use_sim_time` | `true` |
+| `/gazebo/pause_physics`, `unpause_physics`, `get_physics_properties` | present; `time_step` 0.001 s, `max_update_rate` 1000 |
+| `/clock`, `/joint_states` | 1000 and 50 messages per simulated second, real-time factor 1.00 |
+| Clock-wait stepper | overshoots one physics iteration (1 ms) per step; with the absolute schedule a tick is 0.0500 s on average (0.049-0.051), 51 ms wall |
+| Velocity steps through `GazeboRosEngine` (`scripts/identify_actuator.py`) | displacement gain 0.985-0.991, lag 8-14 ms on joints 1, 4, 5 |
+| Graph trials (`scripts/validate_velocity.py --engines full`) | see `docs/archive/velocity/calibration.md` |
+
+Two facts found there shape the engine: the arm has no velocity interface
+(`arm_controller` is a `position_controllers/JointTrajectoryController`), and the
+velocity field of `/joint_states` is not usable for the wrist (about -1.45 rad/s
+for a resting `arm_6_joint`), so stillness and measured velocity come from
+position differences.
+
+Still open: `scripts/measure_legacy_tick.py` (the legacy loop's real tick
+period), `scripts/cosim_gazebo_smoke.py --joints 5 6`, the dashboard and editor
+against Gazebo, and a run with the Gazebo GUI on a GPU.

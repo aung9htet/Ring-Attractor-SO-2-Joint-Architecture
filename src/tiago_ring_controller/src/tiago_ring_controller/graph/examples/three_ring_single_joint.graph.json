@@ -8,7 +8,8 @@
     "rng_seed": 13579,
     "local_num_threads": 1,
     "step_mode": "run",
-    "reset_mode": "rebuild"
+    "reset_mode": "rebuild",
+    "time_scale": 3
   },
   "blocks": [
     {
@@ -18,13 +19,55 @@
         "population_size": 200,
         "num_fourier_k": 20,
         "half_width": 5,
-        "mapping": "collector",
+        "mapping": "bounded",
         "joint_min": -1.4172695167359413,
         "joint_max": 1.4171452891568528,
-        "state_mode": "continuous",
+        "arc_fraction": 0.7,
+        "ring": {
+          "wall": [
+            15,
+            185
+          ],
+          "outside_current_scale": 0.9,
+          "wall_taper": 0
+        },
+        "homeostasis": {
+          "weight_scale": 5000000.0,
+          "ramp_current": 800000.0,
+          "weights_artifact": "homeostasis/N_200_bounded_a070_homeostasis_weights.npy",
+          "metadata_artifact": "homeostasis/N_200_bounded_a070_homeostasis_metadata.json"
+        },
+        "gain": {
+          "limit_arc": [
+            30,
+            170
+          ],
+          "limit_taper": 0.0,
+          "left_homeostasis_gain_weight": 10000.0,
+          "right_homeostasis_gain_weight": 10000.0
+        },
+        "state_mode": "corrective",
         "state_rate_hz": 200.0,
+        "state_dead_band": 1,
+        "body_gain": {
+          "left_homeostasis_gain_weight": 10000.0,
+          "right_homeostasis_gain_weight": 10000.0
+        },
+        "goal_mode": "corrective",
+        "goal_dead_band": 2,
         "goal_feedback_weight": -0.6,
-        "sense_feedback_weight": -0.6
+        "body_feedback_weight": -3.0,
+        "goal_reference": {
+          "exc_weight": 20000.0,
+          "inh_weight": 60000.0,
+          "window": 10
+        },
+        "body_reference": {
+          "exc_weight": 20000.0,
+          "inh_weight": 150000.0,
+          "window": 10
+        },
+        "window_ticks": 3
       }
     },
     {
@@ -33,13 +76,14 @@
       "params": {
         "source": "gain_counts",
         "spike_scale": 1.0,
-        "tau_s": 0.5125923387284963,
+        "dead_zone": 9.0,
+        "tau_s": 0.05,
         "delay_steps": 0,
-        "gain_positive": 0.0011,
-        "gain_negative": -0.0011,
-        "drive_threshold": 5.0,
-        "n_settle": 10,
-        "horizon": 4
+        "gain_positive": 0.002132289766833065,
+        "gain_negative": -0.002132289766833065,
+        "drive_threshold": 15.0,
+        "n_settle": 40,
+        "horizon": 1
       }
     },
     {
@@ -49,7 +93,8 @@
         "index": 5,
         "joint_min": -1.4172695167359413,
         "joint_max": 1.4171452891568528,
-        "limits_source": "params"
+        "limits_source": "params",
+        "max_velocity": 1.76
       }
     },
     {

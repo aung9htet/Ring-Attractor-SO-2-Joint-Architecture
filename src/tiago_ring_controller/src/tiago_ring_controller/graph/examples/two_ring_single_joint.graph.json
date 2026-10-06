@@ -20,7 +20,10 @@
         "max_distance": 50.0,
         "excitation_std_dev": 10.0,
         "inhibition_std_dev": 5.0,
-        "neuron_params": {}
+        "neuron_params": {},
+        "wall": [],
+        "outside_current_scale": 1.0,
+        "wall_taper": 0
       }
     },
     {
@@ -32,7 +35,10 @@
         "max_distance": 50.0,
         "excitation_std_dev": 10.0,
         "inhibition_std_dev": 5.0,
-        "neuron_params": {}
+        "neuron_params": {},
+        "wall": [],
+        "outside_current_scale": 1.0,
+        "wall_taper": 0
       }
     },
     {
@@ -67,6 +73,7 @@
         "cold_inh_weight": -20000.0,
         "decision_lateral_weight": -20000.0,
         "weight_scale": 5000000.0,
+        "ramp_current": 0.0,
         "weights_artifact": "",
         "metadata_artifact": "",
         "neuron_params": {}
@@ -82,7 +89,9 @@
         "gain_to_ring_weight": -0.6,
         "cross_inhibition_weight": -30000.0,
         "margin": 5,
-        "neuron_params": {}
+        "neuron_params": {},
+        "limit_arc": [],
+        "limit_taper": 10.0
       }
     },
     {
@@ -97,7 +106,8 @@
         "dead_band": 0,
         "mapping": "collector",
         "joint_min": -1.4172695167359413,
-        "joint_max": 1.4171452891568528
+        "joint_max": 1.4171452891568528,
+        "arc_fraction": 0.7
       }
     },
     {
@@ -112,7 +122,8 @@
         "dead_band": 0,
         "mapping": "collector",
         "joint_min": -1.4172695167359413,
-        "joint_max": 1.4171452891568528
+        "joint_max": 1.4171452891568528,
+        "arc_fraction": 0.7
       }
     },
     {
@@ -121,10 +132,11 @@
       "params": {
         "source": "gain_counts",
         "spike_scale": 1.0,
-        "tau_s": 0.5125923387284963,
+        "dead_zone": 20.0,
+        "tau_s": 0.15,
         "delay_steps": 0,
-        "gain_positive": 0.0011,
-        "gain_negative": -0.0011,
+        "gain_positive": 0.0015907594569530858,
+        "gain_negative": -0.0015907594569530858,
         "drive_threshold": 5.0,
         "n_settle": 10,
         "horizon": 4
@@ -137,7 +149,8 @@
         "index": 5,
         "joint_min": -1.4172695167359413,
         "joint_max": 1.4171452891568528,
-        "limits_source": "params"
+        "limits_source": "params",
+        "max_velocity": 1.0
       }
     },
     {

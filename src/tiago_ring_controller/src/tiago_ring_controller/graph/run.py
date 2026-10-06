@@ -30,6 +30,8 @@ def run_graph_trial(compiled: CompiledGraph, goal_rad: float, meta: Optional[Dic
     """One trial of a compiled graph: sets the (first) Goal block, runs, annotates the record."""
 
     trial_meta = {"graph": compiled.graph.describe(), "graph_name": compiled.graph.name}
+    if compiled.meta.get("calibration"):
+        trial_meta["calibration"] = compiled.meta["calibration"]
     if meta:
         trial_meta.update(meta)
     record = run_trial(compiled.loop, goal_rad, compiled.config, meta=trial_meta, reset_mode=reset_mode)

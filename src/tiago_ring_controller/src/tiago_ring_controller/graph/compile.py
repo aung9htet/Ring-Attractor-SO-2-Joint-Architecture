@@ -24,6 +24,7 @@ from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from ..blocks.base import Block, PortKind
 from ..blocks.decoder import Decoder, ProfileDecoder
+from ..blocks.state import RingState
 from ..blocks.joint import Goal, Joint
 from ..blocks.probe import Probe
 from ..cosim.config import CosimConfig
@@ -33,6 +34,7 @@ from ..cosim.fakes import FakeRobotEngine
 from ..cosim.graph_engine import GraphNestEngine
 from ..cosim.loop import AnyOf, FTILoop, LoopObserver, MaxSteps, SettledFlag
 from ..cosim.tf import GoalTF, TickContext, TransceiverFunction
+from .calibration import calibration_report, transport_motif
 from .graph import Graph, GraphError
 
 ROBOT_ENGINES = ("fake", "gazebo")
@@ -230,7 +232,11 @@ class DecoderTF(BlockTF):
 
 
 class JointCommandTF(BlockTF):
-    """``Decoder.velocity -> Joint.velocity`` → ``"<joint>.command"`` (one joint's horizon)."""
+    """``Decoder.velocity -> Joint.velocity`` → ``"<joint>.command"`` (one joint's horizon).
+
+    The horizon is clipped to the joint's ``max_velocity`` and carries the
+    joint's limits, which the robot engine enforces on the commanded positions.
+    """
 
     def __init__(self, graph: Graph, block: Joint, decoder: Decoder, source_id: str) -> None:
         BlockTF.__init__(self, graph, block)
@@ -239,23 +245,44 @@ class JointCommandTF(BlockTF):
         self.source_id = source_id
         self.inputs = frozenset({source_id, "ring_counts"})
         self.outputs = frozenset({self.name})
+        self._ring_views: Dict[int, Dict[str, Any]] = {}
+
+    def reset(self) -> None:
+        self.block.reset()
+        self._ring_views = {}
 
     def __call__(self, inputs: Mapping[str, DataPack], ctx: TickContext) -> Dict[str, DataPack]:
+        # The collector record and the dashboard expect the ring fields on the consumed sample;
+        # the NEST engine emits ring_counts when the graph has the single-joint motif.  The
+        # consumed sample is older than the newest ring view by the horizon, so views are kept
+        # by NEST step and the one of the consumed step is attached.
+        view = inputs.get("ring_counts")
+        if view is not None and view.get("nest_step") is not None:
+            self._ring_views[int(view["nest_step"])] = {
+                "r1_spike_count": view.get("r1_spike_count", 0.0), "r1_bump_index": view.get("r1_bump_index"),
+                "r1_centroid": view.get("r1_centroid", float("nan")),
+                "r1_centroid_circular": view.get("r1_centroid_circular", float("nan")),
+            }
         pack = inputs.get(self.source_id)
         if pack is None:
             return {}
         consumed = dict(pack["consumed"])
-        # The collector record and the dashboard expect the ring fields on the consumed sample;
-        # the NEST engine emits ring_counts when the graph has the single-joint motif.
-        view = inputs.get("ring_counts")
-        consumed.setdefault("r1_spike_count", 0.0 if view is None else view.get("r1_spike_count", 0.0))
-        consumed.setdefault("r1_bump_index", None if view is None else view.get("r1_bump_index"))
-        consumed.setdefault("r1_centroid", float("nan") if view is None else view.get("r1_centroid", float("nan")))
+        step = consumed.get("nest_step")
+        ring = self._ring_views.get(int(step)) if step is not None else None
+        if ring is None:
+            ring = {"r1_spike_count": 0.0, "r1_bump_index": None, "r1_centroid": float("nan"), "r1_centroid_circular": float("nan")}
+        for key, value in ring.items():
+            consumed.setdefault(key, value)
+        if step is not None:
+            for old in [key for key in self._ring_views if key < int(step)]:
+                del self._ring_views[old]
+        velocities, clipped = self.block.clip_velocities(pack["velocity"])
         return {
             self.name: DataPack(
                 self.name, ctx.t_ms,
                 {
-                    "joint_index": self.block.index, "velocities": list(pack["velocity"]),
+                    "joint_index": self.block.index, "velocities": velocities,
+                    "limits": list(self.block.limits()), "velocity_clamped": clipped,
                     "consumed": consumed, "consecutive_settled": int(pack.get("consecutive_settled", 0)),
                     "settled": bool(pack["settled"]),
                 },
@@ -292,7 +319,8 @@ class ArmCommandTF(TransceiverFunction):
             return {}
         primary = inputs.get(self.primary_id) or packs[0]
         commands = [
-            {"joint_index": int(p["joint_index"]), "velocities": list(p["velocities"]), "settled": bool(p["settled"])}
+            {"joint_index": int(p["joint_index"]), "velocities": list(p["velocities"]), "settled": bool(p["settled"]),
+             "limits": list(p["limits"]), "velocity_clamped": bool(p["velocity_clamped"])}
             for p in packs
         ]
         return {
@@ -304,6 +332,7 @@ class ArmCommandTF(TransceiverFunction):
                     "nest_lead_steps": self.nest_lead_steps, "consumed": dict(primary["consumed"]),
                     "consecutive_settled": int(primary.get("consecutive_settled", 0)),
                     "settled": all(c["settled"] for c in commands), "phase": ctx.phase,
+                    "velocity_clamped": any(c["velocity_clamped"] for c in commands),
                     "commands": commands,
                 },
             )
@@ -316,6 +345,17 @@ class ProfileDecoderTF(BlockTF):
         if profile is None:
             return {}
         return self.emit(ctx, **self.block.step(profile))
+
+
+class RingStateTF(BlockTF):
+    """``Ring.counts -> RingState.counts`` → the joint angle the ring holds."""
+
+    def __call__(self, inputs: Mapping[str, DataPack], ctx: TickContext) -> Dict[str, DataPack]:
+        counts = self.read(inputs, "counts")
+        if counts is None:
+            return {}
+        source = inputs.get(self.sources["counts"][0])
+        return self.emit(ctx, **self.block.step(counts, None if source is None else source.get("nest_step")))
 
 
 class ProbeTF(BlockTF):
@@ -354,7 +394,7 @@ def graph_cosim_config(graph: Graph, primary: Optional[Primary] = None) -> Cosim
         reset_mode=sim.reset_mode, stepper=graph.robot.get("stepper", "clock_wait"), nest_model="vectorised",
     )
     encoder = primary.state_encoder or primary.goal_encoder
-    if encoder is not None and encoder.params["mapping"] != "circular":
+    if encoder is not None and encoder.params["mapping"] not in ("circular", "bounded"):
         values["profile"] = encoder.params["mapping"]
         values["stimulus_half_width"] = encoder.params["half_width"]
         values["proprioception_mode"] = encoder.params["mode"] if encoder.params["mode"] != "corrective" else "continuous"
@@ -365,7 +405,7 @@ def graph_cosim_config(graph: Graph, primary: Optional[Primary] = None) -> Cosim
         p = primary.decoder.params
         values.update(
             decoder_gain_positive=p["gain_positive"], decoder_gain_negative=p["gain_negative"],
-            decoder_tau_s=p["tau_s"], decoder_delay_steps=p["delay_steps"],
+            decoder_tau_s=p["tau_s"], decoder_delay_steps=p["delay_steps"], decoder_dead_zone=p["dead_zone"],
             drive_threshold=p["drive_threshold"], n_settle=p["n_settle"],
         )
     return CosimConfig(**values)
@@ -416,7 +456,10 @@ def resolve_joint_limits(graph: Graph, transport: Any) -> Dict[str, Any]:
     """Apply URDF limits to ``Joint`` blocks with ``limits_source="urdf"`` (and their encoders).
 
     Encoders whose ``joint_min``/``joint_max`` equal the joint's previous limits
-    (the templates set them from the same source) follow.  Returns what changed.
+    (the templates set them from the same source) follow.  When the encoder that
+    places the joint on the state ring follows, one ring index stands for a
+    different angle, so the gains of the decoder commanding the joint are scaled
+    by the same ratio (the decoder gain is ``a * rho / dt``).  Returns what changed.
     """
 
     from ..cosim.limits import joint_limits_from_transport
@@ -437,6 +480,13 @@ def resolve_joint_limits(graph: Graph, transport: Any) -> Dict[str, Any]:
                 params["joint_min"], params["joint_max"] = float(limits[0]), float(limits[1])
                 followers.append(block.id)
         changed[joint.id] = {"from": old, "to": limits, "followers": followers}
+        decoder = source_of(graph, joint, "velocity")
+        encoder = transport_motif(graph, decoder).get("state_encoder") if isinstance(decoder, Decoder) else None
+        if encoder is not None and encoder.id in followers and old[1] > old[0]:
+            factor = (float(limits[1]) - float(limits[0])) / (old[1] - old[0])
+            decoder.params["gain_positive"] *= factor
+            decoder.params["gain_negative"] *= factor
+            changed[joint.id]["decoder"] = {"id": decoder.id, "gain_factor": factor}
     return changed
 
 
@@ -485,6 +535,8 @@ def compile_graph(
             tfs.append(DecoderTF(graph, block))
         elif isinstance(block, ProfileDecoder):
             tfs.append(ProfileDecoderTF(graph, block))
+        elif isinstance(block, RingState):
+            tfs.append(RingStateTF(graph, block))
         elif isinstance(block, Probe):
             tfs.append(ProbeTF(graph, block))
     if primary.complete and nest_engine is not None:
@@ -507,12 +559,13 @@ def compile_graph(
     )
     return CompiledGraph(
         graph=graph, loop=loop, config=config, nest_engine=nest_engine, robot_engine=robot_engine,
-        tfs=tfs, primary=primary, meta={"engines": engines, "graph": graph.describe()},
+        tfs=tfs, primary=primary,
+        meta={"engines": engines, "graph": graph.describe(), "calibration": calibration_report(graph)},
     )
 
 
 __all__ = [
     "ArmCommandTF", "BlockTF", "CompiledGraph", "DecoderTF", "GoalBlockTF", "JointCommandTF", "JointSensorTF",
-    "Primary", "ProbeTF", "ProfileDecoderTF", "compile_graph", "find_primary",
+    "Primary", "ProbeTF", "ProfileDecoderTF", "RingStateTF", "compile_graph", "find_primary",
     "graph_cosim_config", "make_robot_engine", "resolve_joint_limits",
 ]

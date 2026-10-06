@@ -32,12 +32,16 @@ problems reported together):
   to the runtime (the editor stores positions there).
 - `edges`: `from` an output port, `to` an input port of the same kind
   (`spikes` or `signal`); required inputs connected; at most one producer per
-  input unless the port is *multi* (`Ring.stim`); edge `params` only `weight`
-  and `margin` (spike edges into a ring); the signal graph is acyclic within a
+  input unless the port is *multi* (`Ring.stim`, `Gain.reference`); edge
+  `params` only `weight` and `margin` (spike edges into a ring) and
+  `exc_weight`, `inh_weight`, `window` (a ring's spikes into `Gain.reference`,
+  the projection of architecture v4: `docs/architecture.md`); the signal graph is acyclic within a
   tick; build-bound spike edges are acyclic (feedback goes through late-bound
   inputs).
 - `simulation`: `dt_ms > 0`, `nest_lead_steps ≥ 0`, `max_steps > 0`,
-  `step_mode` run|simulate, `reset_mode` rebuild|continue, `local_num_threads ≥ 1`.
+  `step_mode` run|simulate, `reset_mode` rebuild|continue, `local_num_threads ≥ 1`,
+  optional `time_scale` (integer ≥ 1, NEST steps of `dt_ms` per robot tick; left out when 1.
+  A decoder's dead zone and settle threshold scale with it: `docs/archive/velocity/speed.md`).
 - `robot.engine`: the intended robot, fake|gazebo (documentation: `--engines
   full` always drives Gazebo, `fake` and `nest` always the fake robot);
   `robot.stepper`: clock_wait|plugin.

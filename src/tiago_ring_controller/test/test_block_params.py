@@ -83,7 +83,7 @@ class ParamSchemaTests(unittest.TestCase):
         self.assertEqual(
             list(PRIMITIVE_SCHEMAS),
             ["Ring", "FourierReadout", "Homeostasis", "Gain", "Encoder", "FeatureEncoder", "Decoder", "Joint", "Goal",
-             "Probe", "SignedProduct", "OutputRing", "ProfileDecoder", "TaskGain", "Transport", "JointTriple"],
+             "Probe", "SignedProduct", "OutputRing", "ProfileDecoder", "RingState", "TaskGain", "Transport", "JointTriple"],
         )
         with self.assertRaises(KeyError):
             schema_for("Nope")

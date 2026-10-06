@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 from collections import OrderedDict
+from dataclasses import fields as dataclass_fields
 from typing import Any, Dict, List, Mapping
 
 from ..blocks import REGISTRY, BlockError, block_from_type
@@ -56,7 +57,7 @@ def graph_from_dict(document: Mapping[str, Any]) -> Graph:
     if not isinstance(simulation_doc, Mapping):
         problems.append("simulation must be an object")
         simulation_doc = {}
-    known_sim = set(Simulation().to_dict())
+    known_sim = {f.name for f in dataclass_fields(Simulation)}
     unknown_sim = sorted(set(simulation_doc) - known_sim)
     if unknown_sim:
         problems.append("unknown simulation keys %s" % unknown_sim)

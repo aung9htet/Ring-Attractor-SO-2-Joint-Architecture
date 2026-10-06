@@ -4,7 +4,9 @@
     python3 scripts/run_graph.py GRAPH.graph.json --engines fake|nest|full [--goal RAD ...] [--out DIR]
     python3 scripts/run_graph.py GRAPH.graph.json --validate
     python3 scripts/run_graph.py GRAPH.graph.json --engines full --dashboard   # http://localhost:8765/
-    python3 scripts/run_graph.py --template two_ring_single_joint --engines nest
+    python3 scripts/run_graph.py --template two_ring_single_joint --engines nest                    # v3, legacy ring
+    python3 scripts/run_graph.py --template two_ring_single_joint --bounds bounded --engines nest   # v3, bounded ring
+    python3 scripts/run_graph.py --template three_ring_single_joint --joint 4 --engines nest        # v4
 
 ``--engines fake`` needs no simulator (fake NEST backend, fake robot), ``nest``
 needs PyNEST (fake robot), ``full`` uses the graph's ``robot.engine`` (Gazebo).
@@ -29,6 +31,16 @@ def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("graph", nargs="?", help="graph file (.graph.json)")
     parser.add_argument("--template", choices=sorted(TEMPLATES), help="use a built-in template instead of a file")
+    parser.add_argument("--bounds", choices=("legacy", "bounded"), default=None,
+                        help="--template two_ring_single_joint: legacy ring or the bounded ring (docs/archive/velocity/bounded-ring.md)")
+    parser.add_argument("--time-scale", type=int, default=None,
+                        help="single-joint templates: NEST steps per robot tick (docs/archive/velocity/speed.md); default: the template's")
+    parser.add_argument("--calibration", choices=("legacy", "transport"), default=None,
+                        help="--template two_ring_single_joint: decoder gains from velocity_calibration.json (hand-set) or "
+                             "from the transport calibration (default)")
+    parser.add_argument("--joint", type=int, default=None, help="single-joint templates: arm joint index 0-6 (default 5)")
+    parser.add_argument("--feedback", action="append", default=[],
+                        help="--template three_ring_single_joint: v4 setting key=value (graph.templates.FEEDBACK), e.g. motor_gain=0.004")
     parser.add_argument("--engines", choices=("fake", "nest", "full"), default="fake")
     parser.add_argument("--goal", type=float, action="append", help="goal angle in rad (repeatable)")
     parser.add_argument("--seed", type=int, default=None, help="override simulation.rng_seed")
@@ -42,9 +54,41 @@ def parse_args(argv=None):
     return parser.parse_args(argv)
 
 
+def parse_settings(items):
+    """``key=value`` items as a dict; the value is JSON when it parses, ``a.b=value`` sets ``{"a": {"b": value}}``."""
+
+    import json
+
+    settings = {}
+    for item in items or ():
+        key, _, value = item.partition("=")
+        try:
+            value = json.loads(value)
+        except ValueError:
+            pass
+        target = settings
+        *parents, leaf = key.split(".")
+        for parent in parents:
+            target = target.setdefault(parent, {})
+        target[leaf] = value
+    return settings
+
+
+SINGLE_JOINT_TEMPLATES = ("two_ring_single_joint", "three_ring_single_joint")
+
+
 def load(args):
+    options = {key: value for key, value in (("bounds", args.bounds), ("time_scale", args.time_scale), ("joint", args.joint), ("calibration", args.calibration),
+                                             ("feedback", parse_settings(args.feedback) or None)) if value is not None}
+    if options and args.template not in SINGLE_JOINT_TEMPLATES:
+        # in a graph file the decoder's dead zone belongs to its time scale: edit simulation.time_scale and the decoder together
+        raise SystemExit("--bounds, --calibration, --time-scale, --joint and --feedback apply to --template %s" % " / ".join(SINGLE_JOINT_TEMPLATES))
+    if ("bounds" in options or "calibration" in options) and args.template != "two_ring_single_joint":
+        raise SystemExit("--bounds and --calibration apply to --template two_ring_single_joint (v4 is always on the bounded ring)")
+    if "feedback" in options and args.template != "three_ring_single_joint":
+        raise SystemExit("--feedback applies to --template three_ring_single_joint")
     if args.template:
-        graph = TEMPLATES[args.template]()
+        graph = TEMPLATES[args.template](**options)
     elif args.graph:
         graph = Graph.load(args.graph)
     else:
@@ -153,6 +197,15 @@ def main(argv=None):
         return 0
 
     print("engines: %s" % args.engines + (" (NEST + Gazebo through ROS)" if args.engines == "full" else " (fake robot)"))
+    from tiago_ring_controller.graph import calibration_report
+
+    for row in calibration_report(graph):
+        if row["warning"]:
+            print("WARNING: " + row["warning"])
+        elif not row["uses_transport_calibration"]:
+            print("note: decoder %r gain %.6g, dead zone %g; the transport calibration prescribes %.6g and %g"
+                  % (row["decoder"], row["actual"]["gain_positive"], row["actual"]["dead_zone"],
+                     row["expected"]["gain_positive"], row["expected"]["dead_zone"]))
     goal_values = [g if g is not None else (graph.blocks[b].value() if (b := next((i for i, blk in graph.blocks.items() if blk.type_name == "Goal"), None)) else 0.0) for g in goals]
     started = time.monotonic()
     results = run_graph(graph, engines=args.engines, goals=goal_values, out_dir=args.out, on_trial=report_timing)

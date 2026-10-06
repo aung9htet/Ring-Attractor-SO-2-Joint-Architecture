@@ -1,0 +1,80 @@
+[
+ {
+  "joint": 5,
+  "system": 1,
+  "goal_rad": -1.2755,
+  "start_rad": 0.1993,
+  "final_rad": -1.2947,
+  "goal_error_rad": 0.0192,
+  "ring_final_rad": -1.1721,
+  "steps": 302,
+  "stop": "drive_settled",
+  "frames": 302,
+  "video": "speed_joint5_goal-1.28_k1.mp4"
+ },
+ {
+  "joint": 5,
+  "system": 3,
+  "goal_rad": -1.2755,
+  "start_rad": 0.1992,
+  "final_rad": -1.3176,
+  "goal_error_rad": 0.0421,
+  "ring_final_rad": -1.2076,
+  "steps": 123,
+  "stop": "drive_settled",
+  "frames": 123,
+  "video": "speed_joint5_goal-1.28_k3.mp4"
+ },
+ {
+  "joint": 4,
+  "system": 1,
+  "goal_rad": 1.4661,
+  "start_rad": -1.5705,
+  "final_rad": 1.4164,
+  "goal_error_rad": 0.0497,
+  "ring_final_rad": 1.7307,
+  "steps": 223,
+  "stop": "drive_settled",
+  "frames": 223,
+  "video": "speed_joint4_goal+1.47_k1.mp4"
+ },
+ {
+  "joint": 4,
+  "system": 3,
+  "goal_rad": 1.4661,
+  "start_rad": -1.5706,
+  "final_rad": 1.3661,
+  "goal_error_rad": 0.1,
+  "ring_final_rad": 1.6275,
+  "steps": 115,
+  "stop": "drive_settled",
+  "frames": 115,
+  "video": "speed_joint4_goal+1.47_k3.mp4"
+ },
+ {
+  "joint": 1,
+  "system": 1,
+  "goal_rad": -1.172,
+  "start_rad": -0.2068,
+  "final_rad": -0.9646,
+  "goal_error_rad": -0.2074,
+  "ring_final_rad": -1.0074,
+  "steps": 171,
+  "stop": "drive_settled",
+  "frames": 171,
+  "video": "speed_joint1_goal-1.17_k1.mp4"
+ },
+ {
+  "joint": 1,
+  "system": 3,
+  "goal_rad": -1.172,
+  "start_rad": -0.2068,
+  "final_rad": -0.9634,
+  "goal_error_rad": -0.2087,
+  "ring_final_rad": -1.0296,
+  "steps": 68,
+  "stop": "drive_settled",
+  "frames": 68,
+  "video": "speed_joint1_goal-1.17_k3.mp4"
+ }
+]

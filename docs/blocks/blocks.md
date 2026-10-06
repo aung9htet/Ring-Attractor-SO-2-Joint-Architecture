@@ -20,6 +20,9 @@ Neural: yes. Version 1.
 | `excitation_std_dev` | float | 10 | ≥ 0 |  | Mexican-hat excitation width |
 | `inhibition_std_dev` | float | 5 | ≥ 0 |  | Mexican-hat inhibition width |
 | `neuron_params` | dict | `{}` |  |  | iaf_psc_alpha parameters for the ring population; empty means the config file's 'ring' set |
+| `wall` | list | `[]` |  |  | bounded ring: [low, high] ring indices; neurons outside get their bias current scaled by outside_current_scale so no bump can rest there (empty = no wall) |
+| `outside_current_scale` | float | 1 | ≥ 0; ≤ 1 |  | bias current factor outside the wall |
+| `wall_taper` | int | 0 | ≥ 0 |  | indices over which the factor changes linearly at each wall end |
 
 | port | kind | direction | notes |
 |---|---|---|---|
@@ -60,6 +63,7 @@ Neural: yes. Version 1.
 | `cold_inh_weight` | float | -20000 |  |  | warm -> right |
 | `decision_lateral_weight` | float | -20000 |  |  | left <-> right |
 | `weight_scale` | float | 5e+06 |  |  | multiplies the fitted feature weights |
+| `ramp_current` | float | 0 |  | pA | added to the warm and cold neurons' bias current: keeps both ramps above the zero-rate floor across the joint arc (the decision reads their difference); 0 = legacy |
 | `weights_artifact` | str |  |  |  | N_<N>_homeostasis_weights.npy; empty = homeostasis/ per feature count |
 | `metadata_artifact` | str |  |  |  | matching metadata JSON (feature order); empty = per feature count |
 | `neuron_params` | dict | `{}` |  |  | iaf_psc_alpha parameters for the homeostasis population; empty means the config file's 'homeostasis' set |
@@ -89,12 +93,15 @@ Neural: yes. Version 1.
 | `cross_inhibition_weight` | float | -30000 |  |  | decision left -> right population and vice versa |
 | `margin` | int | 5 | ≥ 0 |  | ring neurons excluded from feedback at each end |
 | `neuron_params` | dict | `{}` |  |  | iaf_psc_alpha parameters for the gain population; empty means the config file's 'gain' set |
+| `limit_arc` | list | `[]` |  |  | bounded ring: [low, high] ring indices of the joint limits; the ring's drive of the right (upward) population fades to 0 at high, of the left population at low (empty = none) |
+| `limit_taper` | float | 10 | ≥ 0 |  | indices over which the drive fades at a limit |
 
 | port | kind | direction | notes |
 |---|---|---|---|
 | `ring` | spikes | in | required; the ring whose bump gates the populations (one_to_one) |
 | `left_in` | spikes | in | required; decision neuron for left |
 | `right_in` | spikes | in | required; decision neuron for right |
+| `reference` | spikes | in | optional; multi; late; a ring the gated bump is steered toward, index by index (edge params exc_weight, inh_weight, window; late-bound) |
 | `feedback` | spikes | out | shifted ±1 feedback into a ring's stim port (late-bound) |
 | `left_counts` | signal | out | left population spikes per tick |
 | `right_counts` | signal | out | right population spikes per tick |
@@ -103,12 +110,12 @@ Neural: yes. Version 1.
 
 Angle → bump: N Poisson generators one_to_one on the target ring, rate set per tick.
 
-Modes: ``once`` (first angle of a trial only, legacy parity), ``continuous``
-(every tick), ``corrective`` (only when the ring's centroid is further than
-``dead_band`` from the mapped index).  A window stays on for
-``duration_ticks`` ticks.  The block owns no NEST structure until it is
-connected to a ring (late-bound ``stim``), because the generator count is
-the ring size.
+    Modes: ``once`` (first angle of a trial only, legacy parity), ``continuous``
+    (every tick), ``corrective`` (only when the ring's centroid is further than
+    ``dead_band`` from the mapped index).  A window stays on for
+    ``duration_ticks`` ticks.  The block owns no NEST structure until it is
+    connected to a ring (late-bound ``stim``), because the generator count is
+    the ring size.
 
 Neural: yes. Version 1.
 
@@ -120,9 +127,10 @@ Neural: yes. Version 1.
 | `duration_ticks` | int | 1 | ≥ 1 |  | ticks a bump stays on |
 | `mode` | str | once | once, continuous, corrective |  | when to stimulate |
 | `dead_band` | int | 0 | ≥ 0 |  | corrective mode: minimum \|centroid - index\| in ring indices |
-| `mapping` | str | collector | collector, analysis, calibration, circular |  | angle -> ring index: a legacy control profile over [joint_min, joint_max], or the full circle |
+| `mapping` | str | collector | collector, analysis, calibration, circular, bounded |  | angle -> ring index: a legacy control profile over [joint_min, joint_max], the full circle, or 'bounded': the joint range on arc_fraction of the ring, centred opposite the seam |
 | `joint_min` | float | -1 |  | rad | lower joint limit of the mapping |
 | `joint_max` | float | 1 |  | rad | upper joint limit of the mapping |
+| `arc_fraction` | float | 0.7 | ≥ 0.05; ≤ 0.95 |  | bounded mapping: fraction of the ring the joint range covers |
 
 | port | kind | direction | notes |
 |---|---|---|---|
@@ -133,11 +141,11 @@ Neural: yes. Version 1.
 
 Angle → 2K push-pull feature rates on generators, so a comparator can take a reference with no ring.
 
-Feature k: ``sin_pos = max(sin(kθ), 0)``, ``sin_neg = max(-sin(kθ), 0)`` where
-θ is the preferred angle of the ring index the angle maps to; rates are
-``rate_scale`` times those values.  The generators are a population whose
-``features`` port plugs into ``Homeostasis``; the fitted comparator weights
-are those of the ring size in ``population_size``.
+    Feature k: ``sin_pos = max(sin(kθ), 0)``, ``sin_neg = max(-sin(kθ), 0)`` where
+    θ is the preferred angle of the ring index the angle maps to; rates are
+    ``rate_scale`` times those values.  The generators are a population whose
+    ``features`` port plugs into ``Homeostasis``; the fitted comparator weights
+    are those of the ring size in ``population_size``.
 
 Neural: yes. Version 1.
 
@@ -148,8 +156,9 @@ Neural: yes. Version 1.
 | `weight` | float | 1 |  |  | generator -> target synapse weight scale (multiplied by fitted weights) |
 | `joint_min` | float | -1 |  | rad |  |
 | `joint_max` | float | 1 |  | rad |  |
-| `mapping` | str | collector | collector, analysis, calibration, circular |  |  |
+| `mapping` | str | collector | collector, analysis, calibration, circular, bounded |  |  |
 | `population_size` | int | 200 | ≥ 3 |  | ring size the angle is mapped onto |
+| `arc_fraction` | float | 0.7 | ≥ 0.05; ≤ 0.95 |  | bounded mapping: fraction of the ring |
 
 | port | kind | direction | notes |
 |---|---|---|---|
@@ -158,11 +167,13 @@ Neural: yes. Version 1.
 
 ## Decoder
 
-``right - left`` → exponential filter → delay → asymmetric gains → velocity horizon.
+``right - left`` → dead zone → exponential filter → delay → asymmetric gains → velocity horizon.
 
-Wraps ``DriveControlCore`` exactly as the cosim ``MotorTF`` does: one sample
-per NEST step, the horizon is the last ``horizon`` decoded velocities, the
-settle counter runs over consumed samples on main ticks only.
+    Wraps ``DriveControlCore`` exactly as the cosim ``MotorTF`` does: one sample
+    per NEST step, the horizon is the last ``horizon`` decoded velocities, the
+    settle counter runs over consumed samples on main ticks only.  The gains
+    are rad/s per spike/tick; for the joint to move as far as the state bump
+    they are ``a * rho / dt`` (``graph.calibration``).
 
 Neural: no. Version 1.
 
@@ -170,6 +181,7 @@ Neural: no. Version 1.
 |---|---|---|---|---|---|
 | `source` | str | gain_counts | gain_counts, centroid_velocity, decision_counts |  |  |
 | `spike_scale` | float | 1 |  |  | multiplies right - left before the filter |
+| `dead_zone` | float | 0 | ≥ 0 | spikes/tick | signed counts below this give no drive, larger ones are reduced by it (the bump does not move below a minimum gain rate); applied before the filter |
 | `tau_s` | float | 0.3 | ≥ 0 | s |  |
 | `delay_steps` | int | 0 | ≥ 0 |  |  |
 | `gain_positive` | float | 0.0001 |  |  |  |
@@ -198,6 +210,7 @@ Neural: no. Version 1.
 | `joint_min` | float | -1 |  | rad | lower limit |
 | `joint_max` | float | 1 |  | rad | upper limit |
 | `limits_source` | str | params | params, urdf |  | 'urdf': read the limits from /robot_description when a robot transport is available (encoders mapped with the old limits follow) |
+| `max_velocity` | float | 1 | ≥ 0 | rad/s | commanded velocities are clipped to this magnitude; commanded positions never pass the limits |
 
 | port | kind | direction | notes |
 |---|---|---|---|
@@ -288,12 +301,46 @@ Neural: no. Version 1.
 | `profile` | signal | in | required; per-neuron counts of an output ring |
 | `angle` | signal | out | decoded angle in rad |
 
+## RingState
+
+Ring counts → population-vector average → ring index → joint angle.
+
+    The counts of the last ``window_ticks`` NEST steps are summed, their
+    circular population-vector average gives a fractional ring index, and the
+    inverse of the encoder mapping turns it into a joint angle, clamped to the
+    joint limits (a bump just past an arc end reads as that limit; ``index``
+    and ``in_arc`` keep the raw position).  ``strength``
+    is the length of the population vector (1 for a single tight bump, near 0
+    for activity spread around the ring); ``in_arc`` says whether the index
+    lies on the joint's arc (``arc_margin`` indices of slack).  Use the same
+    mapping parameters as the encoder that places the joint on the ring.
+
+Neural: no. Version 1.
+
+| parameter | type | default | bounds / choices | unit | doc |
+|---|---|---|---|---|---|
+| `mapping` | str | collector | collector, analysis, calibration, circular, bounded |  | the state encoder's mapping, inverted to read the joint angle |
+| `joint_min` | float | -1 |  | rad |  |
+| `joint_max` | float | 1 |  | rad |  |
+| `half_width` | int | 5 | ≥ 0 |  | the state encoder's half width (legacy mappings use it) |
+| `arc_fraction` | float | 0.7 | ≥ 0.05; ≤ 0.95 |  | bounded mapping: fraction of the ring |
+| `window_ticks` | int | 3 | ≥ 1 |  | ticks of counts summed before the readout |
+| `arc_margin` | float | 5 | ≥ 0 |  | ring indices of slack for in_arc |
+
+| port | kind | direction | notes |
+|---|---|---|---|
+| `counts` | signal | in | required; per-neuron spike counts of the state ring per tick (Ring.counts) |
+| `angle` | signal | out | joint angle the ring holds, within the joint limits, rad (NaN while the ring is silent) |
+| `index` | signal | out | fractional ring index of the population vector |
+| `strength` | signal | out | population-vector length, 0-1 |
+| `in_arc` | signal | out | True when the index lies on the joint's arc |
+
 ## TaskGain
 
 Bilinear gate: configuration features AND task-error direction → feedback onto joint belief rings.
 
-Not implemented: ``build`` raises.  The block exists so graphs can be drawn
-and validated with it and the editor shows its ports.
+    Not implemented: ``build`` raises.  The block exists so graphs can be drawn
+    and validated with it and the editor shows its ports.
 
 Neural: yes. Version 1.
 
@@ -324,6 +371,7 @@ Neural: yes. Version 1.
 | `state_features` | spikes | in | required; features of the ring being moved |
 | `target_features` | spikes | in | required; features of the reference |
 | `ring` | spikes | in | required; the ring being moved (gates the gain populations) |
+| `reference` | spikes | in | optional; multi; late; the reference ring itself, for the sharp comparison (Gain.reference) |
 | `feedback` | spikes | out | shifted feedback into the moved ring's stim port |
 | `left_counts` | signal | out | left gain spikes per tick |
 | `right_counts` | signal | out | right gain spikes per tick |
@@ -331,36 +379,59 @@ Neural: yes. Version 1.
 
 ## JointTriple (composite)
 
-Target / belief / actual rings with CT_goal (T moves B, motor signal) and CT_sense (A corrects B).
+Architecture v4: goal, predictive and state rings with two gain pairs on the predictive ring.
 
-The belief ring starts from the first measured angle (``enc_belief``, mode
-``once``), like the state ring of the two-ring model; afterwards only the
-two transports move it.
+    * ``G`` holds the goal, ``S`` the measured joint angle (encoders, every
+      tick), ``P`` the predicted joint angle.  ``P`` starts from the first
+      measured angle (``enc_pred``, mode ``once``); afterwards only the two
+      gain pairs move it.
+    * ``ct_goal`` compares ``P`` with ``G``: its spikes move ``P`` toward the
+      goal and are the motor signal (``left_counts`` / ``right_counts``).
+    * ``ct_body`` compares ``P`` with ``S``: its spikes pull ``P`` back to the
+      body and command nothing.  The goal comparison therefore keeps
+      commanding until the body itself has arrived.
+    * Each comparison is the ramp comparator (far) plus the ring's own
+      projection onto the gain pair (``Gain.reference``, near).
 
-Neural: yes. Version 1.
+    docs/architecture.md, docs/v4-tuning.md.
+
+Neural: yes. Version 2.
 
 | parameter | type | default | bounds / choices | unit | doc |
 |---|---|---|---|---|---|
 | `population_size` | int | 200 | ≥ 3 |  |  |
 | `num_fourier_k` | int | 20 | ≥ 1 |  |  |
 | `half_width` | int | 5 | ≥ 0 |  |  |
-| `mapping` | str | collector | collector, analysis, calibration |  |  |
+| `mapping` | str | collector | collector, analysis, calibration, bounded |  |  |
 | `joint_min` | float | -1 |  | rad |  |
 | `joint_max` | float | 1 |  | rad |  |
-| `state_mode` | str | continuous | once, continuous, corrective |  | how the actual ring follows the measured angle |
+| `arc_fraction` | float | 0.7 | ≥ 0.05; ≤ 0.95 |  | bounded mapping: fraction of the ring |
+| `ring` | dict | `{}` |  |  | Ring parameter overrides of the three rings (the bounded ring's wall) |
+| `homeostasis` | dict | `{}` |  |  | Homeostasis parameter overrides of both comparators |
+| `gain` | dict | `{}` |  |  | Gain parameter overrides of both gain pairs (cross inhibition is 0 unless given) |
+| `state_mode` | str | corrective | once, continuous, corrective |  | how the state ring follows the measured angle (continuous drive biases the body comparator) |
 | `state_rate_hz` | float | 200 | ≥ 0 | Hz |  |
-| `goal_feedback_weight` | float | -0.6 |  |  | CT_goal feedback into the belief ring |
-| `sense_feedback_weight` | float | -0.6 |  |  | CT_sense feedback into the belief ring (trust) |
+| `state_dead_band` | int | 1 | ≥ 0 |  | state_mode corrective: indices the state bump may be off |
+| `body_gain` | dict | `{}` |  |  | Gain parameter overrides of the body pair only (on top of gain) |
+| `goal_mode` | str | corrective | once, continuous, corrective |  | how the goal ring is held on the goal angle |
+| `goal_dead_band` | int | 2 | ≥ 0 |  | goal_mode corrective: indices the goal bump may be off |
+| `goal_feedback_weight` | float | -0.6 |  |  | goal gain pair -> predictive ring (shifted +-1) |
+| `body_feedback_weight` | float | -3 |  |  | body gain pair -> predictive ring (how hard the body pulls) |
+| `goal_reference` | dict | `{'exc_weight': 20000.0, 'inh_weight': 60000.0, 'window': 10}` |  |  | goal ring -> goal gain pair (Gain.reference edge parameters); empty = no sharp comparison |
+| `body_reference` | dict | `{'exc_weight': 20000.0, 'inh_weight': 150000.0, 'window': 10}` |  |  | state ring -> body gain pair (Gain.reference edge parameters); empty = no sharp comparison |
+| `window_ticks` | int | 3 | ≥ 1 |  | ticks summed by the two RingState readouts |
 
 | port | kind | direction | notes |
 |---|---|---|---|
-| `goal_angle` | signal | in | required; desired angle → target ring |
-| `measured_angle` | signal | in | required; measured angle → actual ring (mode state_mode) |
-| `initial_angle` | signal | in | required; measured angle → belief ring once, at trial start |
-| `left_counts` | signal | out | CT_goal left gain counts (motor signal) |
-| `right_counts` | signal | out | CT_goal right gain counts (motor signal) |
-| `sense_left_counts` | signal | out | CT_sense left counts (prediction error) |
-| `sense_right_counts` | signal | out | CT_sense right counts (prediction error) |
-| `belief_counts` | signal | out | belief ring counts |
-| `actual_counts` | signal | out | actual ring counts |
-| `target_counts` | signal | out | target ring counts |
+| `goal_angle` | signal | in | required; desired angle → goal ring |
+| `measured_angle` | signal | in | required; measured angle → state ring (mode state_mode) |
+| `initial_angle` | signal | in | required; measured angle → predictive ring once, at trial start |
+| `left_counts` | signal | out | goal pair, left gain counts (motor signal) |
+| `right_counts` | signal | out | goal pair, right gain counts (motor signal) |
+| `body_left_counts` | signal | out | body pair, left gain counts (prediction ahead of the body) |
+| `body_right_counts` | signal | out | body pair, right gain counts |
+| `goal_counts` | signal | out | goal ring counts |
+| `predicted_counts` | signal | out | predictive ring counts |
+| `state_counts` | signal | out | state ring counts |
+| `predicted_angle` | signal | out | joint angle the predictive ring holds, rad |
+| `state_angle` | signal | out | joint angle the state ring holds, rad |

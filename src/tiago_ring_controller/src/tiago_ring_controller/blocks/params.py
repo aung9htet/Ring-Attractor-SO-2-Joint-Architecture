@@ -165,6 +165,11 @@ RING_SCHEMA = ParamSchema("Ring", [
     ParamSpec("excitation_std_dev", "float", 10.0, minimum=0.0, doc="Mexican-hat excitation width"),
     ParamSpec("inhibition_std_dev", "float", 5.0, minimum=0.0, doc="Mexican-hat inhibition width"),
     _neuron_param_spec("ring"),
+    ParamSpec("wall", "list", [], doc="bounded ring: [low, high] ring indices; neurons outside get their bias current "
+              "scaled by outside_current_scale so no bump can rest there (empty = no wall)"),
+    ParamSpec("outside_current_scale", "float", 1.0, minimum=0.0, maximum=1.0,
+              doc="bias current factor outside the wall"),
+    ParamSpec("wall_taper", "int", 0, minimum=0, doc="indices over which the factor changes linearly at each wall end"),
 ])
 
 FOURIER_READOUT_SCHEMA = ParamSchema("FourierReadout", [
@@ -185,6 +190,9 @@ HOMEOSTASIS_SCHEMA = ParamSchema("Homeostasis", [
     ParamSpec("cold_inh_weight", "float", -20000.0, doc="warm -> right"),
     ParamSpec("decision_lateral_weight", "float", -20000.0, doc="left <-> right"),
     ParamSpec("weight_scale", "float", 5.0e6, doc="multiplies the fitted feature weights"),
+    ParamSpec("ramp_current", "float", 0.0, unit="pA",
+              doc="added to the warm and cold neurons' bias current: keeps both ramps above the zero-rate floor across "
+                  "the joint arc (the decision reads their difference); 0 = legacy"),
     ParamSpec("weights_artifact", "str", "", doc="N_<N>_homeostasis_weights.npy; empty = homeostasis/ per feature count"),
     ParamSpec("metadata_artifact", "str", "", doc="matching metadata JSON (feature order); empty = per feature count"),
     _neuron_param_spec("homeostasis"),
@@ -198,6 +206,9 @@ GAIN_SCHEMA = ParamSchema("Gain", [
     ParamSpec("cross_inhibition_weight", "float", -30000.0, doc="decision left -> right population and vice versa"),
     ParamSpec("margin", "int", 5, minimum=0, doc="ring neurons excluded from feedback at each end"),
     _neuron_param_spec("gain"),
+    ParamSpec("limit_arc", "list", [], doc="bounded ring: [low, high] ring indices of the joint limits; the ring's drive "
+              "of the right (upward) population fades to 0 at high, of the left population at low (empty = none)"),
+    ParamSpec("limit_taper", "float", 10.0, minimum=0.0, doc="indices over which the drive fades at a limit"),
 ])
 
 ENCODER_SCHEMA = ParamSchema("Encoder", [
@@ -207,10 +218,13 @@ ENCODER_SCHEMA = ParamSchema("Encoder", [
     ParamSpec("duration_ticks", "int", 1, minimum=1, doc="ticks a bump stays on"),
     ParamSpec("mode", "str", "once", choices=("once", "continuous", "corrective"), doc="when to stimulate"),
     ParamSpec("dead_band", "int", 0, minimum=0, doc="corrective mode: minimum |centroid - index| in ring indices"),
-    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration", "circular"),
-              doc="angle -> ring index: a legacy control profile over [joint_min, joint_max], or the full circle"),
+    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration", "circular", "bounded"),
+              doc="angle -> ring index: a legacy control profile over [joint_min, joint_max], the full circle, "
+                  "or 'bounded': the joint range on arc_fraction of the ring, centred opposite the seam"),
     ParamSpec("joint_min", "float", -1.0, unit="rad", doc="lower joint limit of the mapping"),
     ParamSpec("joint_max", "float", 1.0, unit="rad", doc="upper joint limit of the mapping"),
+    ParamSpec("arc_fraction", "float", 0.70, minimum=0.05, maximum=0.95,
+              doc="bounded mapping: fraction of the ring the joint range covers"),
 ])
 
 FEATURE_ENCODER_SCHEMA = ParamSchema("FeatureEncoder", [
@@ -219,13 +233,17 @@ FEATURE_ENCODER_SCHEMA = ParamSchema("FeatureEncoder", [
     ParamSpec("weight", "float", 1.0, doc="generator -> target synapse weight scale (multiplied by fitted weights)"),
     ParamSpec("joint_min", "float", -1.0, unit="rad"),
     ParamSpec("joint_max", "float", 1.0, unit="rad"),
-    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration", "circular")),
+    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration", "circular", "bounded")),
     ParamSpec("population_size", "int", 200, minimum=3, doc="ring size the angle is mapped onto"),
+    ParamSpec("arc_fraction", "float", 0.70, minimum=0.05, maximum=0.95, doc="bounded mapping: fraction of the ring"),
 ])
 
 DECODER_SCHEMA = ParamSchema("Decoder", [
     ParamSpec("source", "str", "gain_counts", choices=("gain_counts", "centroid_velocity", "decision_counts")),
     ParamSpec("spike_scale", "float", 1.0, doc="multiplies right - left before the filter"),
+    ParamSpec("dead_zone", "float", 0.0, minimum=0.0, unit="spikes/tick",
+              doc="signed counts below this give no drive, larger ones are reduced by it (the bump "
+                  "does not move below a minimum gain rate); applied before the filter"),
     ParamSpec("tau_s", "float", 0.3, minimum=0.0, unit="s"),
     ParamSpec("delay_steps", "int", 0, minimum=0),
     ParamSpec("gain_positive", "float", 1.0e-4),
@@ -242,6 +260,8 @@ JOINT_SCHEMA = ParamSchema("Joint", [
     ParamSpec("limits_source", "str", "params", choices=("params", "urdf"),
               doc="'urdf': read the limits from /robot_description when a robot transport is available "
                   "(encoders mapped with the old limits follow)"),
+    ParamSpec("max_velocity", "float", 1.0, minimum=0.0, unit="rad/s",
+              doc="commanded velocities are clipped to this magnitude; commanded positions never pass the limits"),
 ])
 
 GOAL_SCHEMA = ParamSchema("Goal", [
@@ -267,6 +287,17 @@ OUTPUT_RING_SCHEMA = ParamSchema("OutputRing", [
     ParamSpec("weights_key", "str", "W_signed_lift", doc="array in the .npz, shape (n_features, size)"),
 ])
 
+RING_STATE_SCHEMA = ParamSchema("RingState", [
+    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration", "circular", "bounded"),
+              doc="the state encoder's mapping, inverted to read the joint angle"),
+    ParamSpec("joint_min", "float", -1.0, unit="rad"),
+    ParamSpec("joint_max", "float", 1.0, unit="rad"),
+    ParamSpec("half_width", "int", 5, minimum=0, doc="the state encoder's half width (legacy mappings use it)"),
+    ParamSpec("arc_fraction", "float", 0.70, minimum=0.05, maximum=0.95, doc="bounded mapping: fraction of the ring"),
+    ParamSpec("window_ticks", "int", 3, minimum=1, doc="ticks of counts summed before the readout"),
+    ParamSpec("arc_margin", "float", 5.0, minimum=0.0, doc="ring indices of slack for in_arc"),
+])
+
 PROFILE_DECODER_SCHEMA = ParamSchema("ProfileDecoder", [
     ParamSpec("method", "str", "sawtooth", choices=("sawtooth", "scalar_ramp", "centroid")),
 ])
@@ -284,14 +315,28 @@ JOINT_TRIPLE_SCHEMA = ParamSchema("JointTriple", [
     ParamSpec("population_size", "int", 200, minimum=3),
     ParamSpec("num_fourier_k", "int", 20, minimum=1),
     ParamSpec("half_width", "int", 5, minimum=0),
-    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration")),
+    ParamSpec("mapping", "str", "collector", choices=("collector", "analysis", "calibration", "bounded")),
     ParamSpec("joint_min", "float", -1.0, unit="rad"),
     ParamSpec("joint_max", "float", 1.0, unit="rad"),
-    ParamSpec("state_mode", "str", "continuous", choices=("once", "continuous", "corrective"),
-              doc="how the actual ring follows the measured angle"),
+    ParamSpec("arc_fraction", "float", 0.70, minimum=0.05, maximum=0.95, doc="bounded mapping: fraction of the ring"),
+    ParamSpec("ring", "dict", {}, doc="Ring parameter overrides of the three rings (the bounded ring's wall)"),
+    ParamSpec("homeostasis", "dict", {}, doc="Homeostasis parameter overrides of both comparators"),
+    ParamSpec("gain", "dict", {}, doc="Gain parameter overrides of both gain pairs (cross inhibition is 0 unless given)"),
+    ParamSpec("state_mode", "str", "corrective", choices=("once", "continuous", "corrective"),
+              doc="how the state ring follows the measured angle (continuous drive biases the body comparator)"),
     ParamSpec("state_rate_hz", "float", 200.0, minimum=0.0, unit="Hz"),
-    ParamSpec("goal_feedback_weight", "float", -0.6, doc="CT_goal feedback into the belief ring"),
-    ParamSpec("sense_feedback_weight", "float", -0.6, doc="CT_sense feedback into the belief ring (trust)"),
+    ParamSpec("state_dead_band", "int", 1, minimum=0, doc="state_mode corrective: indices the state bump may be off"),
+    ParamSpec("body_gain", "dict", {}, doc="Gain parameter overrides of the body pair only (on top of gain)"),
+    ParamSpec("goal_mode", "str", "corrective", choices=("once", "continuous", "corrective"),
+              doc="how the goal ring is held on the goal angle"),
+    ParamSpec("goal_dead_band", "int", 2, minimum=0, doc="goal_mode corrective: indices the goal bump may be off"),
+    ParamSpec("goal_feedback_weight", "float", -0.6, doc="goal gain pair -> predictive ring (shifted +-1)"),
+    ParamSpec("body_feedback_weight", "float", -3.0, doc="body gain pair -> predictive ring (how hard the body pulls)"),
+    ParamSpec("goal_reference", "dict", {"exc_weight": 2.0e4, "inh_weight": 6.0e4, "window": 10},
+              doc="goal ring -> goal gain pair (Gain.reference edge parameters); empty = no sharp comparison"),
+    ParamSpec("body_reference", "dict", {"exc_weight": 2.0e4, "inh_weight": 1.5e5, "window": 10},
+              doc="state ring -> body gain pair (Gain.reference edge parameters); empty = no sharp comparison"),
+    ParamSpec("window_ticks", "int", 3, minimum=1, doc="ticks summed by the two RingState readouts"),
 ])
 
 PRIMITIVE_SCHEMAS: Dict[str, ParamSchema] = OrderedDict(
@@ -299,7 +344,7 @@ PRIMITIVE_SCHEMAS: Dict[str, ParamSchema] = OrderedDict(
     for schema in (
         RING_SCHEMA, FOURIER_READOUT_SCHEMA, HOMEOSTASIS_SCHEMA, GAIN_SCHEMA,
         ENCODER_SCHEMA, FEATURE_ENCODER_SCHEMA, DECODER_SCHEMA, JOINT_SCHEMA, GOAL_SCHEMA, PROBE_SCHEMA,
-        SIGNED_PRODUCT_SCHEMA, OUTPUT_RING_SCHEMA, PROFILE_DECODER_SCHEMA, TASK_GAIN_SCHEMA,
+        SIGNED_PRODUCT_SCHEMA, OUTPUT_RING_SCHEMA, PROFILE_DECODER_SCHEMA, RING_STATE_SCHEMA, TASK_GAIN_SCHEMA,
         TRANSPORT_SCHEMA, JOINT_TRIPLE_SCHEMA,
     )
 )
@@ -315,7 +360,7 @@ def schema_for(block_type: str) -> ParamSchema:
 __all__ = [
     "DECODER_SCHEMA", "ENCODER_SCHEMA", "FEATURE_ENCODER_SCHEMA", "FOURIER_READOUT_SCHEMA", "GAIN_SCHEMA",
     "GOAL_SCHEMA", "HOMEOSTASIS_SCHEMA", "JOINT_SCHEMA", "JOINT_TRIPLE_SCHEMA", "OUTPUT_RING_SCHEMA",
-    "PARAM_TYPES", "PRIMITIVE_SCHEMAS", "PROBE_SCHEMA", "PROFILE_DECODER_SCHEMA", "RING_SCHEMA",
+    "PARAM_TYPES", "PRIMITIVE_SCHEMAS", "PROBE_SCHEMA", "PROFILE_DECODER_SCHEMA", "RING_SCHEMA", "RING_STATE_SCHEMA",
     "SIGNED_PRODUCT_SCHEMA", "TASK_GAIN_SCHEMA", "TRANSPORT_SCHEMA",
     "ParamError", "ParamSchema", "ParamSpec", "schema_for",
 ]

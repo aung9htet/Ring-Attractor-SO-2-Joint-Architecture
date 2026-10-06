@@ -26,7 +26,7 @@ import numpy as np
 
 from ..control.controller import DecoderParameters, DriveControlCore
 from ..control.profiles import LegacyControlProfile
-from ..math.control import decode_velocity
+from ..math.control import dead_zone, decode_velocity
 from .datapack import DataPack
 
 
@@ -243,6 +243,8 @@ class MotorSample:
     filtered_drive: float
     delayed_drive: float
     decoded_velocity: float
+    #: what the settle check reads: the delayed drive, or the raw filtered count with a dead zone
+    settle_drive: float = 0.0
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -282,12 +284,14 @@ class MotorTF(TransceiverFunction):
         nest_lead_steps: int = 4,
         drive_threshold: float = 5.0,
         n_settle: int = 10,
+        dead_zone: float = 0.0,
     ) -> None:
         self.profile = profile
         self.joint_index = int(joint_index)
         self.population_size = int(population_size)
         self.dt_ms = float(dt_ms)
         self.dt_s = self.dt_ms / 1000.0
+        self.dead_zone = float(dead_zone)
         self.decoder = decoder or DecoderParameters(
             gain_positive=profile.decoder_gain_positive,
             gain_negative=profile.decoder_gain_negative,
@@ -315,6 +319,7 @@ class MotorTF(TransceiverFunction):
         self.buffer = deque(maxlen=self.horizon_len)
         self.consecutive_settled = 0
         self.samples_seen = 0
+        self._raw_filtered = 0.0
         self._last_nest_step: Optional[int] = None
 
     def consume_counts(self, counts: DataPack) -> Optional[MotorSample]:
@@ -328,7 +333,9 @@ class MotorTF(TransceiverFunction):
         left = int(counts["left"])
         right = int(counts["right"])
         signed = self.profile.signed_drive(right, left, self.population_size)
-        _, filtered, delayed = self.core.advance(signed, self.decoder.delay_steps)
+        _, filtered, delayed = self.core.advance(dead_zone(signed, self.dead_zone), self.decoder.delay_steps)
+        self._raw_filtered = self.core.alpha * self._raw_filtered + (1.0 - self.core.alpha) * signed
+        settle_drive = delayed if self.dead_zone <= 0.0 else self._raw_filtered
         velocity = decode_velocity(
             delayed, self.decoder.gain_positive, self.decoder.gain_negative
         )
@@ -344,6 +351,7 @@ class MotorTF(TransceiverFunction):
             filtered_drive=float(filtered),
             delayed_drive=float(delayed),
             decoded_velocity=float(velocity),
+            settle_drive=float(settle_drive),
         )
         self.buffer.append(sample)
         self.samples_seen += 1
@@ -360,7 +368,7 @@ class MotorTF(TransceiverFunction):
 
         consumed = self.buffer[0]
         if not ctx.is_lead:
-            if abs(consumed.delayed_drive) < self.drive_threshold:
+            if abs(consumed.settle_drive) < self.drive_threshold:
                 self.consecutive_settled += 1
             else:
                 self.consecutive_settled = 0

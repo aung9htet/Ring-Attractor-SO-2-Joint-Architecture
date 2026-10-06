@@ -3,7 +3,7 @@
 Inputs are the encoders' angle signals (``"<encoder id>.angle"`` datapacks with
 an ``angle`` field); outputs are one datapack per neural block with signal
 outputs, named by the block id (``Ring``: per-neuron deltas, total, bump index,
-centroid; ``Gain``: left/right totals; ``Homeostasis``: warm/cold/left/right;
+linear and circular centroid; ``Gain``: left/right totals; ``Homeostasis``: warm/cold/left/right;
 ``SignedProduct``/``OutputRing``: per-cell deltas).  Bumps are generator rate
 changes followed by a kernel recalibration (see ``GeneratorStimulusPort``).
 """
@@ -21,7 +21,7 @@ if TYPE_CHECKING:  # pragma: no cover - the graph package imports this module
     from ..graph.graph import BuiltGraph, Graph
 from .datapack import DataPack
 from .engine import Engine, EngineStateError
-from .fakes import ring_readout
+from .fakes import circular_centroid, ring_readout
 from .nest_engine import SpikeCountReader
 
 
@@ -154,7 +154,7 @@ class GraphNestEngine(Engine):
     def _ring_centroid(self, encoder_id: str) -> Optional[float]:
         ring_id = self._ring_of_encoder.get(encoder_id)
         pack = self.last.get(ring_id) if ring_id else None
-        return None if pack is None else pack.get("centroid")
+        return None if pack is None else pack.get("centroid_circular")
 
     def _apply_pending(self, dt_ms: float) -> None:
         if not self.pending:
@@ -181,18 +181,21 @@ class GraphNestEngine(Engine):
     def _do_advance(self, dt_ms: float) -> None:
         if self.built is None:
             raise EngineStateError("graph engine has not been reset")
+        # ``time_scale`` NEST steps of ``dt_ms`` per tick (docs/archive/velocity/speed.md). Input
+        # enters before the first; the counts below cover the whole tick.
         self._apply_pending(dt_ms)
-        if self.step_mode == "run":
-            if not self.prepared:
-                self.backend.Prepare()
-                self.prepared = True
-            self.backend.Run(dt_ms)
-        else:
-            self.backend.Simulate(dt_ms)
-        self.kernel_time_ms += dt_ms
-        expired = [encoder.expire(self.kernel_time_ms) for encoder in self.built.encoders()]
-        if any(expired):
-            self.recalibrate()
+        for _ in range(int(self.graph.simulation.time_scale)):
+            if self.step_mode == "run":
+                if not self.prepared:
+                    self.backend.Prepare()
+                    self.prepared = True
+                self.backend.Run(dt_ms)
+            else:
+                self.backend.Simulate(dt_ms)
+            self.kernel_time_ms += dt_ms
+            expired = [encoder.expire(self.kernel_time_ms) for encoder in self.built.encoders()]
+            if any(expired):
+                self.recalibrate()
 
         t_after = self.t_ms + dt_ms
         step = self.step_index + 1
@@ -206,7 +209,8 @@ class GraphNestEngine(Engine):
                 self._prev[block_id][port] = current
                 if block.type_name == "Ring":
                     total, bump, centroid = ring_readout(delta)
-                    data.update({"counts": delta.tolist(), "total": total, "bump_index": bump, "centroid": centroid})
+                    data.update({"counts": delta.tolist(), "total": total, "bump_index": bump, "centroid": centroid,
+                                 "centroid_circular": circular_centroid(delta)})
                 elif block.type_name == "Homeostasis":
                     data["counts"] = {label: int(delta[i]) for i, label in enumerate(block.population.labels)}
                     data["left_counts"] = data["counts"]["left"]
@@ -225,6 +229,7 @@ class GraphNestEngine(Engine):
                     "left": int(gain["left_counts"]), "right": int(gain["right_counts"]),
                     "r1_delta": list(ring["counts"]), "r1_spike_count": float(ring["total"]),
                     "r1_bump_index": ring["bump_index"], "r1_centroid": ring["centroid"],
+                    "r1_centroid_circular": ring["centroid_circular"],
                     "t_nest_ms": t_after, "nest_step": step, "hidden_ms": 0.0,
                     "step_mode": self.step_mode, "readout_mode": self.readout_mode,
                 },

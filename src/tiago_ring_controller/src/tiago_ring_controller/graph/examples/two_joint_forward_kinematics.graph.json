@@ -20,7 +20,10 @@
         "max_distance": 50.0,
         "excitation_std_dev": 10.0,
         "inhibition_std_dev": 5.0,
-        "neuron_params": {}
+        "neuron_params": {},
+        "wall": [],
+        "outside_current_scale": 1.0,
+        "wall_taper": 0
       }
     },
     {
@@ -32,7 +35,10 @@
         "max_distance": 50.0,
         "excitation_std_dev": 10.0,
         "inhibition_std_dev": 5.0,
-        "neuron_params": {}
+        "neuron_params": {},
+        "wall": [],
+        "outside_current_scale": 1.0,
+        "wall_taper": 0
       }
     },
     {
@@ -47,7 +53,8 @@
         "dead_band": 0,
         "mapping": "circular",
         "joint_min": -1.0,
-        "joint_max": 1.0
+        "joint_max": 1.0,
+        "arc_fraction": 0.7
       }
     },
     {
@@ -62,7 +69,8 @@
         "dead_band": 0,
         "mapping": "circular",
         "joint_min": -1.0,
-        "joint_max": 1.0
+        "joint_max": 1.0,
+        "arc_fraction": 0.7
       }
     },
     {

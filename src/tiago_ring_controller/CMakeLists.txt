@@ -32,11 +32,14 @@ catkin_package(
 catkin_install_python(
   PROGRAMS
     scripts/benchmark_build.py
+    scripts/calibrate_transport.py
     scripts/cosim_gazebo_smoke.py
+    scripts/identify_actuator.py
     scripts/measure_legacy_tick.py
     scripts/run_cosim_trial.py
     scripts/run_graph.py
-    scripts/sweep_feedback.py
+    scripts/archive/sweep_feedback.py
+    scripts/validate_velocity.py
     scripts/write_block_reference.py
     legacy/record_experiments.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

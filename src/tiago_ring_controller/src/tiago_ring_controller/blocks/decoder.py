@@ -10,17 +10,19 @@ import numpy as np
 
 from ..control.controller import DecoderParameters, DriveControlCore
 from ..math.circular import decode_population_angle, decode_sawtooth_profile, preferred_angles
-from ..math.control import decode_velocity
+from ..math.control import dead_zone, decode_velocity
 from .base import Block, Port, signal_in, signal_out
 from .params import DECODER_SCHEMA, PROFILE_DECODER_SCHEMA
 
 
 class Decoder(Block):
-    """``right - left`` → exponential filter → delay → asymmetric gains → velocity horizon.
+    """``right - left`` → dead zone → exponential filter → delay → asymmetric gains → velocity horizon.
 
     Wraps ``DriveControlCore`` exactly as the cosim ``MotorTF`` does: one sample
     per NEST step, the horizon is the last ``horizon`` decoded velocities, the
-    settle counter runs over consumed samples on main ticks only.
+    settle counter runs over consumed samples on main ticks only.  The gains
+    are rad/s per spike/tick; for the joint to move as far as the state bump
+    they are ``a * rho / dt`` (``graph.calibration``).
     """
 
     type_name: ClassVar[str] = "Decoder"
@@ -57,6 +59,7 @@ class Decoder(Block):
             drive_threshold=p["drive_threshold"], n_settle=p["n_settle"], alpha=math.exp(-self.dt_s / tau),
         )
         self.buffer: Deque[Dict[str, Any]] = deque(maxlen=int(p["horizon"]))
+        self._raw_filtered = 0.0
         self.consecutive_settled = 0
         self.samples_seen = 0
         self._last_centroid: Optional[float] = None
@@ -77,14 +80,18 @@ class Decoder(Block):
         """Decode one NEST sample into the horizon buffer and return it."""
 
         signed = self.signed_input(left, right, centroid)
-        _, filtered, delayed = self.core.advance(signed, self.params["delay_steps"])
+        _, filtered, delayed = self.core.advance(dead_zone(signed, self.params["dead_zone"]), self.params["delay_steps"])
         velocity = decode_velocity(delayed, self.params["gain_positive"], self.params["gain_negative"])
+        # The settle check must see the gain populations, not the dead-zoned drive: below the
+        # dead zone the bump still creeps, and a trial that stopped there would end early.
+        self._raw_filtered = self.core.alpha * self._raw_filtered + (1.0 - self.core.alpha) * signed
+        settle_drive = delayed if self.params["dead_zone"] <= 0.0 else self._raw_filtered
         self.samples_seen += 1
         sample = {
             "nest_step": int(nest_step if nest_step is not None else self.samples_seen),
             "signed_spike": float(signed), "left": float(left), "right": float(right),
             "filtered_drive": float(filtered), "delayed_drive": float(delayed),
-            "decoded_velocity": float(velocity),
+            "decoded_velocity": float(velocity), "settle_drive": float(settle_drive),
         }
         self.buffer.append(sample)
         return sample
@@ -96,7 +103,7 @@ class Decoder(Block):
         self.consume(left, right, centroid, nest_step)
         consumed = self.buffer[0]
         if not is_lead:
-            if abs(consumed["delayed_drive"]) < self.params["drive_threshold"]:
+            if abs(consumed["settle_drive"]) < self.params["drive_threshold"]:
                 self.consecutive_settled += 1
             else:
                 self.consecutive_settled = 0

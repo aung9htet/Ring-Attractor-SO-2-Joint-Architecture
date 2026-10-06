@@ -22,7 +22,7 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SRC = os.path.join(os.path.dirname(HERE), "src")
+SRC = os.path.join(os.path.dirname(os.path.dirname(HERE)), "src")
 if SRC not in sys.path:
     sys.path.insert(0, SRC)
 
@@ -45,7 +45,8 @@ def analyse(record, encoder):
     ticks = record.main_ticks
     centroids, indices = [], []
     for tick in ticks:
-        counts = tick.outputs.get("ring_counts")
+        # ring_counts is an engine datapack since the graph NEST engine emits it
+        counts = tick.inputs.get("ring_counts") or tick.outputs.get("ring_counts")
         joint = tick.inputs.get("joint_state")
         if counts is None or joint is None:
             continue

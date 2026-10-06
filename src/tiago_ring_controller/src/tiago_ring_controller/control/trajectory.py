@@ -20,6 +20,8 @@ class RecedingTrajectoryData:
     points: Tuple[TrajectoryPointData, ...]
     next_commanded_positions: Tuple[float, ...]
     next_commanded_velocities: Tuple[float, ...]
+    #: joints whose integrated position was held at a limit (multi-joint builder with ``limits``)
+    clamped_joints: Tuple[int, ...] = ()
 
 
 def build_receding_trajectory(
@@ -75,6 +77,7 @@ def build_multi_joint_trajectory(
     base_positions: Sequence[float],
     horizons: Mapping[int, Iterable[float]],
     dt_s: float,
+    limits: Optional[Mapping[int, Sequence[float]]] = None,
 ) -> Optional[RecedingTrajectoryData]:
     """One receding horizon for several joints at once (plan phase 5).
 
@@ -82,12 +85,32 @@ def build_multi_joint_trajectory(
     horizon hold their commanded position.  Horizons of different lengths are
     padded with zero velocity.  For a single joint the result equals
     :func:`build_receding_trajectory` point for point.
+
+    ``limits`` maps a joint to ``(lower, upper)``.  An integrated position
+    never leaves that range: it is held at the limit and the point's velocity
+    becomes the velocity actually travelled (zero once it rests on the limit).
+    A joint that starts outside its range is not pulled back, only prevented
+    from moving further out.  Held joints are listed in ``clamped_joints``.
     """
 
     lists = {int(joint): list(velocities) for joint, velocities in horizons.items()}
     lists = {joint: values for joint, values in lists.items() if values}
     if not lists:
         return None
+    bounds = {int(joint): (float(pair[0]), float(pair[1])) for joint, pair in (limits or {}).items()}
+    clamped = set()
+
+    def integrate(joint: int, position: float, velocity: float) -> Tuple[float, float]:
+        target = position + velocity * dt_s
+        pair = bounds.get(joint)
+        if pair is None:
+            return target, velocity
+        held = min(max(target, min(pair[0], position)), max(pair[1], position))
+        if held == target:
+            return target, velocity
+        clamped.add(joint)
+        return held, (held - position) / dt_s
+
     base = list(base_positions)
     length = max(len(values) for values in lists.values())
     positions = list(base)
@@ -96,8 +119,7 @@ def build_multi_joint_trajectory(
         point_velocities = [0.0] * len(base)
         for joint, values in lists.items():
             velocity = values[i] if i < len(values) else 0.0
-            positions[joint] += velocity * dt_s
-            point_velocities[joint] = velocity
+            positions[joint], point_velocities[joint] = integrate(joint, positions[joint], velocity)
         points.append(
             TrajectoryPointData(
                 positions=tuple(positions),
@@ -108,12 +130,12 @@ def build_multi_joint_trajectory(
     next_positions = list(base)
     next_velocities = [0.0] * len(base)
     for joint, values in lists.items():
-        next_positions[joint] += values[0] * dt_s
-        next_velocities[joint] = values[0]
+        next_positions[joint], next_velocities[joint] = integrate(joint, base[joint], values[0])
     return RecedingTrajectoryData(
         points=tuple(points),
         next_commanded_positions=tuple(next_positions),
         next_commanded_velocities=tuple(next_velocities),
+        clamped_joints=tuple(sorted(clamped)),
     )
 
 
@@ -226,12 +248,17 @@ class CommandState:
         self,
         horizons: Mapping[int, Iterable[float]],
         dt_s: float,
+        limits: Optional[Mapping[int, Sequence[float]]] = None,
     ) -> Optional[RecedingTrajectoryData]:
-        """Several joints per horizon; consumes one step of each commanded joint."""
+        """Several joints per horizon; consumes one step of each commanded joint.
+
+        With ``limits`` the commanded positions stay inside each joint's range
+        (see :func:`build_multi_joint_trajectory`).
+        """
 
         if not self.initialized or self.commanded_positions is None:
             raise RuntimeError("Command state has not been primed")
-        result = build_multi_joint_trajectory(self.commanded_positions, horizons, dt_s)
+        result = build_multi_joint_trajectory(self.commanded_positions, horizons, dt_s, limits)
         if result is None:
             return None
         self.commanded_positions[:] = result.next_commanded_positions

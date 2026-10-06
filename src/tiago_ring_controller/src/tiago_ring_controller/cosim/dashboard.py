@@ -189,7 +189,7 @@ class DashboardObserver(LoopObserver):
             "right": None if counts is None else counts["right"],
             "r1": None if not new_sample else counts["r1_delta"],
             "r1_bump": None if counts is None else counts.get("r1_bump_index"),
-            "centroid": None if counts is None else _finite(counts.get("r1_centroid")),
+            "centroid": None if counts is None else _finite(counts.get("r1_centroid_circular", counts.get("r1_centroid"))),
             "drive": None if consumed is None else consumed["filtered_drive"],
             "decoded_velocity": None if consumed is None else consumed["decoded_velocity"],
             "signed_spike": None if consumed is None else consumed["signed_spike"],

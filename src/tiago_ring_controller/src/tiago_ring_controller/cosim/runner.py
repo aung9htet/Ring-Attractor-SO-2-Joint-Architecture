@@ -22,6 +22,7 @@ import numpy as np
 from ..artifacts import save_json_legacy, save_npz_compressed_legacy
 from ..config import legacy_root, load_ring_spec, source_config_path
 from ..control.controller import decoder_features_from_spikes
+from ..math.control import dead_zone
 from ..evaluation.serialization import (
     RING_RASTER_FIELDS,
     RING_TIMESERIES_FIELDS,
@@ -30,7 +31,7 @@ from ..evaluation.serialization import (
 )
 from .config import CosimConfig
 from .engine import Engine
-from .fakes import FakeNestEngine, FakeRobotEngine
+from .fakes import FakeNestEngine, FakeRobotEngine, measured_velocity
 from .loop import AnyOf, FTILoop, LoopObserver, MaxSteps, SettledFlag, StopCondition, TrialRecord
 from .nest_engine import GeneratorStimulusPort, NestEngine, RingModelPorts
 from .tf import GoalTF, MotorTF, ProprioceptionTF, TransceiverFunction
@@ -70,6 +71,7 @@ def build_transceivers(
             profile, config.joint_index, population_size, config.dt_ms,
             decoder=config.decoder, nest_lead_steps=config.nest_lead_steps,
             drive_threshold=config.drive_threshold, n_settle=config.n_settle,
+            dead_zone=config.decoder_dead_zone,
         ),
     ]
 
@@ -284,7 +286,7 @@ def legacy_collector_record(
         after = main[index + 1].inputs if index + 1 < len(main) else record.end_state
         state = after["joint_state"]
         position = float(state["positions"][joint])
-        velocity = float(state["velocities"][joint])
+        velocity = measured_velocity(state, joint)
         bump = sample["r1_bump_index"]
         hist["time"].append(tick.t_ms / 1000.0 + dt_s)
         hist["joint_position"].append(position)
@@ -302,8 +304,9 @@ def legacy_collector_record(
 
     q_final = float(record.final_state["joint_state"]["positions"][joint])
     raw_err = goal - q_final
+    # The prediction uses what the decoder filtered: the signed count after its dead zone.
     features = decoder_features_from_spikes(
-        np.asarray(hist["signed_spike"], dtype=float), dt_s,
+        dead_zone(np.asarray(hist["signed_spike"], dtype=float), config.decoder_dead_zone), dt_s,
         config.decoder_tau_s, config.decoder_delay_steps,
     )
     S_pos = float(features["S_pos"])

@@ -2,6 +2,78 @@
   "schema_version": 1,
   "baseline": "pre-refactor artifact schemas",
   "files": {
+    "src/config/calibration/transport_calibration.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "35e1836ce171917fa1d3fdd381a6e291cd2b76a635531ae1f4ec2bf07353622a",
+      "key_order": [
+        "schema",
+        "model",
+        "index_per_spike",
+        "dead_zone",
+        "decoder_tau_s",
+        "decoder_delay_steps",
+        "dt_ms",
+        "network_fingerprint",
+        "fit",
+        "dataset",
+        "actuator",
+        "created",
+        "nest_version"
+      ],
+      "top_level_value_types": {
+        "schema": "str",
+        "model": "str",
+        "index_per_spike": "float",
+        "dead_zone": "float",
+        "decoder_tau_s": "float",
+        "decoder_delay_steps": "int",
+        "dt_ms": "float",
+        "network_fingerprint": "str",
+        "fit": "dict",
+        "dataset": "dict",
+        "actuator": "dict",
+        "created": "str",
+        "nest_version": "str"
+      }
+    },
+    "src/config/calibration/transport_calibration_bounded.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "35e1836ce171917fa1d3fdd381a6e291cd2b76a635531ae1f4ec2bf07353622a",
+      "key_order": [
+        "schema",
+        "model",
+        "index_per_spike",
+        "dead_zone",
+        "decoder_tau_s",
+        "decoder_delay_steps",
+        "dt_ms",
+        "network_fingerprint",
+        "fit",
+        "dataset",
+        "actuator",
+        "created",
+        "nest_version"
+      ],
+      "top_level_value_types": {
+        "schema": "str",
+        "model": "str",
+        "index_per_spike": "float",
+        "dead_zone": "float",
+        "decoder_tau_s": "float",
+        "decoder_delay_steps": "int",
+        "dt_ms": "float",
+        "network_fingerprint": "str",
+        "fit": "dict",
+        "dataset": "dict",
+        "actuator": "dict",
+        "created": "str",
+        "nest_version": "str"
+      }
+    },
     "src/config/calibration/velocity_calibration.json": {
       "kind": "json",
       "strict_json": true,
@@ -64,6 +136,55 @@
         {
           "shape": [
             20,
+            2
+          ],
+          "dtype": "float64",
+          "fortran_order": false
+        }
+      ]
+    },
+    "src/config/homeostasis/N_200_bounded_a070_homeostasis_metadata.json": {
+      "kind": "json",
+      "strict_json": true,
+      "top_level_type": "dict",
+      "structure_sha256": "c6106fb4ea84e6953465092bdac38d0498a44b0dd55518f5be8fda9a03c48126",
+      "key_order": [
+        "population_size",
+        "feature_names",
+        "target",
+        "rise_fraction",
+        "arc_fraction",
+        "num_positions",
+        "window_ms",
+        "ridge_lambda",
+        "train_r2",
+        "test_rms",
+        "bias",
+        "fit",
+        "note"
+      ],
+      "top_level_value_types": {
+        "population_size": "int",
+        "feature_names": "list",
+        "target": "str",
+        "rise_fraction": "float",
+        "arc_fraction": "float",
+        "num_positions": "int",
+        "window_ms": "float",
+        "ridge_lambda": "float",
+        "train_r2": "float",
+        "test_rms": "float",
+        "bias": "float",
+        "fit": "dict",
+        "note": "str"
+      }
+    },
+    "src/config/homeostasis/N_200_bounded_a070_homeostasis_weights.npy": {
+      "kind": "npy",
+      "arrays": [
+        {
+          "shape": [
+            80,
             2
           ],
           "dtype": "float64",

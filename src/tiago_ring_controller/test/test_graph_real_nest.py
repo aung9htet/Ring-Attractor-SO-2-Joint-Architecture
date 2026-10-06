@@ -198,7 +198,7 @@ class GraphFileParityTests(unittest.TestCase):
             graph.blocks["enc_state"].profile, 5, joint_min=joint.limits()[0], joint_max=joint.limits()[1],
             rng_seed=SEED, nest_model="vectorised",
             decoder_gain_positive=dec["gain_positive"], decoder_gain_negative=dec["gain_negative"],
-            decoder_tau_s=dec["tau_s"], decoder_delay_steps=dec["delay_steps"],
+            decoder_tau_s=dec["tau_s"], decoder_delay_steps=dec["delay_steps"], decoder_dead_zone=dec["dead_zone"],
         )
         loop = build_loop(config, [make_nest_engine(config, backend=nest), FakeRobotEngine("robot")])
         loop.initialize()
@@ -308,7 +308,7 @@ class MultiJointRealNestTests(unittest.TestCase):
             raise unittest.SkipTest("requires NEST %s, found %s" % (PINNED_NEST_VERSION, nest.__version__))
 
     def test_two_joints_move_toward_their_goals(self):
-        # Goals far enough for the comparator to produce drive (docs/blocks/feedback.md: below
+        # Goals far enough for the comparator to produce drive (docs/archive/blocks/feedback.md: below
         # about 18 ring indices of goal distance the decision pair stays silent).
         goals = (0.6, -1.2)
         graph = multi_joint_two_ring(joints=(5, 6), goals=goals)

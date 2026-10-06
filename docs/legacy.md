@@ -52,11 +52,11 @@ run them in a disposable copy. The original entrypoint guide is
 
 ## What the legacy loop did and why it was replaced
 
-`docs/cosim/assessment.md`: one hand-written, single-threaded tick loop copied
+`docs/archive/cosim-assessment.md`: one hand-written, single-threaded tick loop copied
 into three scripts, `rospy.sleep(0.05)` under simulated time, no shared clock
 with Gazebo, robot state entering NEST once per trial, hidden simulated time
 inside stimulus injection, readout cost growing with trial length. The
-replacement is the co-simulation loop (`docs/cosim/plan-b-inhouse-loop.md`)
+replacement is the co-simulation loop (`docs/archive/cosim-plan-b-inhouse-loop.md`)
 and, on top of it, the block graphs (`docs/blocks/`).
 
 ## How the new model relates to the old
@@ -76,7 +76,7 @@ and, on top of it, the block graphs (`docs/blocks/`).
 - Two behaviours of the original model surfaced during characterisation and are
   unchanged: the comparator produces no drive below about 18 ring indices of
   goal distance, and outcomes for some goals depend on the seed
-  (`docs/blocks/feedback.md` §2).
+  (`docs/archive/blocks/feedback.md` §2).
 
 ## The frozen baseline and its checks
 

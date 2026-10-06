@@ -13,7 +13,7 @@
 from __future__ import annotations
 
 import math
-from typing import List, Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 import numpy as np
 
@@ -30,6 +30,47 @@ def command_horizons(cmd: Any) -> Dict[int, List[float]]:
     if commands:
         return {int(c["joint_index"]): [float(v) for v in c["velocities"]] for c in commands}
     return {int(cmd["joint_index"]): [float(v) for v in cmd["velocities"]]}
+
+
+def command_limits(cmd: Any) -> Dict[int, Tuple[float, float]]:
+    """``{joint_index: (lower, upper)}`` for the commands of an ``arm_velocity_cmd`` that carry limits."""
+
+    commands = cmd.get("commands") if hasattr(cmd, "get") else None
+    limits: Dict[int, Tuple[float, float]] = {}
+    for command in commands or ():
+        pair = command.get("limits")
+        if pair is not None:
+            limits[int(command["joint_index"])] = (float(pair[0]), float(pair[1]))
+    return limits
+
+
+def measured_velocity(joint_state: Any, joint_index: int) -> float:
+    """Velocity of one joint from a ``joint_state`` datapack.
+
+    Prefers the engine's finite-difference estimate (``velocities_fd``): the
+    velocity field of ``/joint_states`` is not usable for the TIAGo wrist in
+    Gazebo (docs/archive/velocity/calibration.md).
+    """
+
+    velocities = joint_state.get("velocities_fd") or joint_state.get("velocities")
+    return float(velocities[joint_index]) if velocities else 0.0
+
+
+def circular_centroid(counts: Any) -> float:
+    """Population-vector average of a ring's counts as a ring index in ``[0, N)``; NaN when silent.
+
+    Unlike the linear centroid of :func:`ring_readout`, it is right for a bump
+    that straddles the seam between the last and the first neuron.
+    """
+
+    values = np.asarray(counts, dtype=float)
+    total = float(values.sum())
+    if total <= 0.0:
+        return float("nan")
+    size = len(values)
+    angles = 2.0 * np.pi * np.arange(size) / size
+    vector = np.sum(values * np.exp(1j * angles))
+    return float((np.angle(vector) % (2.0 * np.pi)) * size / (2.0 * np.pi))
 
 
 def ring_readout(delta: np.ndarray) -> Tuple[float, Optional[int], float]:
@@ -71,17 +112,27 @@ class FakeRobotEngine(Engine):
         self.sim_time_s = 0.0
         self.pending: Optional[DataPack] = None
         self.published: List[Dict[str, Any]] = []
+        self.clamped_joints: List[int] = []
+        self.start_pose: Dict[int, float] = {}
         self.reset_count = 0
         self.rebuild_count = 0
+
+    def set_start_pose(self, positions: Mapping[int, float]) -> None:
+        """Joint angles (by index) a rebuild reset starts from instead of the home pose."""
+
+        self.start_pose = {int(joint): float(value) for joint, value in positions.items()}
 
     def _do_reset(self) -> None:
         if self.reset_mode == "rebuild" or not self.command_state.initialized:
             self.positions = list(self.home)
+            for joint, value in self.start_pose.items():
+                self.positions[joint] = value
             self.velocities = [0.0] * len(self.home)
             self.sim_time_s = 0.0
             self.rebuild_count += 1
         self.pending = None
         self.published = []
+        self.clamped_joints = []
         self.command_state.reset()
         self.command_state.prime(self.positions, self.velocities, force=True)
         self.reset_count += 1
@@ -95,6 +146,7 @@ class FakeRobotEngine(Engine):
                     "positions": list(self.positions),
                     "velocities": list(self.velocities),
                     "commanded_positions": list(self.command_state.commanded_positions or []),
+                    "clamped_joints": list(self.clamped_joints),
                     "sim_time_ms": self.sim_time_s * 1000.0,
                 },
             ),
@@ -124,9 +176,10 @@ class FakeRobotEngine(Engine):
             cmd = self.pending
             self.pending = None
             horizons = command_horizons(cmd)
-            trajectory = self.command_state.build_multi(horizons, dt_s)
+            trajectory = self.command_state.build_multi(horizons, dt_s, command_limits(cmd))
             if trajectory is None:
                 raise EngineError("empty velocity horizon")
+            self.clamped_joints = list(trajectory.clamped_joints)
             self.published.append(
                 {
                     "t_ms": self.t_ms,
@@ -134,10 +187,12 @@ class FakeRobotEngine(Engine):
                     "joint_indices": sorted(horizons),
                     "velocities": [float(v) for v in cmd["velocities"]],
                     "points": [list(point.positions) for point in trajectory.points],
+                    "clamped_joints": list(trajectory.clamped_joints),
                 }
             )
             target = list(trajectory.points[0].positions)
         else:
+            self.clamped_joints = []
             target = list(self.command_state.commanded_positions or self.positions)
         self._track(target, dt_s)
 
