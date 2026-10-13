@@ -5,19 +5,29 @@ On Humble, ros2_control_node reads ~/robot_description, but PAL's launch publish
 Upstream's own demos add this remap on Humble only
 (mujoco_ros2_control_demos/launch/01_basic_robot.launch.py).
 Defaults: PAL's pregenerated 4-DoF model (floating base, no end-effector), MoveIt off.
+Also starts PAL's own left and right arm trajectory controllers, unchanged (docs/kangaroo/DECISIONS.md D7).
 """
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.substitutions import PathJoinSubstitution
+from launch.actions import DeclareLaunchArgument, GroupAction, IncludeLaunchDescription
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import SetRemap
 from launch_ros.substitutions import FindPackageShare
 
 
+def pal_launch(package, name):
+    return PathJoinSubstitution([FindPackageShare(package), 'launch', name])
+
+
 def generate_launch_description():
-    pal_launch = PathJoinSubstitution([FindPackageShare('kangaroo_mujoco'), 'launch', 'kangaroo_mujoco.launch.py'])
+    # Scoped per side so the two includes' `side` arguments do not overwrite each other.
+    arm_controllers = [GroupAction([
+        IncludeLaunchDescription(pal_launch('kangaroo_controller_configuration', 'arm_controller.launch.py'),
+                                 launch_arguments={'side': side, 'arm_type': LaunchConfiguration('arm_type')}.items())])
+        for side in ('left', 'right')]
     return LaunchDescription([
         DeclareLaunchArgument('arm_type', default_value='4dof'),
         DeclareLaunchArgument('moveit', default_value='False'),
         SetRemap(src='~/robot_description', dst='/robot_description'),
-        IncludeLaunchDescription(pal_launch),
+        IncludeLaunchDescription(pal_launch('kangaroo_mujoco', 'kangaroo_mujoco.launch.py')),
+        *arm_controllers,
     ])

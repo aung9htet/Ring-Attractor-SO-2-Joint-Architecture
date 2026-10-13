@@ -9,6 +9,7 @@ docker image inspect "$image" >/dev/null 2>&1 || docker build -t "$image" "$here
 
 args=(run --rm --init --name ros2-kangaroo --network host --ipc host
       --user "$(id -u):$(id -g)" -e HOME=/tmp
+      -e PYTHONDONTWRITEBYTECODE=1  # as run_model_docker.bash: never add bytecode to the tracked __pycache__ trees
       -v "$PWD:/work" -w /work)
 [[ -t 0 && -t 1 ]] && args+=(-it)
 

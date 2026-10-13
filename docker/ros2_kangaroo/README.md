@@ -23,8 +23,10 @@ docker/ros2_kangaroo/run.bash            # builds the image on first use, then o
 Inside the container:
 
 ```bash
-ros2 launch /opt/kangaroo_sim.launch.py  # PAL's 4-DoF Kangaroo in an empty MuJoCo world
+ros2 launch /opt/kangaroo_sim.launch.py  # PAL's 4-DoF Kangaroo in an empty MuJoCo world + arm controllers
 ```
+
+To move individual arm joints by velocity, see `../../kangaroo/README.md`.
 
 A second terminal into the same container:
 
@@ -52,7 +54,7 @@ MuJoCo renders on the NVIDIA GPU. It prints PASS/FAIL for each and exits with th
 | File | Role |
 |---|---|
 | `Dockerfile` | Pinned `osrf/ros:humble-desktop` base plus PAL's apt packages |
-| `kangaroo_sim.launch.py` | PAL's launch, unchanged, plus the Humble remap (below). Defaults: 4-DoF, MoveIt off |
+| `kangaroo_sim.launch.py` | PAL's launch, unchanged, plus the Humble remap (below), plus PAL's left/right arm trajectory controllers. Defaults: 4-DoF, MoveIt off |
 | `run.bash` | Starts the container with GPU, display, and your current directory at `/work` |
 | `smoke_test.bash` | The acceptance check above |
 
@@ -68,6 +70,7 @@ mirrors drop old versions. A rebuild may therefore install newer ones; re-run th
 | ros-humble-pal-sea-arm-description | 2.8.4 |
 | ros-humble-mujoco-ros2-control | 0.1.2 |
 | MuJoCo (via ros-humble-mujoco-vendor 0.1.1) | 3.12.0 |
+| NEST (built from source at commit `41892a50f95d…`, the repo's pinned `HEAD@41892a5`; reports `HEAD@41892a50f`) | for `kangaroo/ring_reach.py` |
 
 ## Known upstream issues (PAL's public Humble release)
 

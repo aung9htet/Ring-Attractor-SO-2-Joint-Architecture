@@ -152,3 +152,13 @@ missing display/cookie errors, start from a desktop terminal with `DISPLAY` and
 `--headless` disables display forwarding; Gazebo's own `gui:=false` additionally
 disables its GUI. Camera rendering may still require a virtual X display; see the
 validation notes for tested headless simulation commands.
+
+## Kangaroo (ROS 2) migration
+
+Work in progress on branch `kangaroo-migration`: velocity control of PAL's Kangaroo robot in MuJoCo on ROS 2
+Humble.
+- Simulator image: `docker/ros2_kangaroo/README.md`.
+- Per-joint arm velocity control, and ring-attractor control of one joint per arm (both arms at once):
+  `kangaroo/README.md`. Decoder calibrated for left j0, and for right j1 over its measured
+  range from a mid-range start pose (both directions; downward moves overshoot, see DECISIONS.md F13).
+- Design decisions: `docs/kangaroo/DECISIONS.md`. Glossary: `CONTEXT.md`.
