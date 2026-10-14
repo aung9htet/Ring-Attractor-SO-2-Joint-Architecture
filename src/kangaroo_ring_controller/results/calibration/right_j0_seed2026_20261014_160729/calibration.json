@@ -1,0 +1,26 @@
+{
+ "side": "right",
+ "joint": 0,
+ "profile": "calibration",
+ "joint_limits": [
+  -2.6711649714929293,
+  2.6739519037420383
+ ],
+ "start_pose": [
+  -0.239,
+  1.321,
+  -1.57,
+  0.8
+ ],
+ "decoder_gain_positive": 0.005827220977801947,
+ "decoder_gain_negative": -0.005056857405394151,
+ "decoder_tau": 1.2,
+ "decoder_delay_steps": 4,
+ "seed": 2026,
+ "refit_of": "src/kangaroo_ring_controller/results/calibration/right_j0_seed2026_20261014_111335/calibration.json",
+ "refit_trials": 50,
+ "refit_desired_mae": 0.20170391431691115,
+ "refit_actual_mae": 0.24968324404949704,
+ "limits_file": "/work/src/kangaroo_ring_controller/results/joint_limits/right_j0_20261013_180317/limits.json",
+ "balanced": true
+}

@@ -1,8 +1,0 @@
-{
- "side": "right",
- "joint": 1,
- "joint_min": -1.1396466124494633,
- "joint_max": 1.4622630704048099,
- "velocity": 1.0,
- "seconds": 5.0
-}

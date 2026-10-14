@@ -26,7 +26,7 @@ Inside the container:
 ros2 launch /opt/kangaroo_sim.launch.py  # PAL's 4-DoF Kangaroo in an empty MuJoCo world + arm controllers
 ```
 
-To move individual arm joints by velocity, see `../../kangaroo/README.md`.
+To move individual arm joints by velocity, see `../../src/kangaroo_ring_controller/README.md`.
 
 A second terminal into the same container:
 
@@ -70,7 +70,7 @@ mirrors drop old versions. A rebuild may therefore install newer ones; re-run th
 | ros-humble-pal-sea-arm-description | 2.8.4 |
 | ros-humble-mujoco-ros2-control | 0.1.2 |
 | MuJoCo (via ros-humble-mujoco-vendor 0.1.1) | 3.12.0 |
-| NEST (built from source at commit `41892a50f95d…`, the repo's pinned `HEAD@41892a5`; reports `HEAD@41892a50f`) | for `kangaroo/ring_reach.py` |
+| NEST (built from source at commit `41892a50f95d…`, the repo's pinned `HEAD@41892a5`; reports `HEAD@41892a50f`) | for the ring attractor in `src/kangaroo_ring_controller/` |
 
 ## Known upstream issues (PAL's public Humble release)
 

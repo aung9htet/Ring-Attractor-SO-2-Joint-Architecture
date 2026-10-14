@@ -68,3 +68,37 @@ __pycache__/
 !src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/logging.cpython-38.pyc
 !src/tiago_ring_controller/src/tiago_ring_controller/ros/__pycache__/transport.cpython-38.pyc
 !src/tiago_ring_controller/src/trainer/__pycache__/train_ring_model.cpython-38.pyc
+
+# --- Kangaroo: generated run output stays local (re-create with the scripts) ---
+# Only the calibrations the controller loads are committed (joint_setup.newest_setup);
+# a new calibration you want to share: git add -f <dir>/calibration.json
+/kangaroo/results/
+/src/kangaroo_ring_controller/results/*
+!/src/kangaroo_ring_controller/results/calibration/
+/src/kangaroo_ring_controller/results/calibration/*
+!/src/kangaroo_ring_controller/results/calibration/left_j0_seed2026_refit20261014_200821_20261014_201023/
+!/src/kangaroo_ring_controller/results/calibration/left_j1_seed2026_20261014_160729/
+!/src/kangaroo_ring_controller/results/calibration/left_j2_seed2026_20261014_160729/
+!/src/kangaroo_ring_controller/results/calibration/left_j3_seed2026_20261014_160729/
+!/src/kangaroo_ring_controller/results/calibration/right_j0_seed2026_20261014_160729/
+!/src/kangaroo_ring_controller/results/calibration/right_j1_seed2026_refit20261014_201002_20261014_201023/
+!/src/kangaroo_ring_controller/results/calibration/right_j2_seed2026_20261014_160729/
+!/src/kangaroo_ring_controller/results/calibration/right_j3_seed2026_20261014_160729/
+
+# --- Personal working notes: kept on disk, summarised in docs/kangaroo/{EXPERIMENTS,DESIGN}.md ---
+/docs/experiments/
+/docs/kangaroo/DECISIONS.md
+/docs/kangaroo/design/
+/docs/kangaroo/adr/
+/docs/superpowers/
+
+# --- Coding-agent files and editor/tool caches ---
+CLAUDE.md
+PROGRESS.md
+CONTEXT.md
+.claude/
+.remember/
+.serena/
+.superpowers/
+.vscode/
+.ruff_cache/

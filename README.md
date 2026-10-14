@@ -158,7 +158,7 @@ validation notes for tested headless simulation commands.
 Work in progress on branch `kangaroo-migration`: velocity control of PAL's Kangaroo robot in MuJoCo on ROS 2
 Humble.
 - Simulator image: `docker/ros2_kangaroo/README.md`.
-- Per-joint arm velocity control, and ring-attractor control of one joint per arm (both arms at once):
-  `kangaroo/README.md`. Decoder calibrated for left j0, and for right j1 over its measured
-  range from a mid-range start pose (both directions; downward moves overshoot, see DECISIONS.md F13).
-- Design decisions: `docs/kangaroo/DECISIONS.md`. Glossary: `CONTEXT.md`.
+- Code: `src/kangaroo_ring_controller/` (README there), a sibling of the TIAGo package `src/tiago_ring_controller/`.
+  Per-joint arm velocity control, ring-attractor control of any arm joint (both arms at once), decoder calibration,
+  and a browser GUI with a goal slider per joint. All 8 arm joints are calibrated and evaluated.
+- Design: `docs/kangaroo/DESIGN.md`. Experiments and results: `docs/kangaroo/EXPERIMENTS.md`.
